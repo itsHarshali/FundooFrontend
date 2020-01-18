@@ -8,36 +8,37 @@
         <img src="../assets/unnamed.png" alt="logo" class="img">
         <span class="md-title">Fundoo</span>
 
-         <md-autocomplete
+         <md-autocomplete id="search1"
           class="search"
           v-model="selectedEmployee"
-          :md-options="employees"
+          :md-options="employees" 
           md-layout="box">
-          <label>Search...</label>
-        </md-autocomplete>
+          <label>
+          <md-icon>search</md-icon>
+            Search...</label>
+          </md-autocomplete>
 
-         <div class="md-toolbar-section-end">
+          <div class="md-toolbar-section-end">
           <md-button class="md-icon-button">
             <md-icon>refresh</md-icon>  
           </md-button>  
           <md-button class="md-icon-button">           
              <md-avatar>
-      <img src="../assets/images (1).png" alt="Avatar">
+         <img src="../assets/images (1).png" alt="Avatar">
          </md-avatar>
           </md-button>
         </div>
 
       </md-app-toolbar>
-      <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
-        <md-toolbar class="md-transparent" md-elevation="0">
+      <md-app-drawer :md-active.sync="menuVisible" md-persistent="null">
+        <!-- <md-toolbar class="md-transparent" md-elevation="0">
           <span>Navigation</span>
-
           <div class="md-toolbar-section-end">
             <md-button class="md-icon-button md-dense" @click="toggleMenu">
               <md-icon>keyboard_arrow_left</md-icon>
             </md-button>
           </div>
-        </md-toolbar>
+        </md-toolbar> -->
 
         <md-list>
           <md-list-item>
@@ -73,7 +74,8 @@
       </md-app-drawer>
 
       <md-app-content>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea.
+
+  helllo
       </md-app-content>
     </md-app>
   </div>
@@ -83,22 +85,12 @@
   export default {
     name: 'PersistentFull',
     data: () => ({
-      menuVisible: false,
+      menuVisible: false ,
       selectedEmployee: null,
       employees: [
         'Jim Halpert',
         'Dwight Schrute',
         'Michael Scott',
-        'Pam Beesly',
-        'Angela Martin',
-        'Kelly Kapoor',
-        'Ryan Howard',
-        'Kevin Malone',
-        'Creed Bratton',
-        'Oscar Nunez',
-        'Toby Flenderson',
-        'Stanley Hudson',
-        'Meredith Palmer',
         'Phyllis Lapin-Vance'
       ]
     }),
@@ -112,7 +104,7 @@
 
 <style lang="scss" scoped>
   .md-app {
-    min-height: 400px;
+    min-height: 600px;
     border: 1px solid rgba(#000, .12);
   }
 
@@ -121,15 +113,25 @@
     width: 230px;
     max-width: calc(100vw - 125px);
   }
+  .md-app-drawer {
+    margin-top:63px;
+  }
   .page-container{
     background-color: #FFFFFF;
   }
-   .search {
-    max-width: 500px;
-     background-color:rgb(179, 185, 185);
-  
+    .md-autocomplete{
+    max-width: 600px;
+
   }
-  .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box input{
-     background-color:rgb(96, 105, 105);
+  #search1{
+     margin-left: 90px;
+     background-color:rgb(216, 216, 216);
+  }
+
+   .md-card {
+    width: 320px;
+    margin: 4px;
+    display: inline-block;
+    vertical-align: top;
   }
 </style>

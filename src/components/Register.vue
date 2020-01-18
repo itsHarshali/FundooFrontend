@@ -47,7 +47,7 @@
             </div>
      
           <div class="md-layout md-gutter">
-            <div class="md-layout-item md-size-50">
+            <div class="md-layout-item md-size-100">
             <md-field :class="getValidationClass('password')">
             <label for="password">Password</label>
             <md-input type="password" name="password" id="password" autocomplete="password" v-model="form.password" :disabled="sending" />
@@ -56,14 +56,14 @@
           </md-field>
             </div>
 
-            <div class="md-layout-item md-size-50">
+            <!-- <div class="md-layout-item md-size-50">
             <md-field :class="getValidationClass('password')"  :md-toggle-password="false">
             <label for="confirm">Confirm</label>
             <md-input type="password" name="confirm" id="confirm" autocomplete="confirm" v-model="form.password" :disabled="sending" />
             <span class="md-error" v-if="!$v.form.confirm.required">The confirm password is required</span>
             <span class="md-error" v-else-if="!$v.form.confirm.minlength">Invalid password</span>
             </md-field>
-            </div>
+            </div> -->
             </div>
             <div class="text">Use 8 or more characters with a mix of letters, numbers & symbols</div>
          
@@ -110,7 +110,7 @@ import { HTTP } from "../http-common";
         firstName: null,
         lastName: null,
         password: null,
-        confirm:null,
+        // confirm:null,
         email: null,
       },
       userSaved: false,
@@ -131,10 +131,10 @@ import { HTTP } from "../http-common";
           required,
           minLength: minLength(8)
         },
-         confirm: {
-          required,
-          minLength: minLength(8)
-        },
+        //  confirm: {
+        //   required,
+        //   minLength: minLength(8)
+        // },
         email: {
           required,
           email
@@ -156,13 +156,12 @@ import { HTTP } from "../http-common";
         this.form.firstName = null
         this.form.lastName = null
         this.form.password = ""
-        this.form.confirm = ""
+        // this.form.confirm = ""
         this.form.email = ""
       },
         //JSON.stringify() takes a JavaScript object and transforms it into a JSON string.
     saveUser() {
       this.sending = true;
-
       const registerData = {};
       registerData.firstName = this.form.firstName;
       registerData.lastName = this.form.lastName;
@@ -177,7 +176,7 @@ import { HTTP } from "../http-common";
         .then(response => {
           //  this.$log.info('test', response)
           const data = JSON.stringify(response.data);
-          alert("registration succesfully ", data);
+          alert("registration succesfully ,Check your email for email verification", data);
           // this.posts = response.data;
           // this.userSaved=true
           this.sending=false

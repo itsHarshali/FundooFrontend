@@ -3,7 +3,16 @@
       <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-size-50 md-small-size-100">
         <md-card-header>
-          <div class="md-title">Forget Password</div>
+            <div class="fundoo">
+        <span style="color:blue">F</span>
+        <span style="color:red">u</span>
+        <span style="color:brown">n</span>
+        <span style="color:green">d</span>
+        <span style="color:purple">o</span>
+        <span style="color:blue">o</span>
+        </div>
+        <div class="md-title">Forget Password</div>
+        
         </md-card-header>
            
         <md-card-content>
@@ -156,7 +165,8 @@ import { HTTP } from "../http-common";
 //   border-style: outset;
 // }
 #btn1 {
-  background-color: #4caf50; /* Green */
+   background: #1a73e8;
+  //background-color: #4caf50; /* Green */
   border: none;
   color: white;
   //padding: 15px 32px;
