@@ -170,6 +170,10 @@ import { HTTP } from "../http-common";
 </script>
 
 <style lang="scss" scoped>
+.md-card-actions{
+  display: flex;
+  flex-direction: row;
+}
 .md-progress-bar {
   position: absolute;
   top: 0;
@@ -201,6 +205,9 @@ import { HTTP } from "../http-common";
 
 }
 .md-card{
+  display: flex;
+  justify-content:space-between;
+  flex-direction: column;
    margin-top: 60px; 
 }
 .md-layout{
