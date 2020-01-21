@@ -1,4 +1,5 @@
 <template>
+ <!-- <div> -->
   <md-card>
     <md-card-header-text>
       <input type="text" placeholder="Title" style="border:none; outline:none" />
@@ -67,6 +68,13 @@
       </md-card-actions>
     </div>
   </md-card>
+ 
+  <!-- <md-card>
+   <md-card-content>
+      <input type="text" placeholder="Take a Note" style="border:none; outline:none"/>
+    </md-card-content>
+</md-card>
+  </div> -->
 </template>
 <script>
 export default {
@@ -93,7 +101,7 @@ export default {
   // vertical-align: top;
   border: 1px solid transparent;
   box-sizing: border-box;
-  // overflow: hidden;
+   overflow: hidden;
   position: relative;
   border-radius: 8px;
   transition-duration: 0.218s;

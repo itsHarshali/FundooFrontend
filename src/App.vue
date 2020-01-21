@@ -9,7 +9,8 @@
         <router-link to='/ResetPassword'></router-link>
          <!-- <router-link to='/notes'></router-link> -->
     </nav>
-    <router-view />
+    <router-view></router-view>
+    <!-- <router-view /> -->
   </div>
 </template>
 <script>
