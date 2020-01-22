@@ -50,8 +50,8 @@
               </md-avatar>
             </md-button>
             </md-menu-item>
-
-              <md-menu-item>emailId:harshalibadgujar3@gmail.com</md-menu-item>
+<!-- emailId:harshalibadgujar3@gmail.com</md-menu-item> -->
+              <md-menu-item v-model="email"> {{ email }}</md-menu-item> 
                <md-divider> </md-divider>
               <md-menu-item><md-button>Sing Out</md-button></md-menu-item>            
             </md-menu-content>
@@ -105,22 +105,26 @@
 
       <md-app-content>
         <md-card></md-card>
-        <notes></notes>
+        <noteComponent></noteComponent>
       </md-app-content>
     </md-app>
   </div>
 </template>
 
 <script>
-import notes from "../components/notes";
+import noteComponent from "../components/noteComponent";
+
+  // var lastname =
+
 export default {
   name: "PersistentFull",
   components: {
-    notes
-  },
+    noteComponent,
+    
+  }, 
   data:()=>({
     menuVisible: false,
-   
+   email:"ghfghf",
     selectedEmployee: null,
     employees: [
       "Jim Halpert",
@@ -129,7 +133,9 @@ export default {
       "Phyllis Lapin-Vance"
     ]
   }),
- 
+ mounted(){
+   this.email=localStorage.getItem("emailid")
+ },
  methods: {
    
       toggleMenu () {
@@ -168,6 +174,7 @@ export default {
 }
 .md-autocomplete {
   max-width: 600px;
+  
 }
 #search1 {
   //  margin-left: 90px;
@@ -178,6 +185,12 @@ export default {
   margin-left: 56px;
   margin-right: 49px;
   overflow: hidden;
+  position: relative;
+  border-radius: 8px;
+  transition-duration: 0.218s;
+  transition-property: background, border, opacity, box-shadow, transform;
+  transition-timing-function: ease-in;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .md-card {

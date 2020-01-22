@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { HTTP } from "../http-common";
+  import { HTTP } from "../http-common";
   import { validationMixin } from 'vuelidate'
   import {
     required,

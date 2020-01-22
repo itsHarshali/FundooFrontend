@@ -37,7 +37,7 @@
 
         <md-card-actions>
           <md-button type="submit" id="btn1" class="md-primary" :disabled="sending">Login</md-button>
-          <md-button router-link to="/ForgatePassword"  type="submit" id="btn1" class="forget" :disabled="sending">forgEt</md-button>          
+          <md-button router-link to="/ForgatePassword"  type="submit" id="btn1" class="forget" :disabled="sending">forget</md-button>          
         </md-card-actions>
           <!-- <p>Not registered?<a href="url">Create an account</a> </p> -->
           <p>Not registered?<router-link to="/Register">New User?</router-link> </p>
@@ -45,9 +45,7 @@
       <!-- <router-link to="/ForgatePassword" class="btn">Forgot password?</router-link> -->
       </div>
         
-        </md-card-content>     
- 
-
+        </md-card-content>    
         <md-progress-bar md-mode="indeterminate" v-if="sending"/>
 
        
@@ -80,7 +78,7 @@ import { HTTP } from "../http-common";
     required,
     email,
     minLength,
-  
+ 
   } from 'vuelidate/lib/validators'
 
   export default {
@@ -88,7 +86,6 @@ import { HTTP } from "../http-common";
     mixins: [validationMixin],
     data: () => ({
       form: {
-       
         email: null,
         password:null,
       },
@@ -140,6 +137,10 @@ import { HTTP } from "../http-common";
           // this.posts = response.data;
           //this.userSaved=true
           this.$router.push('/dashboard')
+          localStorage.setItem("name",response.data.data.firstName +" "+ response.data.data.lastName);         localStorage.setItem("emailid",response.data.data.emailid);
+          localStorage.setItem("email",response.data.emailid);  
+          localStorage.setItem("token",response.data.token);
+        
           this.sending=false
            this.clearForm();
         })
