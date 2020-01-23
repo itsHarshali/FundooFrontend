@@ -1,6 +1,6 @@
 <template>
   <div class="note">
-    <div v-if="seen==false" @click="toggleMenu">
+    <div v-if="seen==false" @click="toggleMenu" >
 
      <md-card class="take">
       <md-card-content>
@@ -21,27 +21,22 @@
     
     </md-card>
     </div>
-    <div v-else> 
 
-
-    <md-card >
+    <form v-else  @submit.prevent="validateUser"> 
+    <md-card>
       <md-card-header-text class="header">
-        <input  name="title" id="title" type="text" placeholder="Title" style="border:none; outline:none"  :disabled="sending"/>
+        
+        <input  v-model="title" type="text" placeholder="Title" style="border:none; outline:none"  :disabled="sending"/>
         <md-button class="md-icon-button">
           <md-avatar>
             <img src="../assets/pin.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
-        <!-- <md-button class="md-icon-button">
-          <md-avatar class=pin>
-            <img src="../assets/notification.svg" alt="Avatar" />
-          </md-avatar>
-        </md-button>
-        -->
       </md-card-header-text>
 
       <md-card-content>
-        <input name="description" id="description" type="text" placeholder="Take a Note" style="border:none; outline:none" :disabled="sending" />
+        <input v-model="description" type="text" placeholder="Take a Note" style="border:none; outline:none" :disabled="sending" />
+      
       </md-card-content>
       <div class="bottom">
         <md-card-actions md-alignment="left">
@@ -91,13 +86,13 @@
             </md-button>
           </div>
           <div v-if="seen==true" @click="toggleMenu">
-          <md-button type="submit" id="btn1" >close</md-button>
+          <md-button type="submit"  id="btn1" @click="saveNote">close</md-button>
           </div>
         </md-card-actions>
       </div>
     </md-card>
-        </div>
-      <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
+        </form>
+      <!-- <md-snackbar :md-active.sync="saveNote">The Note {{ lastUser }} was saved with success!</md-snackbar> -->
 
   </div>
 </template>
@@ -106,36 +101,38 @@ import { HTTP } from "../http-common";
 export default {
   name: "notes",
   data: () => ({
-    seen: false
+    seen: false,
+     title: "",
+     description: "",
+      sending: false,
   }),
   methods: {
-
-       saveUser() {
+        clearForm () {
+        this.title = ""
+        this.description = ""
+      },
+       saveNote() {
       this.sending = true;
       const noteData = {};
       noteData.title = this.title;
       noteData.description = this.description;
 
   this.$log.info('test', this.title)
-
-      HTTP.post(`notes`,localStorage.getItem("token"), noteData)
+ 
+      HTTP.post(`notes`, noteData,{headers:{token:localStorage.getItem("token")}})
 
         .then(response => {
-          //  this.$log.info('test', response)
+           this.$log.info('test', response)
           const data = JSON.stringify(response.data);
-          alert("note create succesfully ,Check your email for email verification", data);
-          // this.posts = response.data;
-          // this.userSaved=true
+          alert("note create succesfully ", data);
           this.sending=false
           this.clearForm()
         })
         .catch(e => {
           this.$log.info('test', e)
-          alert("doesn't creat note" , e);
-          // this.sending = false
+          alert("add description" , e);
           this.sending=false
           this.clearForm()
-          // this.errors.push(e);
         });
        },
     toggleMenu() {
@@ -146,8 +143,6 @@ export default {
       window.alert("Send a message...");
     },
   validateUser() {
-      this.$v.$touch();
-
       if (!this.$v.$invalid) {
         this.saveUser();
       }
@@ -167,7 +162,7 @@ export default {
   // vertical-align: top;
   border: 1px solid transparent;
   box-sizing: border-box;
-  //overflow: hidden;
+  overflow: hidden;
   position: relative;
   border-radius: 8px;
   transition-duration: 0.218s;

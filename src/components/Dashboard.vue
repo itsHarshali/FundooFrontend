@@ -41,7 +41,7 @@
               </md-avatar>
             </md-button>
 
-            <md-menu-content>
+            <md-menu-content class=c1>
               <md-menu-item>
                 <md-button  class="md-icon-button">
                 <md-avatar class="profile"> 
@@ -51,6 +51,7 @@
             </md-button>
             </md-menu-item>
 <!-- emailId:harshalibadgujar3@gmail.com</md-menu-item> -->
+              <md-menu-item v-model="name"> {{ name }}</md-menu-item> 
               <md-menu-item v-model="email"> {{ email }}</md-menu-item> 
                <md-divider> </md-divider>
               <md-menu-item><md-button>Sing Out</md-button></md-menu-item>            
@@ -104,6 +105,7 @@
       </md-app-drawer>
 
       <md-app-content>
+         
         <md-card></md-card>
         <noteComponent></noteComponent>
       </md-app-content>
@@ -124,7 +126,8 @@ export default {
   }, 
   data:()=>({
     menuVisible: false,
-   email:"ghfghf",
+   email:"",
+   name:"",
     selectedEmployee: null,
     employees: [
       "Jim Halpert",
@@ -135,6 +138,7 @@ export default {
   }),
  mounted(){
    this.email=localStorage.getItem("emailid")
+    this.name=localStorage.getItem("name")
  },
  methods: {
    
@@ -173,12 +177,13 @@ export default {
   background-color: #ffffff;
 }
 .md-autocomplete {
-  max-width: 600px;
-  
+  max-width: 700px;
+  -webkit-text-fill-color: #6f6f6f;
 }
 #search1 {
   //  margin-left: 90px;
-  background-color: rgb(216, 216, 216);
+  // background-color: rgb(216, 216, 216);
+      background-color: #e2e0e0;
   //      padding: 11px 0;
   height: 46px;
   padding: 0;
@@ -191,6 +196,7 @@ export default {
   transition-property: background, border, opacity, box-shadow, transform;
   transition-timing-function: ease-in;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  -webkit-text-fill-color: #797979;
 }
 
 .md-card {
@@ -215,5 +221,10 @@ export default {
 .md-menu {
   margin: 24px;
 }
-
+// .c1{
+//   align-content: center
+// }
+.md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box label{
+  -webkit-text-fill-color: #6f6f6f;
+}
 </style>

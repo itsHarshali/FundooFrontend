@@ -1,7 +1,7 @@
 <template>
-  <div class=note> 
-    
-  <md-card> 
+  <div class=note>
+    <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
+  <md-card>  
     <md-card-header-text class="header">
       <input type="text" placeholder="Title" style="border:none; outline:none" />
      <md-button class="md-icon-button">
@@ -9,14 +9,7 @@
             <img src="../assets/pin.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
-         <!-- <md-button class="md-icon-button">
-          <md-avatar class=pin>
-            <img src="../assets/notification.svg" alt="Avatar" />
-          </md-avatar>
-        </md-button>
-      -->
     </md-card-header-text>
-
     <md-card-content>
       <input type="text" placeholder="Take a Note" style="border:none; outline:none" />
     </md-card-content>
@@ -60,8 +53,8 @@
       </md-card-actions>
     </div>
   </md-card>
-
-  </div>
+    </div>
+  <!-- </div> -->
 </template>
 <script>
 export default {
@@ -72,6 +65,7 @@ export default {
    ] ,
     data:()=>({
     seen: false
+    
     }),
   methods: {
     toggleMenu () {
@@ -79,6 +73,7 @@ export default {
         this.$log.info('seen :: ' +this.seen)
 
       },
+
     sendMessage() {
       window.alert("Send a message...");
     },
