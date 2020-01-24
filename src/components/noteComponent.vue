@@ -1,46 +1,43 @@
 <template>
-  <div>
-   
+  <div> 
     <notes></notes>
-    <displayNote displayNote></displayNote>
+    <displayNote :getAllNotes="getAllNotes"></displayNote>
   </div>
 </template>
 <script>
 import notes from "../components/notes";
 import displayNote from "../components/displayNote";
 import { HTTP } from "../http-common";
-
 export default {
   name: "noteComponent",
   components: {
     notes,
     displayNote
   },
-  props: [
-    // camelCase in JavaScript
-    "displayNote"
-  ],
-
+ 
   data: () => ({
-    getAllNotes:[
+    getAllNotes:[],
 
-    ]
   }),
+  
   mounted() {
-    this.getAllNotes();
+    this.getAllNote()
   },
 
   methods: {
-    getAllNotes() {
+    getAllNote() {
       HTTP.get(`notes`, { headers: { token: localStorage.getItem("token") } })
         .then(response => {
           // const data = JSON.stringify(response.data);
-         this.$log.info("data", response.data);
-          alert("get all notes succesfully ", response.data);
+          //JSON. stringify() method converts a  JavaScript object or value to a JSON string
+        //  this.$log.info("getall notes data from backend =>"+JSON.stringify(response.data));
+         this.getAllNotes= response.data.data
+         this.$log.info("getall notes data  =>"+JSON.stringify(this.getAllNotes));
+          // alert("get all notes succesfully ",response.data.data);
         })
         .catch(e => {
           this.$log.info("error", e);
-          alert("add description", e);
+          // alert("add description", e);
         });
     }
   }

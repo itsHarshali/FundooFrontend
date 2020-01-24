@@ -105,7 +105,18 @@
 
       <md-app-content>
         <md-card></md-card>
+
+
         <notes></notes>
+        
+        <transition>
+  <div v-if="toggle" key="1">Hello</div>
+  <div v-else key="2">Goodbye</div>
+</transition>
+
+<li v-for="task in tasks" :key="task.id">
+    {{ task.description}}
+</li>
       </md-app-content>
     </md-app>
   </div>
@@ -118,9 +129,16 @@ export default {
   components: {
     notes
   },
+  
   data:()=>({
     menuVisible: false,
-   
+   tasks: [
+    {
+        description: "dry"
+    },{
+        description: "wash"
+    }
+],
     selectedEmployee: null,
     employees: [
       "Jim Halpert",

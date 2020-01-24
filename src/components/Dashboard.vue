@@ -1,6 +1,7 @@
 <template>
   <div class="page-container">
     <md-app>
+      <!-- <div class="tool"> -->
       <md-app-toolbar>
         <!-- v-if="!menuVisible" -->
         
@@ -50,7 +51,6 @@
               </md-avatar>
             </md-button>
             </md-menu-item>
-<!-- emailId:harshalibadgujar3@gmail.com</md-menu-item> -->
               <md-menu-item v-model="name"> {{ name }}</md-menu-item> 
               <md-menu-item v-model="email"> {{ email }}</md-menu-item> 
                <md-divider> </md-divider>
@@ -58,23 +58,16 @@
             </md-menu-content>
           </md-menu>
         </div>
+      
       </md-app-toolbar>
+      <!-- </div> -->
 
         <md-app-drawer :md-active.sync="menuVisible" md-persistent="null">
-        <!-- <md-toolbar class="md-transparent" md-elevation="0">
-          <span>Navigation</span>
-
-          <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button md-dense" @click="toggleMenu">
-              <md-icon>keyboard_arrow_left</md-icon>
-            </md-button>
-          </div>
-        </md-toolbar> -->
-
         <md-list>
-          <md-list-item>
+          <md-list-item >
             <md-icon>note</md-icon>
             <span class="md-list-item-text">Notes</span>
+           
           </md-list-item>
 
           <md-list-item>
@@ -104,7 +97,7 @@
         </md-list>
       </md-app-drawer>
 
-      <md-app-content>
+      <md-app-content class="container">
          
         <md-card></md-card>
         <noteComponent></noteComponent>
@@ -115,8 +108,6 @@
 
 <script>
 import noteComponent from "../components/noteComponent";
-
-  // var lastname =
 
 export default {
   name: "PersistentFull",
@@ -226,5 +217,19 @@ export default {
 // }
 .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box label{
   -webkit-text-fill-color: #6f6f6f;
+}
+.container{
+    display: flex; 
+  flex-wrap: wrap;
+  justify-content: center;
+    border: 1px solid transparent;
+    //  width: 700px
+    // margin:80px
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+}
+.md-app-toolbar{
+   display: flex;
+  // justify-content: space-between;
+  flex-direction: row;
 }
 </style>

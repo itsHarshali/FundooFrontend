@@ -1,17 +1,20 @@
 <template>
   <div class=note>
-    <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
+   
+    <div v-for="note in getAllNotes"  v-bind:key="note"> 
+          <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
+    <div class="card">
   <md-card>  
     <md-card-header-text class="header">
-      <input type="text" placeholder="Title" style="border:none; outline:none" />
-     <md-button class="md-icon-button">
+      <div>{{note.title}}</div> 
+     <md-button class="md-icon-button bottom">
           <md-avatar>
             <img src="../assets/pin.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
     </md-card-header-text>
     <md-card-content>
-      <input type="text" placeholder="Take a Note" style="border:none; outline:none" />
+      <div>{{note.description}}</div>   
     </md-card-content>
     <div class="bottom">   
       <md-card-actions md-alignment="left">
@@ -54,18 +57,19 @@
     </div>
   </md-card>
     </div>
-  <!-- </div> -->
+    </div>
+  </div>
 </template>
 <script>
 export default {
   name: "notes",
      props: [  
-   // camelCase in JavaScript  
-   'displayNote'  
+   "getAllNotes" 
+
    ] ,
     data:()=>({
-    seen: false
-    
+    seen: false,
+    getAllNotes:[]
     }),
   methods: {
     toggleMenu () {
@@ -84,6 +88,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+// .trashnoted :hover .footerarea {
+//   visibility: visible;
+ 
+// }
 .md-card {
   display: flex;
   justify-content: space-between;
@@ -151,13 +159,13 @@ export default {
   }
 }
 .bottom {
+  
    display: flex;
 justify-content: space-between;
 flex-direction: row;
 align-items:center;
 color:rgba(0, 0, 0, 0.54);
 direction:ltr;
-
 flex-direction:row-reverse;
 flex-wrap:wrap-reverse;
 font-family:Roboto, arial, sans-serif;
@@ -173,7 +181,7 @@ transition-delay:0s, 0s;
 transition-duration:0.218s, 0.218s;
 transition-property:background-color, box-shadow;
 transition-timing-function:ease-in-out, ease-in-out;
-
+ visibility: hidden;
 }
 .button{
   display: flex;
@@ -238,16 +246,35 @@ width: 229.859px;
 
 // style="user-select: none;" aria-disabled="true"
 
-.note{
-  display: flex;
-  justify-content: center;
-    border: 1px solid transparent;
+// .note{
+//   display: flex; 
+//   flex-wrap: wrap;
+//   justify-content: center;
+//     border: 1px solid transparent;
+//     //  width: 700px
+//     // margin:80px
+// }
+.note {
+  display: flex; 
+   justify-content: space-between;
+  flex-wrap: wrap;
+      width: 800px;
+    // margin:80px
+ 
 }
 .header{
   display: flex;
   justify-content: space-between;
   flex-direction: row
 }
+// .trashnoted :hover .footerarea {
+//   visibility: visible;
+ 
+// }
+.card :hover .bottom{
+visibility: visible;
+}
+
 </style>
 
 
