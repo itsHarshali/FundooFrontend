@@ -16,10 +16,11 @@
     <md-card-content>
       <div>{{note.description}}</div>   
     </md-card-content>
+
     <div class="bottom">   
       <md-card-actions md-alignment="left">
        <div class=button>
-        <md-button class="md-icon-button">
+      <!--   <md-button class="md-icon-button">
           <md-avatar>
             <img src="../assets/notification.svg" alt="Avatar" />
           </md-avatar>
@@ -51,25 +52,33 @@
               <md-icon>message</md-icon>
             </md-menu-item>
           </md-menu-content>
-        </md-menu>
+        </md-menu>-->
+          <iconComponent> </iconComponent>
        </div>
       </md-card-actions>
-    </div>
+    </div> 
+  
   </md-card>
     </div>
     </div>
   </div>
 </template>
 <script>
+import iconComponent from "../components/iconComponent"
 export default {
   name: "notes",
+  components:{
+    iconComponent,
+  },
      props: [  
-   "getAllNotes" 
+   "getAllNotes" ,
+   "getAllTrash"
 
    ] ,
     data:()=>({
     seen: false,
-    getAllNotes:[]
+    getAllNotes:[],
+    getAllTrash:[]
     }),
   methods: {
     toggleMenu () {

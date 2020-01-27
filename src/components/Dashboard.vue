@@ -8,7 +8,7 @@
         <md-button  class="md-icon-button " @click="toggleMenu">
           <md-icon>menu</md-icon>
         </md-button>
-        <img src="../assets/unnamed.png" alt="logo" class="img" />
+        <img  src="../assets/unnamed.png" alt="logo" class="img" />
         <span class="md-title">Fundoo</span>
         <md-autocomplete
           id="search1"
@@ -66,13 +66,13 @@
         <md-list>
           <md-list-item >
             <md-icon>note</md-icon>
-            <span class="md-list-item-text">Notes</span>
+            <button class="md-list-item-text">Notes</button>
            
           </md-list-item>
 
           <md-list-item>
             <md-icon>notification_important</md-icon>
-            <span class="md-list-item-text">Reminders</span>
+            <button class="md-list-item-text">Reminders</button>
           </md-list-item>
 
           <md-divider></md-divider>
@@ -80,28 +80,30 @@
 
           <md-list-item>
             <md-icon>edit</md-icon>
-            <span class="md-list-item-text">Edit Label</span>
+            <button class="md-list-item-text">Edit Label</button>
           </md-list-item>
           <md-divider></md-divider>
 
           <md-list-item>
             <md-icon>move_to_inbox</md-icon>
             <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->
-            <span class="md-list-item-text">Archive</span>
+            <button class="md-list-item-text">Archive</button>
           </md-list-item>
 
           <md-list-item>
             <md-icon>delete</md-icon>
-            <span class="md-list-item-text">Trash</span>
+            <button class="md-list-item-text">Trash</button>
           </md-list-item>
         </md-list>
       </md-app-drawer>
 
       <md-app-content class="container">
-         
+         <div class="main">
         <md-card></md-card>
         <noteComponent></noteComponent>
+         </div>
       </md-app-content>
+
     </md-app>
   </div>
 </template>
@@ -231,5 +233,24 @@ export default {
    display: flex;
   // justify-content: space-between;
   flex-direction: row;
+}
+.main{
+  margin-left: 180px;
+  display: flex;
+}
+.img{
+  display: flex;
+  width: fit-content;
+}
+.md-list button{
+border: none;
+background-color: #ffffff;
+ color:#050101;
+}
+.md-list button:hover {
+    cursor: pointer;
+    background-color: rgb(236, 236, 236);
+    border-radius: 8px;
+  
 }
 </style>

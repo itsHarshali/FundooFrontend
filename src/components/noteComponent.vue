@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import notes from "../components/notes";
+import notes from "../components/notes";                                                        
 import displayNote from "../components/displayNote";
 import { HTTP } from "../http-common";
 export default {
@@ -13,7 +13,7 @@ export default {
   components: {
     notes,
     displayNote
-  },
+  }, 
  
   data: () => ({
     getAllNotes:[],
@@ -25,7 +25,7 @@ export default {
   },
 
   methods: {
-    getAllNote() {
+    getAllNote() {  
       HTTP.get(`notes`, { headers: { token: localStorage.getItem("token") } })
         .then(response => {
           // const data = JSON.stringify(response.data);

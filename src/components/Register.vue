@@ -76,7 +76,7 @@
 
 <div class="md-layout-item md-size-50"> 
  <md-card-media>
- <img src="../assets/account.jpg" alt="logo" class="img">
+ <img src="../assets/account.svg" alt="logo" class="img">
  </md-card-media>
  <p>One account. All of Fundoo working for you.</p>
 </div>

@@ -6,8 +6,8 @@ import ResetPassword from './components/ResetPassword.vue';
 import Dashboard from './components/Dashboard.vue';
 import notes from './components/notes.vue';
 import trash from './components/trash.vue';
-import displayNote from './components/displayNote.vue';
-import noteComponent from './components/noteComponent';
+// import displayNote from './components/displayNote.vue';
+// import noteComponent from './components/noteComponent';
 
 const routes = [
     { path: '/', component: Login },
@@ -15,19 +15,20 @@ const routes = [
     { path: '/ForgatePassword', component: ForgatePassword },
     { path: '/resetpassword/:token', component: ResetPassword },
     { path: '/dashboard', component: Dashboard,
-    children: [
-        {
-          path: 'noteComponent',
-          component: noteComponent
-        },
-        {
-            path: 'trash',
-            component: trash
-          }  ] },
-    { path: '/notes', component: notes },
-    // { path: '/test',component:test},
-    { path: '/displayNote',component:displayNote},
-  //  { path: '/noteComponent',component:noteComponent}
+        children:[
+            {path:'', redirectTo:'/notes', pathMatch:'full'},
+            {path:'notes',component: notes},
+            // {path:'editnote',component: EditnoteComponent},
+            // {path:'remainder',component: RemainderComponent},
+            {path:'trash',component: trash}
+            // {path:'edittrash',component: EditTrashComponent},
+            // {path:'archive',component: ArchiveComponent},
+            // {path:'search',component: SearchComponent}
+            ]},
+
+    // { path: '/notes', component: notes },
+    // { path: '/displayNote',component:displayNote},
+
 ];
 
 export default routes;
