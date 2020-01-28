@@ -31,16 +31,14 @@
             <md-input type="password" name="password" id="password" autocomplete="password" v-model="form.password" :disabled="sending" />
             <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
             <span class="md-error" v-else-if="!$v.form.password.password.minlength">Invalid password</span>
-          </md-field>
-         
+          </md-field>         
           <md-progress-bar md-mode="indeterminate" v-if="sending" />
-
         <md-card-actions>
           <md-button type="submit" id="btn1" class="md-primary" :disabled="sending">Login</md-button>
           <md-button router-link to="/ForgatePassword"  type="submit" id="btn1" class="forget" :disabled="sending">forget</md-button>          
         </md-card-actions>
           <!-- <p>Not registered?<a href="url">Create an account</a> </p> -->
-          <p>Not registered?<router-link to="/Register">New User?</router-link> </p>
+          <p>Not registered?<router-link to="/Register">New User?</router-link></p>  
            <div class="col">
       <!-- <router-link to="/ForgatePassword" class="btn">Forgot password?</router-link> -->
       </div>
@@ -53,19 +51,7 @@
 
       <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
       </form>
-         
-    <!--    <md-field>
-        
-      <label>Initial Value</label>
-      <md-input v-model="initial"></md-input></md-field>
-      <md-field>
-      <label>First Name</label>
-      <md-input v-model="firstName" ></md-input>
-
-    </md-field>
---><nav>
-
-  
+      <nav>
     </nav>
     </div>
     
@@ -128,9 +114,7 @@ import { HTTP } from "../http-common";
     
       loginData.emailid = this.form.email;
       loginData.password = this.form.password;
-
       HTTP.post(`login`, loginData)
-
         .then(response => {
           const data = JSON.stringify(response.data);
           alert("Login succesfully ", data);
@@ -139,8 +123,7 @@ import { HTTP } from "../http-common";
           this.$router.push('/dashboard')
           localStorage.setItem("name",response.data.data.firstName +" "+ response.data.data.lastName);         localStorage.setItem("emailid",response.data.data.emailid);
           localStorage.setItem("email",response.data.emailid);  
-          localStorage.setItem("token",response.data.token);
-        
+          localStorage.setItem("token",response.data.token);      
           this.sending=false
            this.clearForm();
         })
@@ -150,14 +133,6 @@ import { HTTP } from "../http-common";
           this.clearForm();
           // this.errors.push(e);
         });
-
-      // Instead of this timeout, here you can call your API
-      // window.setTimeout(() => {
-      //   this.lastUser = `${this.form.firstName} ${this.form.lastName}`;
-      //   this.userSaved = true;
-      //   this.sending = false;
-      //   this.clearForm();
-      // }, 1500);
     },
     validateUser() {
       this.$v.$touch();

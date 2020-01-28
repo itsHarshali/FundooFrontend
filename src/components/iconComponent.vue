@@ -12,11 +12,25 @@
                 <img src="../assets/collaborator.svg" alt="Avatar" />
               </md-avatar>
             </md-button>
-            <md-button class="md-icon-button">
-              <md-avatar>
+            <md-button class="md-icon-button" >
+                       
+
+              <md-avatar> <md-autocomplete v-model="value" :md-options="colors">
                 <img src="../assets/addcolor.svg" alt="Avatar" />
+                <template slot="md-autocomplete-item" slot-scope="{ item}">
+        <span class="color" :style="`background-color: ${item.color}`"></span>
+        <!-- <md-highlight-text :md-term="term">{{ item.name }}</md-highlight-text> -->
+      </template>
+
+      <!-- <template slot="md-autocomplete-empty" slot-scope="{ term }">
+        No colors matching "{{ term }}" were found. <a @click="noop()">Create a new</a> one!
+      </template> -->
+            </md-autocomplete>
+               
               </md-avatar>
+    
             </md-button>
+
             <md-button class="md-icon-button">
               <md-avatar>
                 <img src="../assets/archive.svg" alt="Avatar" />
@@ -48,17 +62,31 @@
 <script>
 
 export default {
-  //   name: "iconComponent",
+    name: "iconComponent",
   // components: {
   //   notes,
   //   displayNote
   // },
  
-  // data: () => ({
-  //   getAllNotes:[],
+  data: () => ({
+   value: null,
+    colors: [
+        { name: 'Aqua', color: '#00ffff' },
+        { name: 'Aquamarine', color: '#7fffd4' },
+        { name: 'Azure', color: '#f0ffff' },
+        { name: 'Beige', color: '#f5f5dc' },
+        { name: 'Black', color: '#000000' },
+        { name: 'Blue', color: '#0000ff' },
+        { name: 'Brown', color: '#a52a2a' },
+        { name: 'Crimson', color: '#dc143c' },
+    ]
+  }),
+     methods: {
+      noop () {
+        window.alert('noop')
+      }
+    }
 
-  // }),
-  
 }
 </script>
 <style lang="scss" scoped>
@@ -132,5 +160,22 @@ export default {
 
   -webkit-box-flex: 0;
 }
+.color {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin-right: 16px;
+    border: 1px solid rgba(#000, .12);
+  }
 
+  .md-helper-text {
+    display: flex;
+    align-items: center;
+
+    .color {
+      width: 12px;
+      height: 12px;
+      margin-left: 4px;
+    }
+  }
 </style>

@@ -1,21 +1,20 @@
 <template>
   <div> 
-    <notes></notes>   
     <displayNote :getAllNotes="getAllNotes"></displayNote>
   </div>
 </template>
-<script>
-import notes from "../components/notes";                                                        
+<script>                                                      
 import displayNote from "../components/displayNote";
 import { HTTP } from "../http-common";
 export default {
-  name: "noteComponent",
-  components: {
-    notes,
+  name: "getAllNotes",
+  components: { 
     displayNote
-  }, 
+  },
+ 
   data: () => ({
     getAllNotes:[],
+
   }),
   mounted() {
     this.getAllNote()
@@ -23,13 +22,13 @@ export default {
  
   methods: {
     getAllNote() {  
-      HTTP.get(`notes`, { headers: { token: localStorage.getItem("token") } })
+      HTTP.get(`/archive`, { headers: { token: localStorage.getItem("token") } })
         .then(response => {
           // const data = JSON.stringify(response.data);
           //JSON. stringify() method converts a  JavaScript object or value to a JSON string
         //  this.$log.info("getall notes data from backend =>"+JSON.stringify(response.data));
          this.getAllNotes= response.data.data
-         this.$log.info("getall notes data  =>"+JSON.stringify(this.getAllNotes));
+         this.$log.info("getall trash notes data  =>"+JSON.stringify(this.getAllNotes));
           // alert("get all notes succesfully ",response.data.data);
         })
         .catch(e => {

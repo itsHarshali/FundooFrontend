@@ -55,6 +55,10 @@
       </md-card>
     </form>
     <!-- <md-snackbar :md-active.sync="saveNote">The Note {{ lastUser }} was saved with success!</md-snackbar> -->
+  <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
+      <span> note was saved with success!</span>
+     
+    </md-snackbar>
   </div>
 </template>
 <script>
@@ -70,13 +74,18 @@ export default {
     seen: false,
     title: "",
     description: "",
-    sending: false
+    sending: false,
+    showSnackbar: false,
+    position: 'center',
+    duration: 4000,
+    isInfinity: false
   }),
   methods: {
     clearForm() {
       this.title = "";
       this.description = "";
     },
+ 
     saveNote() {
       this.sending = true;
       const noteData = {};
@@ -94,6 +103,9 @@ export default {
           // const data = JSON.stringify(response.data);
           //alert("note create succesfully ", data);
           this.sending = false;
+           
+          this.showSnackbar= true;
+  
           this.clearForm();
         })
         .catch(e => {

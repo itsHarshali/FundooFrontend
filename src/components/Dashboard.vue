@@ -54,69 +54,82 @@
               <md-menu-item v-model="name"> {{ name }}</md-menu-item> 
               <md-menu-item v-model="email"> {{ email }}</md-menu-item> 
                <md-divider> </md-divider>
-              <md-menu-item><md-button>Sing Out</md-button></md-menu-item>            
+              
+              <md-menu-item><md-button>
+                 <router-link to="/">Sing Out</router-link> 
+              </md-button></md-menu-item>            
             </md-menu-content>
           </md-menu>
         </div>
       
       </md-app-toolbar>
       <!-- </div> -->
-
         <md-app-drawer :md-active.sync="menuVisible" md-persistent="null">
         <md-list>
+          <button @click='getNote()' class="md-list-item-text">
           <md-list-item >
             <md-icon>note</md-icon>
-            <button class="md-list-item-text">Notes</button>
-           
+           Notes          
           </md-list-item>
+         </button>
 
+         <button class="md-list-item-text">
           <md-list-item>
             <md-icon>notification_important</md-icon>
-            <button class="md-list-item-text">Reminders</button>
+            Reminders
           </md-list-item>
+            </button>
 
           <md-divider></md-divider>
           <md-subheader>LABELS</md-subheader>
 
+          <button class="md-list-item-text">
           <md-list-item>
             <md-icon>edit</md-icon>
-            <button class="md-list-item-text">Edit Label</button>
+            Edit Label
           </md-list-item>
+          </button>
           <md-divider></md-divider>
 
+          <button @click='getArchive()' class="md-list-item-text"> 
           <md-list-item>
             <md-icon>move_to_inbox</md-icon>
             <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->
-            <button class="md-list-item-text">Archive</button>
+           Archive
           </md-list-item>
+          </button>
 
+           <button @click='getTrash()'  class="md-list-item-text">
           <md-list-item>
             <md-icon>delete</md-icon>
-            <button class="md-list-item-text">Trash</button>
+           Trash
           </md-list-item>
+          </button>
+
         </md-list>
       </md-app-drawer>
-
       <md-app-content class="container">
-         <div class="main">
-        <md-card></md-card>
-        <noteComponent></noteComponent>
+      <div class="main">
+         <!-- <md-card></md-card>  -->
+        <!-- <noteComponent></noteComponent> -->
+      <router-view></router-view>
+
          </div>
       </md-app-content>
-
     </md-app>
   </div>
 </template>
 
 <script>
-import noteComponent from "../components/noteComponent";
-
+// import noteComponent from "../components/noteComponent";
+// import displayNote from "../components/displayNote";
 export default {
   name: "PersistentFull",
   components: {
-    noteComponent,
-    
+    // noteComponent,
+    // displayNote,   
   }, 
+
   data:()=>({
     menuVisible: false,
    email:"",
@@ -132,6 +145,7 @@ export default {
  mounted(){
    this.email=localStorage.getItem("emailid")
     this.name=localStorage.getItem("name")
+     this.getAllNote()
  },
  methods: {
    
@@ -139,6 +153,15 @@ export default {
         this.menuVisible = !this.menuVisible
         this.$log.info('menuvisible :: ' +this.menuVisible)
 
+      },
+      getTrash(){
+        this.$router.push('/trash')
+      },
+         getArchive(){
+        this.$router.push('/archive')
+      },
+         getNote(){
+        this.$router.push('/notes')
       }
     }
   }
@@ -153,6 +176,7 @@ export default {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  height: 64px;
 }
 
 // Demo purposes only
@@ -161,7 +185,7 @@ export default {
   max-width: calc(100vw - 125px);
 }   
 .md-app-drawer {
-  margin-top: 88px;
+  margin-top: 64px;
 }
 .page-container {
   display: flex;
@@ -247,10 +271,22 @@ border: none;
 background-color: #ffffff;
  color:#050101;
 }
-.md-list button:hover {
+// .md-list button:hover {
+//     cursor: pointer;
+//     background-color: rgb(252, 239, 195);
+//     border-radius: 8px;
+  
+// }
+.md-list .h:hover ,button:hover {
     cursor: pointer;
-    background-color: rgb(236, 236, 236);
+    background-color:rgb(252, 239, 195);
     border-radius: 8px;
   
 }
+// .md-list .h:hover ,button:active {
+//     cursor: pointer;
+//     background-color:rgb(117, 96, 25);
+//     border-radius: 8px;
+  
+// }
 </style>
