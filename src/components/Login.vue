@@ -2,7 +2,7 @@
     <div>
       <form novalidate class="md-layout" @submit.prevent="validateUser">
       <md-card class="md-layout-item md-size-35 ">
-     
+
         <div class="fundoo">
         <span style="color:blue">F</span>
         <span style="color:red">u</span>
@@ -41,14 +41,10 @@
           <p>Not registered?<router-link to="/Register">New User?</router-link></p>  
            <div class="col">
       <!-- <router-link to="/ForgatePassword" class="btn">Forgot password?</router-link> -->
-      </div>
-        
+      </div>       
         </md-card-content>    
         <md-progress-bar md-mode="indeterminate" v-if="sending"/>
-
-       
       </md-card>
-
       <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
       </form>
       <nav>
@@ -121,8 +117,8 @@ import { HTTP } from "../http-common";
           // this.posts = response.data;
           //this.userSaved=true
           this.$router.push('/dashboard')
-          localStorage.setItem("name",response.data.data.firstName +" "+ response.data.data.lastName);         localStorage.setItem("emailid",response.data.data.emailid);
-          localStorage.setItem("email",response.data.emailid);  
+          localStorage.setItem("name",response.data.data.firstName +" "+ response.data.data.lastName);        
+           localStorage.setItem("emailid",response.data.data.emailid);  
           localStorage.setItem("token",response.data.token);      
           this.sending=false
            this.clearForm();

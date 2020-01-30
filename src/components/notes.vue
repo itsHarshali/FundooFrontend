@@ -162,11 +162,9 @@ export default {
   width: 600px;
   height: 136px;
   margin: 4px;
-  // display: inline-block;
-  // vertical-align: top;
   border: 1px solid transparent;
   box-sizing: border-box;
-  //overflow: hidden;
+  overflow: hidden;
   position: relative;
   border-radius: 8px;
   transition-duration: 0.218s;
@@ -174,12 +172,6 @@ export default {
   transition-timing-function: ease-in;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 
-  // box-sizing: border-box;
-  // overflow: hidden;
-  // position: relative;
-  // border-radius: 8px;
-  // background-color: #fff;
-  // border-color: #e0e0e0;
 }
 
 .md-card-example {
@@ -197,16 +189,6 @@ export default {
       vertical-align: middle;
     }
   }
-
-  //   .card-reservation {
-  //     margin-top: 8px;
-  //     display: flex;
-  //     align-items: center;
-
-  //     .md-icon {
-  //       margin: 8px;
-  //     }
-  //   }
   .md-button-group {
     display: flex;
 
@@ -220,28 +202,10 @@ export default {
     }
   }
 }
-
-// opacity: 1;
-//     box-sizing: border-box;
-//     bottom: 0;
-//     display: flex;
-//     transition-duration: .218s;
-//     transition-timing-function: ease-in;
-// }
 .close {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  // box-sizing: border-box;
-  // color: rgba(0, 0, 0, 0.87);
-  // overflow: hidden;
-  // text-overflow: ellipsis;
-  // white-space: nowrap;
-  // letter-spacing: 0.01785714em;
-  // font-family: "Google Sans", Roboto, Arial, sans-serif;
-  // font-size: 0.875rem;
-  // font-weight: 500;
-  // line-height: 1.25rem;
   height: 36px;
   padding: 8px 24px;
   border-radius: 4px;
@@ -272,14 +236,6 @@ export default {
   height: 50%;
   display: block;
 }
-// .pin{
-//   width: 42px;
-//     height: 36px;
-//     float: right;
-// }
-
-// style="user-select: none;" aria-disabled="true"
-
 .note {
   display: flex;
   justify-content: center;
@@ -298,8 +254,6 @@ export default {
   width: 600px;
   height: 45px;
   margin: 4px;
-  // display: inline-block;
-  // vertical-align: top;
   border: 1px solid transparent;
   box-sizing: border-box;
   overflow: hidden;

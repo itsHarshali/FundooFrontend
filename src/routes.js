@@ -7,21 +7,25 @@ import Dashboard from './components/Dashboard.vue';
 // import notes from './components/notes.vue';
 import trash from './components/trash.vue';
 import archive from './components/archive.vue';
-import noteComponent from './components/noteComponent';
+import reminder from './components/reminder.vue';
+import noteComponent from './components/noteComponent.vue';
+import uploadProfile from './components/uploadProfile.vue';
 
 const routes = [
     { path: '/', component: Login },
     { path: '/register', component: Register },
     { path: '/ForgatePassword', component: ForgatePassword },
     { path: '/resetpassword/:token', component: ResetPassword },
+    { path: '/uploadProfile', component: uploadProfile },
     // { path: '/trash', component: trash },
     // { path: '/archive', component: archive },
     { path: '/dashboard', component: Dashboard,
         children:[
            {path:'', redirectTo:'/dashboard',component: noteComponent},
-            {path:'/notes',component: noteComponent},
-            {path:'/trash',component: trash},
-            {path:'/archive',component: archive},
+            {path:'notes',component: noteComponent},
+            {path:'trash',component: trash},
+            {path:'archive',component: archive},
+            {path:'reminder',component: reminder},
             // {path:'editnote',component: EditnoteComponent},
             // {path:'remainder',component: RemainderComponent},
 

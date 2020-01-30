@@ -7,7 +7,7 @@
         <router-link to='/Register'></router-link>
         <router-link to='/forgatePassword'></router-link>
         <router-link to='/ResetPassword'></router-link>
-         <!-- <router-link to='/notes'></router-link> -->
+         
     </nav>
     <router-view></router-view>
     <!-- <router-view /> -->

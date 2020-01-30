@@ -1,76 +1,80 @@
 <template>
-  <div class=note>
-
-    <div v-for="note in getAllNotes"  v-bind:key="note"> 
-          <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
-    <div class="card">
-  <md-card>  
-    <md-card-header-text class="header">
-      <div>{{note.title}}</div> 
-     <md-button class="md-icon-button bottom">
-          <md-avatar>
-            <img src="../assets/pin.svg" alt="Avatar" />
-          </md-avatar>
-        </md-button>
-    </md-card-header-text>
-    <md-card-content>
-      <div>{{note.description}}</div>   
-    </md-card-content>
-
-    <div class="bottom">   
-      <md-card-actions md-alignment="left">
-       <div class=button>
-          <iconComponent> </iconComponent>
-       </div>
-      </md-card-actions>
-    </div>   
-  </md-card>
-    </div>
+  <div class="note">
+    <div v-for="note in getAllNotes" v-bind:key="note">
+      <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
+      <div class="card">
+        <md-card md-dynamic-height>
+          <md-card-header-text class="header">
+            <div style="display:flex">{{note.title}}</div>
+            <md-button class="md-icon-button bottom">
+              <md-avatar>
+                <img src="../assets/pin.svg" alt="Avatar" />
+              </md-avatar>
+            </md-button>
+          </md-card-header-text>
+          <md-card-content>
+            <div>{{note.description}}</div>
+          </md-card-content>
+         
+              <div v-if="note.labels.length!= 0"> 
+                 <div v-for="note in note.labels.length"  v-bind:key="note"> 
+                   
+            <md-chip md-deletable>{{note.labels}}</md-chip>
+          </div> 
+          </div>
+          <div v-if="note.reminder!= null">
+            <md-chip md-deletable>{{note.reminder}}</md-chip>
+          </div>
+         
+          <div class="bottom">
+            <md-card-actions md-alignment="left">
+              <div class="button">
+                <iconComponent></iconComponent>
+              </div>
+            </md-card-actions>
+          </div>
+        </md-card>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import iconComponent from "../components/iconComponent"
+import iconComponent from "../components/iconComponent";
 export default {
   name: "notes",
-  components:{
-    iconComponent,
+  components: {
+    iconComponent
   },
-     props: [  
-   "getAllNotes" 
-   ] ,
-    data:()=>({
+  props: ["getAllNotes"],
+  data: () => ({
     seen: false,
-    getAllNotes:[],
-    }),
+    getAllNotes: []
+  }),
   methods: {
-    toggleMenu () {
-        this.seen = !this.seen
-        this.$log.info('seen :: ' +this.seen)
-
-      },
-
+    toggleMenu() {
+      this.seen = !this.seen;
+      this.$log.info("seen :: " + this.seen);
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
 // .trashnoted :hover .footerarea {
 //   visibility: visible;
- 
+
 // }
 .md-card {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-   width: 240px;
-  height: 125px;
+
   margin: 4px;
 
   // display: inline-block;
   // vertical-align: top;
   border: 1px solid transparent;
   box-sizing: border-box;
-   //overflow: hidden;
+  //overflow: hidden;
   position: relative;
   border-radius: 8px;
   transition-duration: 0.218s;
@@ -78,12 +82,12 @@ export default {
   transition-timing-function: ease-in;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 
-    // box-sizing: border-box;
-    // overflow: hidden;
-    // position: relative;
-    // border-radius: 8px;
-    // background-color: #fff;
-    // border-color: #e0e0e0;
+  // box-sizing: border-box;
+  // overflow: hidden;
+  // position: relative;
+  // border-radius: 8px;
+  // background-color: #fff;
+  // border-color: #e0e0e0;
 }
 
 .md-card-example {
@@ -125,58 +129,56 @@ export default {
   }
 }
 .bottom {
-  
-   display: flex;
-justify-content: space-between;
-flex-direction: row;
-align-items:center;
-color:rgba(0, 0, 0, 0.54);
-direction:ltr;
-flex-direction:row-reverse;
-flex-wrap:wrap-reverse;
-font-family:Roboto, arial, sans-serif;
-font-size:12px;
-height:36px;
-line-height:26px;
-margin-bottom:4px;
-margin-left:0px;
-margin-right:0px;
-margin-top:4px;
-position:relative;
-transition-delay:0s, 0s;
-transition-duration:0.218s, 0.218s;
-transition-property:background-color, box-shadow;
-transition-timing-function:ease-in-out, ease-in-out;
- visibility: hidden;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.54);
+  direction: ltr;
+  flex-direction: row-reverse;
+  flex-wrap: wrap-reverse;
+  font-family: Roboto, arial, sans-serif;
+  font-size: 12px;
+  height: 36px;
+  line-height: 26px;
+  margin-bottom: 4px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 4px;
+  position: relative;
+  transition-delay: 0s, 0s;
+  transition-duration: 0.218s, 0.218s;
+  transition-property: background-color, box-shadow;
+  transition-timing-function: ease-in-out, ease-in-out;
+  visibility: hidden;
 }
-.button{
+.button {
   display: flex;
   justify-content: flex-start;
-  bottom:0px;
-box-sizing:border-box;
-color:rgba(0, 0, 0, 0.54);
-direction:ltr;
-flex-basis:auto;
-flex-grow:1;
-flex-shrink:0;
-font-family:Roboto, arial, sans-serif;
-font-size:12px;
-height:34px;
-line-height:26px;
-opacity:1;
-transition-duration:0.218s;
-transition-property:opacity;
-transition-timing-function:ease-in;
-width: 229.859px;
--webkit-box-flex:0;
+  bottom: 0px;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.54);
+  direction: ltr;
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 0;
+  font-family: Roboto, arial, sans-serif;
+  font-size: 12px;
+  height: 34px;
+  line-height: 26px;
+  opacity: 1;
+  transition-duration: 0.218s;
+  transition-property: opacity;
+  transition-timing-function: ease-in;
+  width: 229.859px;
+  -webkit-box-flex: 0;
 
-// opacity: 1;
-//     box-sizing: border-box;
-//     bottom: 0;
-//     display: flex;
-//     transition-duration: .218s;
-//     transition-timing-function: ease-in;
-
+  // opacity: 1;
+  //     box-sizing: border-box;
+  //     bottom: 0;
+  //     display: flex;
+  //     transition-duration: .218s;
+  //     transition-timing-function: ease-in;
 }
 
 .md-card-header-text {
@@ -213,7 +215,7 @@ width: 229.859px;
 // style="user-select: none;" aria-disabled="true"
 
 // .note{
-//   display: flex; 
+//   display: flex;
 //   flex-wrap: wrap;
 //   justify-content: center;
 //     border: 1px solid transparent;
@@ -221,26 +223,24 @@ width: 229.859px;
 //     // margin:80px
 // }
 .note {
-  display: flex; 
-   justify-content: space-between;
-  flex-wrap: wrap;
-      width: 800px;
-    // margin:80px
- 
-}
-.header{
   display: flex;
   justify-content: space-between;
-  flex-direction: row
+  flex-wrap: wrap;
+  width: 800px;
+  // margin:80px
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
 }
 // .trashnoted :hover .footerarea {
 //   visibility: visible;
- 
-// }
-.card :hover .bottom{
-visibility: visible;
-}
 
+// }
+.card :hover .bottom {
+  visibility: visible;
+}
 </style>
 
 
