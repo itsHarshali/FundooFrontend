@@ -4,7 +4,7 @@ import Login from './components/Login.vue';
 import ForgatePassword from './components/ForgatePassword.vue';
 import ResetPassword from './components/ResetPassword.vue';
 import Dashboard from './components/Dashboard.vue';
-// import notes from './components/notes.vue';
+ import d from './components/d.vue';
 import trash from './components/trash.vue';
 import archive from './components/archive.vue';
 import reminder from './components/reminder.vue';
@@ -17,7 +17,7 @@ const routes = [
     { path: '/ForgatePassword', component: ForgatePassword },
     { path: '/resetpassword/:token', component: ResetPassword },
     { path: '/uploadProfile', component: uploadProfile },
-    // { path: '/trash', component: trash },
+     { path: '/d', component: d },
     // { path: '/archive', component: archive },
     { path: '/dashboard', component: Dashboard,
         children:[

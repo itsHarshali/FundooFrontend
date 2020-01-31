@@ -29,7 +29,7 @@
           <div class="bottom">
             <md-card-actions md-alignment="left">
               <div class="button">
-                <iconComponent></iconComponent>
+                <iconComponent @changeColor="colorFromIcon()"></iconComponent>
               </div>
             </md-card-actions>
           </div>
@@ -37,9 +37,11 @@
       </div>
     </div>
   </div>
+  
 </template>
 <script>
 import iconComponent from "../components/iconComponent";
+import { HTTP } from "../http-common";
 export default {
   name: "notes",
   components: {
@@ -48,7 +50,36 @@ export default {
   props: ["getAllNotes"],
   data: () => ({
     seen: false,
-    getAllNotes: []
+    getAllNotes: [],
+  addColor() {
+      this.sending = true;
+      const noteData = {};
+      noteData.colorNote = this.color;
+     
+      this.$log.info("test", this.noteData);
+
+      HTTP.put(`/colorNote`, noteData, {
+        headers: { token: localStorage.getItem("token") }
+      })
+
+        .then(response => {
+          this.$log.info("test", response);
+          // const data = JSON.stringify(response.data);
+          //alert("note create succesfully ", data);
+          this.sending = false;
+           
+          this.showSnackbar= true;
+  
+          this.clearForm();
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+          //alert("add description", e);
+          this.sending = false;
+          this.clearForm();
+        });
+    }
+    
   }),
   methods: {
     toggleMenu() {

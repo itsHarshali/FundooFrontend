@@ -19,8 +19,11 @@
         <div class="md-layout-item md-size-5">
           <span class="md-title">Fundoo</span>
         </div>
-        <div class="md-layout-item md-size-50">
-          <md-autocomplete
+
+
+         <div class="md-layout-item md-size-50">
+<search></search>
+         <!-- <md-autocomplete
             id="search1"
             class="search"
             v-model="selectedEmployee"
@@ -31,7 +34,8 @@
               <md-icon>search</md-icon>Search...
             </label>
           </md-autocomplete>
-        </div>
+        -->
+        </div>   
 
         <div class="md-layout-item md-size-25">
           <!-- <div class="md-toolbar-section-end"> -->
@@ -90,7 +94,7 @@
 
           <button class=" md-list-item-text">
             <router-link :to="{path:'/dashboard/reminder'}" replace>  
-            <md-list-item class="link"> 
+            <md-list-item class="link1"> 
               <md-icon>notification_important</md-icon>Reminders
             </md-list-item>
             </router-link>
@@ -163,6 +167,7 @@
         <div class="main">
           <!-- <md-card></md-card>  -->
           <!-- <noteComponent></noteComponent> -->
+          
           <router-view></router-view>
        
       </div>
@@ -174,11 +179,13 @@
 <script>
 // import noteComponent from "../components/noteComponent";
 // import displayNote from "../components/displayNote";
+import search from "../components/search";
 export default {
   name: "PersistentFull",
   components: {
     // noteComponent,
     // displayNote,
+    search,
   },
 
   data: () => ({
@@ -251,28 +258,28 @@ export default {
   flex-direction: column;
   background-color: #ffffff;
 }
-.md-autocomplete {
-  max-width: 700px;
-  -webkit-text-fill-color: #6f6f6f;
-}
-#search1 {
-  //  margin-left: 90px;
-  // background-color: rgb(216, 216, 216);
-  background-color: #e2e0e0;
-  //      padding: 11px 0;
-  height: 46px;
-  padding: 0;
-  margin-left: 56px;
-  margin-right: 49px;
-  overflow: hidden;
-  position: relative;
-  border-radius: 8px;
-  transition-duration: 0.218s;
-  transition-property: background, border, opacity, box-shadow, transform;
-  transition-timing-function: ease-in;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-  -webkit-text-fill-color: #797979;
-}
+// .md-autocomplete {
+//   max-width: 700px;
+//   -webkit-text-fill-color: #6f6f6f;
+// }
+// #search1 {
+//   //  margin-left: 90px;
+//   // background-color: rgb(216, 216, 216);
+//   background-color: #e2e0e0;
+//   //      padding: 11px 0;
+//   height: 46px;
+//   padding: 0;
+//   margin-left: 56px;
+//   margin-right: 49px;
+//   overflow: hidden;
+//   position: relative;
+//   border-radius: 8px;
+//   transition-duration: 0.218s;
+//   transition-property: background, border, opacity, box-shadow, transform;
+//   transition-timing-function: ease-in;
+//   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+//   -webkit-text-fill-color: #797979;
+// }
 
 .md-card {
   margin: 4px;
