@@ -13,29 +13,25 @@
           </md-avatar>
         </md-button>
 
-        
+        <md-menu md-direction="top-start">
+          <md-button @click="selectColor()" md-menu-trigger class="md-icon-button">
+            <md-avatar>
+              <img src="../assets/addcolor.svg" alt="Avatar" />
+            </md-avatar>
+          </md-button>
 
-         
-    <md-menu md-direction="top-start" >
-      <md-button @click="selectColor()" md-menu-trigger class="md-icon-button" >
-          <md-avatar>
-            <img src="../assets/addcolor.svg" alt="Avatar" />         
-          </md-avatar>
-        </md-button>
-        
-      <md-menu-content>
-        <div class="md-layout"> 
-            <div v-for="color1 in colors" v-bind:key="color1">
-              <div class="md-layout-item" @click="shareColor(color1.color)">
-              <md-button class="md-icon-button " >
-                <span class="color" :style="`background-color: ${color1.color}`" ></span>   
-              </md-button>
+          <md-menu-content>
+            <div class="md-layout">
+              <div v-for="color1 in colors" v-bind:key="color1">
+                <div class="md-layout-item" >
+                  <md-button class="md-icon-button" @click="shareColor(color1.color)">
+                    <span class="color" :style="`background-color: ${color1.color}`"></span>
+                  </md-button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </md-menu-content>
-    </md-menu>
-  
+          </md-menu-content>
+        </md-menu>
 
         <md-button class="md-icon-button">
           <md-avatar>
@@ -50,8 +46,7 @@
 
           <md-menu-content>
             <div>
-              <md-card>
-              </md-card>
+              <md-card></md-card>
             </div>
             <!-- <md-menu-item @click="sendMessage">
                   <span>Send a message</span>
@@ -61,7 +56,6 @@
               <span>Add label</span>
               <md-icon>message</md-icon>
             </md-menu-item>
-         
           </md-menu-content>
         </md-menu>
       </div>
@@ -69,7 +63,6 @@
   </div>
 </template>
 <script>
-
 export default {
   name: "iconComponent",
   // components: {
@@ -79,7 +72,8 @@ export default {
 
   data: () => ({
     value: null,
-     colorCard: false,
+    colorCard: false,
+    color: "",
     colors: [
       { color: "#00ffff" },
       { color: "#7fffd4" },
@@ -89,25 +83,24 @@ export default {
       { color: "#0000ff" },
       { color: "#a52a2a" },
       { color: "#dc143c" }
-    ],
-   
-
+    ]
   }),
   methods: {
     noop() {
       window.alert("noop");
     },
-        selectColor() {
-      this.$emit('changeColor',)
-    }
-  },
-  toggleMenu() {
+    selectColor() {
+      this.$emit("changeColor");
+    },
+    shareColor(color) {
+      
+      this.$log.info("selected color :: " + color);
+    },
+    toggleMenu() {
       this.colorCard = !this.colorCard;
       // this.$log.info("seen :: " + this.seen);
-    },
-    shareColor(color){
-this.$log.info("selected color :: " +color);    }
-  
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -185,10 +178,10 @@ this.$log.info("selected color :: " +color);    }
   -webkit-box-flex: 0;
 }
 .color {
-  width: 16px;
-  height: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   display: inline-block;
-  margin-right: 16px;
   border: 1px solid rgba(#000, 0.12);
 }
 
@@ -196,10 +189,9 @@ this.$log.info("selected color :: " +color);    }
   display: flex;
   align-items: center;
 
-  .color {
-    width: 12px;
-    height: 12px;
-    margin-left: 4px;
-  }
+  // .color {
+
+  //   margin-left: 4px;
+  // }
 }
 </style>

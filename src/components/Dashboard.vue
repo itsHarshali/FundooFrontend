@@ -22,7 +22,10 @@
 
 
          <div class="md-layout-item md-size-50">
-<search></search>
+
+<search>
+  <!-- <router-link :to="{path:'/dashboard/search' }" replace> </router-link> -->
+</search>
          <!-- <md-autocomplete
             id="search1"
             class="search"

@@ -1,52 +1,78 @@
 <template>
-       
-          <md-autocomplete
+ 
+   <div>
+ 
+  <md-autocomplete
             id="search1"
             class="search"
-            :v-model="searchKey"
+           type="search"
             :md-options="employees"
             md-layout="box"
-      @click="searchFunction"
-            
+             v-model="searchKey"
+          
+  
           >
-            <label>
+            <label >
               <md-icon>search</md-icon>Search...
-            </label>
-          </md-autocomplete>
-       
+            </label> 
+  </md-autocomplete>
+
+  <!-- <div class="md-autocomplete">
+    <md-icon>search</md-icon>
+
+    <input
+      type="search"
+      placeholder="Search"
+      aria-label="Search"
+      v-model="searchKey"
+      
+    />
+    -->
+  </div>
+
+   <!-- </div> -->
 </template>
 <script>
 import { HTTP } from "../http-common";
-export default {
-      name: "Search",
-      
-  components: {
- 
-  },
-     data: () => ({
-    searchKey: null,
-    employees: [
-      "Jim Halpert",
-      "Dwight Schrute",
-      "Michael Scott",
-      "Phyllis Lapin-Vance"
-    ],
-    showDialog: false,
-    value: null,
-  }),updated(){
-          this.searchFunction()
-      },
-    methods: {
+import { messageService } from './messageService';
 
-    searchFunction() {  
-        this.$log.info("SearchKey dfdf "+this.searchKey);
-      HTTP.get(`search`+this.searchKey, { headers: { token: localStorage.getItem("token") } })
+
+export default {
+  name: "Search",
+     
+  components: {
+   
+  },
+    // props: ["getAllNotes"],
+  data: () => ({
+    searchKey: null,
+       getAllNotes:[],
+    employees: [
+    //  " this.getAllNotes",
+    ]
+  }),
+  updated() {
+    this.searchFunction();
+  },
+
+  methods: {
+     sendMessage(value) {
+            // send message to subscribers via observable subject
+            messageService.sendMessage(value);
+        },
+    searchFunction() {
+      this.$log.info("SearchKey dfdf " + this.searchKey);
+      HTTP.get('/search/'+this.searchKey, {
+        headers: { token: localStorage.getItem("token") }
+      })
         .then(response => {
-          // const data = JSON.stringify(response.data);
+          // this.$log.info("test", JSON.stringify(response.data.data));
+          // const data =JSON.stringify(response.data.data);
           //JSON. stringify() method converts a  JavaScript object or value to a JSON string
-        //  this.$log.info("getall notes data from backend =>"+JSON.stringify(response.data));
-         this.getAllNotes= response.data.data
-         this.$log.info("getall trash notes data  =>"+JSON.stringify(this.getAllNotes));
+          //  this.$log.info("getall notes data from backend =>"+JSON.stringify(response.data));
+            this.getAllNotes=response.data.data;
+           this.sendMessage(this.getAllNotes);
+           this.$log.info("getall trash notes data  =>"+JSON.stringify(this.getAllNotes));
           // alert("get all notes succesfully ",response.data.data);
         })
         .catch(e => {
@@ -55,10 +81,9 @@ export default {
         });
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
-
 .md-autocomplete {
   max-width: 700px;
   -webkit-text-fill-color: #6f6f6f;
@@ -85,6 +110,4 @@ export default {
 .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box label {
   -webkit-text-fill-color: #6f6f6f;
 }
-
-
 </style>

@@ -10,6 +10,7 @@ import archive from './components/archive.vue';
 import reminder from './components/reminder.vue';
 import noteComponent from './components/noteComponent.vue';
 import uploadProfile from './components/uploadProfile.vue';
+import search from './components/search.vue';
 
 const routes = [
     { path: '/', component: Login },
@@ -18,7 +19,7 @@ const routes = [
     { path: '/resetpassword/:token', component: ResetPassword },
     { path: '/uploadProfile', component: uploadProfile },
      { path: '/d', component: d },
-    // { path: '/archive', component: archive },
+    //  { path: '/search', component: search },
     { path: '/dashboard', component: Dashboard,
         children:[
            {path:'', redirectTo:'/dashboard',component: noteComponent},
@@ -26,7 +27,7 @@ const routes = [
             {path:'trash',component: trash},
             {path:'archive',component: archive},
             {path:'reminder',component: reminder},
-            // {path:'editnote',component: EditnoteComponent},
+            {path:'search',component: search},
             // {path:'remainder',component: RemainderComponent},
 
             // {path:'edittrash',component: EditTrashComponent},

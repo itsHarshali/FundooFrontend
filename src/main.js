@@ -7,6 +7,8 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import VueRouter from 'vue-router'
 import routes from './routes';
+import Rx from 'rxjs/Rx';
+import VueRx from 'vue-rx';
 // import vuetify from '@/plugins/vuetify' // path to vuetify export
 
 const options = {
@@ -25,7 +27,7 @@ Vue.use(VueMaterial);
 Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
-
+Vue.use(VueRx, Rx)
 
 Vue.config.productionTip = false
 

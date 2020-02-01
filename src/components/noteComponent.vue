@@ -7,16 +7,39 @@
 <script>
 import notes from "../components/notes";                                                        
 import displayNote from "../components/displayNote";
+import { messageService } from './messageService';
+// import search from "../components/search";
 import { HTTP } from "../http-common";
 export default {
   name: "noteComponent",
   components: {
     notes,
-    displayNote
+    displayNote,
+    
   }, 
   data: () => ({
     getAllNotes:[],
+ 
   }),
+
+   created () {
+        // subscribe to home component messages
+        this.subscription = messageService.getMessage().subscribe(message => {
+            if (message) {
+                this.$log.info("message---->>>>", message);
+                // add message to local state if not empty
+                this.getAllNotes=message.text;
+
+            } else {
+                // clear messages when empty message received
+                this.messages = [];
+            }
+        });
+    },
+    beforeDestroy () {
+        // unsubscribe to ensure no memory leaks
+        this.subscription.unsubscribe();
+    },
   mounted() {
     this.getAllNote()
   },
