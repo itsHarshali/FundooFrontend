@@ -13,14 +13,14 @@
           </md-avatar>
         </md-button>
 
-        <md-menu md-direction="top-start">
+        <md-menu class="c1" md-direction="top-start">
           <md-button @click="selectColor()" md-menu-trigger class="md-icon-button">
             <md-avatar>
               <img src="../assets/addcolor.svg" alt="Avatar" />
             </md-avatar>
           </md-button>
 
-          <md-menu-content>
+          <md-menu-content class="colorcard">
             <div class="md-layout">
               <div v-for="color1 in colors" v-bind:key="color1">
                 <div class="md-layout-item" >
@@ -48,10 +48,6 @@
             <div>
               <md-card></md-card>
             </div>
-            <!-- <md-menu-item @click="sendMessage">
-                  <span>Send a message</span>
-                  <md-icon>message</md-icon>
-            </md-menu-item>-->
             <md-menu-item @click="sendMessage">
               <span>Add label</span>
               <md-icon>message</md-icon>
@@ -78,11 +74,12 @@ export default {
       { color: "#00ffff" },
       { color: "#7fffd4" },
       { color: "#f0ffff" },
-      { color: "#f5f5dc" },
-      { color: "#000000" },
+      { color: "#f5f5dc" }, 
       { color: "#0000ff" },
-      { color: "#a52a2a" },
-      { color: "#dc143c" }
+      { color: "#94515a" },
+      { color: "#f5bfe0" },
+       { color: "#bbafed" },
+      { color: "#bdcadb" }
     ]
   }),
   methods: {
@@ -90,10 +87,9 @@ export default {
       window.alert("noop");
     },
     selectColor() {
-      this.$emit("changeColor");
+      this.$emit("color");
     },
     shareColor(color) {
-      
       this.$log.info("selected color :: " + color);
     },
     toggleMenu() {
@@ -184,14 +180,22 @@ export default {
   display: inline-block;
   border: 1px solid rgba(#000, 0.12);
 }
-
+.colorcard{
+  height: 130px;
+    display: flex;
+    flex-wrap: wrap;
+    height: 130;
+     border-radius: 8px;
+    width: 160px;
+}
 .md-helper-text {
   display: flex;
   align-items: center;
-
-  // .color {
-
-  //   margin-left: 4px;
-  // }
 }
+  .c1{
+     border-radius: 8px;
+  }
+
+
+
 </style>

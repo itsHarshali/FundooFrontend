@@ -9,7 +9,6 @@
           <input type="file" @change="onFileChanged">
             <button @click="onUpload">Upload!</button>  
          </md-tab>
-  
         <md-tab md-label="your Photos">
   
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus qui, atque at voluptates cupiditate. Neque quae culpa suscipit praesentium inventore ducimus ipsa aut.</p>

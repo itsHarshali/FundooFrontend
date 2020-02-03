@@ -19,6 +19,7 @@ const routes = [
     { path: '/resetpassword/:token', component: ResetPassword },
     { path: '/uploadProfile', component: uploadProfile },
      { path: '/d', component: d },
+     
     //  { path: '/search', component: search },
     { path: '/dashboard', component: Dashboard,
         children:[

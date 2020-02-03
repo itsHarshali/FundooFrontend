@@ -1,15 +1,15 @@
 <template>
   <div> 
-    <displayNote :getAllNotes="getAllNotes"></displayNote>
+    <displayTrash :getAllNotes="getAllNotes"></displayTrash>
   </div>
 </template>
 <script>                                                      
-import displayNote from "../components/displayNote";
+import displayTrash from "../components/displayTrash";
 import { HTTP } from "../http-common";
 export default {
   name: "getAllNotes",
   components: { 
-    displayNote
+    displayTrash
   },
  
   data: () => ({

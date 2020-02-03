@@ -37,7 +37,7 @@
       </div>
     </div>
   </div>
-  
+ 
 </template>
 <script>
 import iconComponent from "../components/iconComponent";
@@ -63,16 +63,11 @@ export default {
       HTTP.put(`/colorNote`, noteData, {
         headers: { token: localStorage.getItem("token") }
       })
-
         .then(response => {
           this.$log.info("test", response);
           // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);
-        
-           
-          // this.showSnackbar= true;
-  
-       
+          //alert("note create succesfully ", data);          
+          // this.showSnackbar= true; 
         })
         .catch(e => {
           this.$log.info("test", e);
@@ -138,15 +133,6 @@ export default {
     }
   }
 
-  //   .card-reservation {
-  //     margin-top: 8px;
-  //     display: flex;
-  //     align-items: center;
-
-  //     .md-icon {
-  //       margin: 8px;
-  //     }
-  //   }
   .md-button-group {
     display: flex;
 

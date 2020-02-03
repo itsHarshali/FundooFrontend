@@ -1,36 +1,39 @@
 <template>
  
-   <div>
- 
-  <md-autocomplete
+    <div>
+  
+ <md-autocomplete
             id="search1"
             class="search"
            type="search"
             :md-options="employees"
             md-layout="box"
-             v-model="searchKey"
-          
-  
-          >
-            <label >
+             v-model="searchKey"            
+          > 
+            <label>
+              
+ <!-- @click="searchToNotes()"  -->
+            
               <md-icon>search</md-icon>Search...
-            </label> 
+            </label>
   </md-autocomplete>
 
-  <!-- <div class="md-autocomplete">
+   <!--  <div class="md-autocomplete">
     <md-icon>search</md-icon>
-
-    <input
+  <input   
       type="search"
+       id="search1"
+        class="search"
+         md-layout="box"
       placeholder="Search"
       aria-label="Search"
       v-model="searchKey"
-      
+      @click="searchToNotes()"
     />
-    -->
-  </div>
+   
+  </div> -->
 
-   <!-- </div> -->
+   </div>
 </template>
 <script>
 import { HTTP } from "../http-common";
@@ -79,6 +82,10 @@ export default {
           this.$log.info("error", e);
           // alert("add description", e);
         });
+    },
+    searchToNotes(){
+       this.$router.push("/dashboard/search");
+        // <router-link :to="{path:'/dashboard/search' }" replace> </router-link> 
     }
   }
 };

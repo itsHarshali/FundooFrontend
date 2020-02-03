@@ -29,7 +29,16 @@
           <div class="bottom">
             <md-card-actions md-alignment="left">
               <div class="button">
-                <iconComponent @changeColor="colorFromIcon()"></iconComponent>
+             <md-button class="md-icon-button">
+          <md-avatar>
+            <img src="../assets/foreverTrash.svg" alt="Avatar" />
+          </md-avatar>
+        </md-button>
+        <md-button class="md-icon-button">
+          <md-avatar>
+            <img src="../assets/restoreTrash.svg" alt="Avatar" />
+          </md-avatar>
+        </md-button>
               </div>
             </md-card-actions>
           </div>
@@ -37,16 +46,16 @@
       </div>
     </div>
   </div>
-  
+
 </template>
 <script>
-import iconComponent from "../components/iconComponent";
+// import iconComponent from "../components/iconComponent";
 import { HTTP } from "../http-common";
 // import search from "../components/search";
 export default {
   name: "notes",
   components: {
-    iconComponent,
+    // iconComponent,
     // search
   },
   props: ["getAllNotes"],
@@ -54,7 +63,6 @@ export default {
     seen: false,
     getAllNotes: [],
   addColor() {
-    
       const noteData = {};
       noteData.colorNote = this.color;
      
