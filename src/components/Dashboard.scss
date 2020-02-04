@@ -46,14 +46,18 @@
   //   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
   //   -webkit-text-fill-color: #797979;
   // }
-  
+  #ex3 {
+    background-color: yellow;
+    color: red;
+    all: initial;
+  }
   .md-card {
     margin: 4px;
     display: inline-block;
     vertical-align: top;
   
     //     box-sizing: border-box;
-    // overflow: hidden;
+     overflow: hidden;
     // position: relative;
     // border-radius: 8px;
     // background-color: #fff;
@@ -61,7 +65,6 @@
   }
   .md-avatar img {
     display: flex;
-    // margin-bottom: auto;
     width: 50%;
     height: 50%;
     display: block;
@@ -82,9 +85,7 @@
     justify-content: center;
     border: 1px solid transparent;
   
-    //  width: 700px
-    // margin:80px
-    
+ 
   }
   .md-app-toolbar {
     display: flex;
@@ -104,31 +105,35 @@
     background-color: #ffffff;
     color: #050101;
   }
-  // .md-list button:hover {
-  //     cursor: pointer;
-  //     background-color: rgb(252, 239, 195);
-  //     border-radius: 8px;
-  
-  // }
+ 
   .md-list .h:hover,
   button:hover {
     cursor: pointer;
     background-color: rgb(223, 223, 223);
-    border-radius: 8px;
+    // border-radius: 8px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
   }
-  // .md-list .h:hover ,button:active {
-  //     cursor: pointer;
-  //     background-color:rgb(117, 96, 25);
-  //     border-radius: 8px;
-  
-  // }
+ 
   .page-container {
     z-index: 8;
   }
-  // .md-menu-item{
-  //   display: flex;
-  //   justify-content: center;
-  // }
+ 
   .link1{
     color:black
   }
+  // .md-list .h:hover,
+  // button:hover,
+  // .h1:active{
+  //    background-color: rgb(180, 176, 113);
+  //    cursor: pointer;
+  //  }
+  
+  // .h1:hover,
+  // .router-link-active,
+  // .router-link-exact-active {
+  //   background-color: indianred;
+  //   cursor: pointer;
+  //   border-top-right-radius: 30px;
+  //   border-bottom-right-radius: 30px;
+  // }

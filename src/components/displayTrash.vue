@@ -5,12 +5,7 @@
       <div class="card">
         <md-card md-dynamic-height>
           <md-card-header-text class="header">
-            <div style="display:flex">{{note.title}}</div>
-            <md-button class="md-icon-button bottom">
-              <md-avatar>
-                <img src="../assets/pin.svg" alt="Avatar" />
-              </md-avatar>
-            </md-button>
+            <div style="display:flex">{{note.title}}</div>  
           </md-card-header-text>
           <md-card-content>
             <div>{{note.description}}</div>

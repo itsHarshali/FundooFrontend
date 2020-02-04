@@ -69,7 +69,7 @@
 
               </md-menu-item>
               
-              <uploadProfile></uploadProfile>
+              <uploadProfile> </uploadProfile>
 
               <md-menu-item v-model="name">{{ name }}</md-menu-item>
               <md-menu-item v-model="email">{{ email }}</md-menu-item>
@@ -93,7 +93,7 @@
         <md-list >
         <!-- @click="getNote()"  -->
           <button class="md-list-item-text">
-            <router-link :to="{path:'/dashboard/notes' }" replace>  
+            <router-link class="h1" class-active="active"  :to="{path:'/dashboard/notes' }" replace>  
             
             <md-list-item class="link1">
               <md-icon>note</md-icon>Notes
@@ -117,6 +117,8 @@
             </md-list-item>
           </button>
           <div>
+
+          <form  @submit.prevent="validateUser">
             <md-dialog :md-active.sync="showDialog">
               <md-dialog-title>Edit label</md-dialog-title>
               <div class="md-layout">
@@ -128,8 +130,10 @@
                   </md-button>
 
                   <input
+                  v-model="label"
                     type="text"
                     placeholder="Create new label"
+
                     style="border:none; outline:none"
                   />
                 </div>
@@ -142,9 +146,12 @@
               </div>
               <md-divider></md-divider>
               <md-dialog-actions>
-                <md-button class="md-primary" @click="showDialog = false">Done</md-button>
+                   <div @click="showDialog = false">
+                <md-button type="submit" class="md-primary" @click="savelabel()">Done</md-button>
+             </div>
               </md-dialog-actions>
             </md-dialog>
+               </form>
           </div>
 
           <md-divider></md-divider>
@@ -175,8 +182,7 @@
       
         <div class="main">
           <!-- <md-card></md-card>  -->
-          <!-- <noteComponent></noteComponent> -->
-          
+          <!-- <noteComponent></noteComponent> -->      
           <router-view></router-view>
        
       </div>
@@ -189,6 +195,7 @@
 // import noteComponent from "../components/noteComponent";
 import uploadProfile from "../components/uploadProfile";
 import search from "../components/search";
+import { HTTP } from "../http-common";
 export default {
   name: "PersistentFull",
   components: {
@@ -199,6 +206,7 @@ export default {
 
   data: () => ({
     menuVisible: false,
+    label: "",
     email: "",
     name: "",
     selectedEmployee: null,
@@ -221,6 +229,35 @@ export default {
       this.menuVisible = !this.menuVisible;
       this.$log.info("menuvisible :: " + this.menuVisible);
     },
+     clearForm() {
+      this.label = "";
+    },
+    saveLabel() {
+      this.sending = true;
+      const labelData = {};
+      labelData.label = this.label;
+      this.$log.info("test", this.label);
+
+      HTTP.post(`/label`, labelData, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test", response);
+          // const data = JSON.stringify(response.data);
+          //alert("note create succesfully ", data);
+          this.sending = false;
+           
+          // this.showSnackbar= true;
+  
+          this.clearForm();
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+          //alert("add description", e);
+          this.sending = false;
+          this.clearForm();
+        });
+    },
     // getTrash() {
     //   this.$router.push("trash");
     // },
@@ -232,7 +269,11 @@ export default {
     // },
     //   getReminderNotes() {
     //   this.$router.push("reminder");
-    // }
+    // } 
+    toggle1() {
+      this.seen1 = !this.seen1;
+      this.$log.info("seen :: " + this.seen);
+    },
        singOut() {
          localStorage.clear();
       this.$router.push("/");
@@ -240,7 +281,6 @@ export default {
   }
 };
 </script>
-
 <style src="./Dashboard.scss" lang="scss" scoped/>
 
 

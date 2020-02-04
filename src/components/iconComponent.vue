@@ -14,7 +14,7 @@
         </md-button>
 
         <md-menu class="c1" md-direction="top-start">
-          <md-button @click="selectColor()" md-menu-trigger class="md-icon-button">
+          <md-button @click="selectColor(e)" md-menu-trigger class="md-icon-button">
             <md-avatar>
               <img src="../assets/addcolor.svg" alt="Avatar" />
             </md-avatar>
@@ -52,6 +52,10 @@
               <span>Add label</span>
               <md-icon>message</md-icon>
             </md-menu-item>
+              <md-menu-item @click="deleteNote">
+              <span>Delete note</span>
+              <md-icon>delete</md-icon>
+            </md-menu-item>
           </md-menu-content>
         </md-menu>
       </div>
@@ -78,7 +82,7 @@ export default {
       { color: "#0000ff" },
       { color: "#94515a" },
       { color: "#f5bfe0" },
-       { color: "#bbafed" },
+      { color: "#bbafed" },
       { color: "#bdcadb" }
     ]
   }),
@@ -86,8 +90,9 @@ export default {
     noop() {
       window.alert("noop");
     },
-    selectColor() {
-      this.$emit("color");
+    selectColor(e) {
+      this.$emit("changeColor", e.color);
+ 
     },
     shareColor(color) {
       this.$log.info("selected color :: " + color);
@@ -185,7 +190,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     height: 130;
-     border-radius: 8px;
+     border-radius: 10px;
     width: 160px;
 }
 .md-helper-text {
@@ -195,7 +200,6 @@ export default {
   .c1{
      border-radius: 8px;
   }
-
 
 
 </style>

@@ -115,6 +115,7 @@ export default {
           this.clearForm();
         });
     },
+    
     toggleMenu() {
       this.seen = !this.seen;
       this.$log.info("seen :: " + this.seen);

@@ -15,21 +15,22 @@
           <md-card-content>
             <div>{{note.description}}</div>
           </md-card-content>
-         
-              <div v-if="note.labels.length!= 0"> 
-                 <div v-for="note in note.labels.length"  v-bind:key="note"> 
-                   
-            <md-chip md-deletable>{{note.labels}}</md-chip>
-          </div> 
+
+          <div v-if="note.labels.length!= 0">
+            <div v-for="note in note.labels.length" v-bind:key="note">
+             
+              <md-chip md-deletable>{{note.labels}}</md-chip>
+              
+            </div>
           </div>
           <div v-if="note.reminder!= null">
             <md-chip md-deletable>{{note.reminder}}</md-chip>
           </div>
-         
+
           <div class="bottom">
             <md-card-actions md-alignment="left">
               <div class="button">
-                <iconComponent @changeColor="colorFromIcon()"></iconComponent>
+                <iconComponent @changeColor="color()"></iconComponent>
               </div>
             </md-card-actions>
           </div>
@@ -37,7 +38,6 @@
       </div>
     </div>
   </div>
- 
 </template>
 <script>
 import iconComponent from "../components/iconComponent";
@@ -46,36 +46,35 @@ import { HTTP } from "../http-common";
 export default {
   name: "notes",
   components: {
-    iconComponent,
+    iconComponent
     // search
   },
   props: ["getAllNotes"],
   data: () => ({
     seen: false,
     getAllNotes: [],
-  addColor() {
+    label:[],
     
+    addColor() {
       const noteData = {};
       noteData.colorNote = this.color;
-     
+
       this.$log.info("test", this.noteData);
 
-      HTTP.put(`/colorNote`, noteData, {
+      HTTP.put(`/colorNote/` + this, noteData, {
         headers: { token: localStorage.getItem("token") }
       })
         .then(response => {
           this.$log.info("test", response);
           // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);          
-          // this.showSnackbar= true; 
+          //alert("note create succesfully ", data);
+          // this.showSnackbar= true;
         })
         .catch(e => {
           this.$log.info("test", e);
           //alert("add description", e);
-       
         });
     }
-    
   }),
   methods: {
     toggleMenu() {
