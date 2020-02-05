@@ -1,9 +1,9 @@
 <template>
   <div class="note">
-    <div v-for="note in getAllNotes" v-bind:key="note">
+    <div v-for="note in getAllNotes" v-bind:key="note" >
       <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
-      <div class="card">
-        <md-card md-dynamic-height>
+      <div class="card" >
+        <md-card md-dynamic-height :style="`background-color: ${note.colorNote}`">
           <md-card-header-text class="header">
             <div style="display:flex">{{note.title}}</div>
             <md-button class="md-icon-button bottom">
@@ -18,9 +18,7 @@
 
           <div v-if="note.labels.length!= 0">
             <div v-for="note in note.labels.length" v-bind:key="note">
-             
               <md-chip md-deletable>{{note.labels}}</md-chip>
-              
             </div>
           </div>
           <div v-if="note.reminder!= null">
@@ -29,8 +27,10 @@
 
           <div class="bottom">
             <md-card-actions md-alignment="left">
-              <div class="button">
-                <iconComponent @changeColor="color()"></iconComponent>
+              <div class="button" @click="getNoteId(note._id)" >
+                <div >
+                <iconComponent @changeColor="getColor" @Trash="addTrash" ></iconComponent>
+                </div>
               </div>
             </md-card-actions>
           </div>
@@ -50,33 +50,78 @@ export default {
     // search
   },
   props: ["getAllNotes"],
+
   data: () => ({
     seen: false,
     getAllNotes: [],
-    label:[],
-    
-    addColor() {
+    label: [],
+    fromChild: "",
+    note_color: "",
+    noteId: null,
+   addInTrash:""
+   
+  }),
+  
+  methods: {
+     addColor() {
       const noteData = {};
-      noteData.colorNote = this.color;
+      noteData.colorNote = this.note_color;
+      this.$log.info("test",noteData);
 
-      this.$log.info("test", this.noteData);
-
-      HTTP.put(`/colorNote/` + this, noteData, {
+      HTTP.put(`/colorNote/` + this.noteId, noteData, {
         headers: { token: localStorage.getItem("token") }
       })
         .then(response => {
-          this.$log.info("test", response);
+          this.$log.info("test2", response);
           // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);
+          //alert("note create succesfully ", data);  
           // this.showSnackbar= true;
+    
         })
         .catch(e => {
           this.$log.info("test", e);
           //alert("add description", e);
         });
-    }
-  }),
-  methods: {
+    },
+
+     addIntoTrash() {
+    
+      HTTP.delete(`/trash/` + this.noteId, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test2", response);
+          // const data = JSON.stringify(response.data);
+          //alert("note create succesfully ", data);
+          // this.showSnackbar= true;
+          
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+          //alert("add description", e);
+        });
+    },
+    getColor(color) {
+      this.note_color = color;
+      this.$log.info("note_color :: " + this.note_color);
+      this.addColor();
+    },
+
+    addTrash(value){
+      this.addInTrash = value;
+      this.$log.info("addInTrash :: " + this.addInTrash);
+      this.addIntoTrash();
+    },
+    getNoteId(id) {
+      this.$log.info("id :: " + id);
+      this.noteId = id;
+      this.$log.info("id :: " + this.noteId);
+    },
+
+    onChildClick(value) {
+      this.fromChild = value;
+    },
+
     toggleMenu() {
       this.seen = !this.seen;
       this.$log.info("seen :: " + this.seen);

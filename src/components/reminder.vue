@@ -21,6 +21,7 @@ export default {
   },
  
   methods: {
+         
     getAllNote() {  
       HTTP.get(`/allReminder`, { headers: { token: localStorage.getItem("token") } })
         .then(response => {

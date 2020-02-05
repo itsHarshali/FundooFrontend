@@ -16,7 +16,7 @@
         <md-menu class="c1" md-direction="top-start">
           <md-button @click="selectColor(e)" md-menu-trigger class="md-icon-button">
             <md-avatar>
-              <img src="../assets/addcolor.svg" alt="Avatar" />
+              <img src="../assets/addcolor.svg" alt="Avatar"/>
             </md-avatar>
           </md-button>
 
@@ -24,7 +24,7 @@
             <div class="md-layout">
               <div v-for="color1 in colors" v-bind:key="color1">
                 <div class="md-layout-item" >
-                  <md-button class="md-icon-button" @click="shareColor(color1.color)">
+                    <md-button class="md-icon-button" @click="shareColor(color1.color)">
                     <span class="color" :style="`background-color: ${color1.color}`"></span>
                   </md-button>
                 </div>
@@ -45,14 +45,14 @@
           </md-button>
 
           <md-menu-content>
-            <div>
-              <md-card></md-card>
-            </div>
-            <md-menu-item @click="sendMessage">
+            <!-- <div>
+              <md-card> </md-card>
+            </div> -->
+            <md-menu-item @click="addLabel">
               <span>Add label</span>
               <md-icon>message</md-icon>
             </md-menu-item>
-              <md-menu-item @click="deleteNote">
+              <md-menu-item @click="shareAddTrash(true)">
               <span>Delete note</span>
               <md-icon>delete</md-icon>
             </md-menu-item>
@@ -75,7 +75,7 @@ export default {
     colorCard: false,
     color: "",
     colors: [
-      { color: "#00ffff" },
+      { color: "#ffffff" },
       { color: "#7fffd4" },
       { color: "#f0ffff" },
       { color: "#f5f5dc" }, 
@@ -84,18 +84,48 @@ export default {
       { color: "#f5bfe0" },
       { color: "#bbafed" },
       { color: "#bdcadb" }
-    ]
+    ]   
+    //     addTrash() {
+      
+    //   // this.$log.info("test",noteData);
+
+    //   HTTP.put(`/trash/` + this.noteId,  {
+    //     headers: { token: localStorage.getItem("token") }
+    //   })
+    //     .then(response => {
+    //       this.$log.info("test2", response);
+    //       // const data = JSON.stringify(response.data);
+    //       //alert("note create succesfully ", data);
+    //       // this.showSnackbar= true;
+          
+    //     })
+    //     .catch(e => {
+    //       this.$log.info("test", e);
+    //       //alert("add description", e);
+    //     });
+    // }
   }),
+  
+mounted() {
+    this.getAllNote();
+  },
+
   methods: {
-    noop() {
-      window.alert("noop");
+    deleteNote(){
+
     },
-    selectColor(e) {
-      this.$emit("changeColor", e.color);
  
-    },
+    // selectColor(e) {
+    //   this.$emit("changeColor", e.color);
+ 
+    // },
+shareAddTrash(value){
+  this.$log.info("trash>>>>>>>:::"+ value)
+this.$emit("Trash",value)
+},
     shareColor(color) {
       this.$log.info("selected color :: " + color);
+        this.$emit("changeColor",color);
     },
     toggleMenu() {
       this.colorCard = !this.colorCard;
