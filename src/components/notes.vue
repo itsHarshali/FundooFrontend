@@ -105,7 +105,7 @@ export default {
           this.sending = false;
            
           this.showSnackbar= true;
-  
+  this.$emit('getAllNotes','response')
           this.clearForm();
         })
         .catch(e => {

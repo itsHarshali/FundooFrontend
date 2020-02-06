@@ -1,52 +1,63 @@
 <template>
-  <div class="note">
-    <div v-for="note in getAllNotes" v-bind:key="note" >
-      <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
-      <div class="card" >
-        <md-card md-dynamic-height :style="`background-color: ${note.colorNote}`">
-          <md-card-header-text class="header">
-            <div style="display:flex">{{note.title}}</div>
-            <md-button class="md-icon-button bottom">
-              <md-avatar>
-                <img src="../assets/pin.svg" alt="Avatar" />
-              </md-avatar>
-            </md-button>
-          </md-card-header-text>
-          <md-card-content>
-            <div>{{note.description}}</div>
-          </md-card-content>
 
-          <div v-if="note.labels.length!= 0">
-            <div v-for="note in note.labels.length" v-bind:key="note">
-              <md-chip md-deletable>{{note.labels}}</md-chip>
-            </div>
-          </div>
-          <div v-if="note.reminder!= null">
-            <md-chip md-deletable>{{note.reminder}}</md-chip>
-          </div>
+    <div class="note">
+      <div v-for="note in getAllNotes" v-bind:key="note">
+        <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
+        <div class="card" @click="getNoteId(note._id) ">
+          <md-card  v-if="seen==false" 
+         
+           md-dynamic-height 
+           :style="`background-color: ${note.colorNote}`"
+           >
+            <md-card-header-text class="header">
+              <div  @click="toggleMenu" style="display:flex">{{note.title}}</div>
+              <md-button class="md-icon-button bottom">
+                <md-avatar>
+                  <img src="../assets/pin.svg" alt="Avatar" />
+                </md-avatar>
+              </md-button>
+            </md-card-header-text>
+            <md-card-content>
+              <div  @click="toggleMenu">{{note.description}}</div>
+            </md-card-content>
 
-          <div class="bottom">
-            <md-card-actions md-alignment="left">
-              <div class="button" @click="getNoteId(note._id)" >
-                <div >
-                <iconComponent @changeColor="getColor" @Trash="addTrash" ></iconComponent>
-                </div>
+            <div v-if="note.labels.length!= 0">
+              <div v-for="note in note.labels.length" v-bind:key="note">
+                <md-chip md-deletable>{{note.labels}}</md-chip>
               </div>
-            </md-card-actions>
-          </div>
-        </md-card>
-      </div>
+            </div>
+            <div v-if="note.reminder!= null">
+              <md-chip md-deletable>{{note.reminder}}</md-chip>
+            </div>
+            <div class="bottom">
+              <md-card-actions md-alignment="left">
+                <div class="button" @click="getNoteId(note._id)">
+                  <div>
+                    <iconComponent @changeColor="getColor" @Trash="addTrash"></iconComponent>
+                  </div>
+                </div>
+              </md-card-actions>
+            </div>
+          </md-card>
+        </div> 
+        <div >
+        <md-dialog v-if="seen==true" :md-active.sync="showEditNote" >
+        <editNote ></editNote>  
+        </md-dialog>
+        </div>
     </div>
   </div>
 </template>
 <script>
 import iconComponent from "../components/iconComponent";
+import editNote from "../components/editNote";
 import { HTTP } from "../http-common";
 // import search from "../components/search";
 export default {
   name: "notes",
   components: {
-    iconComponent
+    iconComponent,
+    editNote
     // search
   },
   props: ["getAllNotes"],
@@ -58,15 +69,15 @@ export default {
     fromChild: "",
     note_color: "",
     noteId: null,
-   addInTrash:""
-   
+    addInTrash: "",
+    showEditNote: false,
   }),
-  
+
   methods: {
-     addColor() {
+    addColor() {
       const noteData = {};
       noteData.colorNote = this.note_color;
-      this.$log.info("test",noteData);
+      this.$log.info("test", noteData);
 
       HTTP.put(`/colorNote/` + this.noteId, noteData, {
         headers: { token: localStorage.getItem("token") }
@@ -74,9 +85,8 @@ export default {
         .then(response => {
           this.$log.info("test2", response);
           // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);  
+          //alert("note create succesfully ", data);
           // this.showSnackbar= true;
-    
         })
         .catch(e => {
           this.$log.info("test", e);
@@ -84,8 +94,7 @@ export default {
         });
     },
 
-     addIntoTrash() {
-    
+    addIntoTrash() {
       HTTP.delete(`/trash/` + this.noteId, {
         headers: { token: localStorage.getItem("token") }
       })
@@ -94,7 +103,6 @@ export default {
           // const data = JSON.stringify(response.data);
           //alert("note create succesfully ", data);
           // this.showSnackbar= true;
-          
         })
         .catch(e => {
           this.$log.info("test", e);
@@ -107,7 +115,7 @@ export default {
       this.addColor();
     },
 
-    addTrash(value){
+    addTrash(value) {
       this.addInTrash = value;
       this.$log.info("addInTrash :: " + this.addInTrash);
       this.addIntoTrash();
@@ -134,6 +142,15 @@ export default {
 //   visibility: visible;
 
 // }
+.md-dialog {
+  height: 220px;
+  width: 520px;
+  display: flex;
+  border-radius: 8px;
+}
+.inputs {
+  padding: 5px;
+}
 .md-card {
   display: flex;
   justify-content: space-between;
@@ -291,19 +308,18 @@ export default {
   width: 800px;
   // margin:80px
 }
+.card :hover .bottom {
+  visibility: visible;
+}
 .header {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
 }
-// .trashnoted :hover .footerarea {
-//   visibility: visible;
-
-// }
-.card :hover .bottom {
-  visibility: visible;
-}
 </style>
+
+
+
 
 
 

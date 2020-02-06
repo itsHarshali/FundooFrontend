@@ -1,7 +1,8 @@
 <template>
   <div> 
     <notes></notes>   
-    <displayNote :getAllNotes="getAllNotes"></displayNote>
+    <displayNote :getAllNotes="getAllNotes" @getAllNotes="onClickChild"></displayNote>
+  
   </div>
 </template>
 <script>
@@ -14,8 +15,7 @@ export default {
   name: "noteComponent",
   components: {
     notes,
-    displayNote,
-    
+    displayNote,  
   }, 
   data: () => ({
     getAllNotes:[],
@@ -59,6 +59,9 @@ export default {
           this.$log.info("error", e);
           // alert("add description", e);
         });
+    },
+    onClickChild (value) {
+    this.$log.info(value); // someValue
     }
   }
 };

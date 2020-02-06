@@ -12,6 +12,7 @@ import noteComponent from './components/noteComponent.vue';
 import uploadProfile from './components/uploadProfile.vue';
 import search from './components/search.vue';
 
+
 const routes = [
     { path: '/', component: Login },
     { path: '/register', component: Register },

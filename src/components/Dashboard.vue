@@ -58,19 +58,19 @@
               </md-avatar>
             </md-button>
 
-
             <md-menu-content class="c1">
               <md-menu-item>
                 <md-button class="md-icon-button">
                   <md-avatar class="profile md-large">
-                    <img src="../assets/logo.png" />
+                    <img src="../assets/logo.png" /> 
+                    <uploadProfile> </uploadProfile>
                   </md-avatar>
+               
                 </md-button>
 
               </md-menu-item>
               
-              <!-- <uploadProfile> </uploadProfile> -->
-
+              
               <md-menu-item v-model="name">{{ name }}</md-menu-item>
               <md-menu-item v-model="email">{{ email }}</md-menu-item>
               <md-divider></md-divider>
@@ -193,14 +193,14 @@
 
 <script>
 // import noteComponent from "../components/noteComponent";
-// import uploadProfile from "../components/uploadProfile";
+import uploadProfile from "../components/uploadProfile";
 import search from "../components/search";
 import { HTTP } from "../http-common";
 export default {
   name: "PersistentFull",
   components: {
     // noteComponent,
-    // uploadProfile,
+    uploadProfile,
     search,
   },
 
