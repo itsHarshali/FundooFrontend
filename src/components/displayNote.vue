@@ -3,9 +3,8 @@
     <div class="note">
       <div v-for="note in getAllNotes" v-bind:key="note">
         <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
-        <div class="card" @click="getNoteId(note._id) ">
+        <div class="card" @getAll="forUpdateNotes" >
           <md-card  v-if="seen==false" 
-         
            md-dynamic-height 
            :style="`background-color: ${note.colorNote}`"
            >
@@ -29,11 +28,11 @@
             <div v-if="note.reminder!= null">
               <md-chip md-deletable>{{note.reminder}}</md-chip>
             </div>
-            <div class="bottom">
+            <div class="bottom" @click="getNoteId(note._id)">
               <md-card-actions md-alignment="left">
-                <div class="button" @click="getNoteId(note._id)">
+                <div class="button" >
                   <div>
-                    <iconComponent @changeColor="getColor" @Trash="addTrash"></iconComponent>
+                    <iconComponent @archive="addArchive" @changeColor="getColor" @Trash="addTrash"></iconComponent>
                   </div>
                 </div>
               </md-card-actions>
@@ -68,9 +67,10 @@ export default {
     label: [],
     fromChild: "",
     note_color: "",
-    noteId: null,
+    noteId: "",
     addInTrash: "",
     showEditNote: false,
+    res:""
   }),
 
   methods: {
@@ -83,14 +83,11 @@ export default {
         headers: { token: localStorage.getItem("token") }
       })
         .then(response => {
-          this.$log.info("test2", response);
-          // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);
-          // this.showSnackbar= true;
+          this.$log.info("test2", response);        
+           this.$emit('getAll',null)
         })
         .catch(e => {
           this.$log.info("test", e);
-          //alert("add description", e);
         });
     },
 
@@ -103,12 +100,28 @@ export default {
           // const data = JSON.stringify(response.data);
           //alert("note create succesfully ", data);
           // this.showSnackbar= true;
+           this.$emit('getAll',null)
         })
         .catch(e => {
           this.$log.info("test", e);
           //alert("add description", e);
         });
     },
+    addIntoArchive(){
+      this.$log.info("test6", this.noteId);  
+      HTTP.put(`/archive/` + this.noteId, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test2", response);     
+           this.$emit('getAll',null)
+        })
+        .catch(e => {
+          this.$log.info("test>>", e);
+        });
+    },
+
+
     getColor(color) {
       this.note_color = color;
       this.$log.info("note_color :: " + this.note_color);
@@ -120,8 +133,12 @@ export default {
       this.$log.info("addInTrash :: " + this.addInTrash);
       this.addIntoTrash();
     },
+     addArchive(value) {
+       this.addInArchive = value;
+       this.$log.info("addInArchive :: " + this.addInArchive);
+      this.addIntoArchive();
+    },
     getNoteId(id) {
-      this.$log.info("id :: " + id);
       this.noteId = id;
       this.$log.info("id :: " + this.noteId);
     },
@@ -133,6 +150,10 @@ export default {
     toggleMenu() {
       this.seen = !this.seen;
       this.$log.info("seen :: " + this.seen);
+    },
+    forUpdateNotes(response){
+  this.res = response;
+      this.$log.info("response :: " + this.res);
     }
   }
 };
@@ -157,7 +178,7 @@ export default {
   flex-direction: column;
 
   margin: 4px;
-
+margin-bottom: 20px;
   // display: inline-block;
   // vertical-align: top;
   border: 1px solid transparent;

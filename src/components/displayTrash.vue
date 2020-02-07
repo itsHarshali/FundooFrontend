@@ -2,38 +2,41 @@
   <div class="note">
     <div v-for="note in getAllNotes" v-bind:key="note">
       <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
-      <div class="card">
-        <md-card md-dynamic-height>
+      <div class="card" @getAll="forUpdateNotes">
+        <md-card
+          v-if="seen==false"
+          md-dynamic-height
+          :style="`background-color: ${note.colorNote}`"
+        >
           <md-card-header-text class="header">
-            <div style="display:flex">{{note.title}}</div>  
+            <div style="display:flex">{{note.title}}</div>
           </md-card-header-text>
           <md-card-content>
             <div>{{note.description}}</div>
           </md-card-content>
-         
-              <div v-if="note.labels.length!= 0"> 
-                 <div v-for="note in note.labels.length"  v-bind:key="note"> 
-                   
-            <md-chip md-deletable>{{note.labels}}</md-chip>
-          </div> 
+
+          <div v-if="note.labels.length!= 0">
+            <div v-for="note in note.labels.length" v-bind:key="note">
+              <md-chip md-deletable>{{note.labels}}</md-chip>
+            </div>
           </div>
           <div v-if="note.reminder!= null">
             <md-chip md-deletable>{{note.reminder}}</md-chip>
           </div>
-         
+
           <div class="bottom">
             <md-card-actions md-alignment="left">
-              <div class="button">
-             <md-button class="md-icon-button">
-          <md-avatar>
-            <img src="../assets/foreverTrash.svg" alt="Avatar" />
-          </md-avatar>
-        </md-button>
-        <md-button class="md-icon-button">
-          <md-avatar>
-            <img src="../assets/restoreTrash.svg" alt="Avatar" />
-          </md-avatar>
-        </md-button>
+              <div class="button" >
+                <md-button class="md-icon-button" @click="getNoteId(note._id);deleteNote();">
+                  <md-avatar>
+                    <img src="../assets/foreverTrash.svg" alt="Avatar" />
+                  </md-avatar>
+                </md-button>
+                <md-button class="md-icon-button" @click="getNoteId(note._id);restoreNote();">
+                  <md-avatar>
+                    <img src="../assets/restoreTrash.svg" alt="Avatar" />
+                  </md-avatar>
+                </md-button>
               </div>
             </md-card-actions>
           </div>
@@ -41,7 +44,6 @@
       </div>
     </div>
   </div>
-
 </template>
 <script>
 // import iconComponent from "../components/iconComponent";
@@ -57,39 +59,57 @@ export default {
   data: () => ({
     seen: false,
     getAllNotes: [],
-  addColor() {
-      const noteData = {};
-      noteData.colorNote = this.color;
-     
-      this.$log.info("test", this.noteData);
+    noteId: "",
+  }),
 
-      HTTP.put(`/colorNote`, noteData, {
-        headers: { token: localStorage.getItem("token") }
-      })
-
-        .then(response => {
-          this.$log.info("test", response);
-          // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);
-        
-           
-          // this.showSnackbar= true;
+  methods: {
   
-       
+    restoreNote() {
+      this.$log.info("test2", this.noteId);
+      const token=localStorage.getItem("token");
+      const auth = {
+        headers: { token:token  }
+      }
+      HTTP.put(`/restoreNote/` + this.noteId,{},auth)
+        .then(response => {
+          this.$log.info("test2", response);
+            this.$emit('getAll',null)
+          // this.noteId=null;
         })
         .catch(e => {
-          this.$log.info("test", e);
-          //alert("add description", e);
-       
+          this.$log.info("test >>", e);
+          
         });
-    }
-    
-  }),
-  methods: {
+    },
+     deleteNote() {
+      this.$log.info("test2", this.noteId);
+     
+      HTTP.delete(`/notes/` + this.noteId, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test2", response);
+            this.$emit('getAll',null)
+          // this.noteId=null;
+        })
+        .catch(e => {
+          this.$log.info("test >>", e);
+          
+        });
+    },
     toggleMenu() {
       this.seen = !this.seen;
       this.$log.info("seen :: " + this.seen);
-    }
+    },
+      forUpdateNotes(response){
+  this.res = response;
+      this.$log.info("response :: " + this.res);
+    },
+     getNoteId(id) {
+      this.$log.info("id :: " + id);
+      this.noteId = id;
+      this.$log.info("id :: " + this.noteId);
+    },
   }
 };
 </script>

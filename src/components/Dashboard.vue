@@ -18,11 +18,10 @@
         <div class="md-layout-item md-size-5">
           <span class="md-title">Fundoo</span>
         </div>
-         <div class="md-layout-item md-size-50">
+        <div class="md-layout-item md-size-50">
+          <search></search>
 
-<search></search>
-
-         <!-- <md-autocomplete
+          <!-- <md-autocomplete
             id="search1"
             class="search"
             v-model="selectedEmployee"
@@ -33,19 +32,18 @@
               <md-icon>search</md-icon>Search...
             </label>
           </md-autocomplete>
-        -->
-        </div>   
+          -->
+        </div>
 
         <div class="md-layout-item md-size-25">
           <!-- <div class="md-toolbar-section-end"> -->
-       
-        
+
           <md-button class="md-icon-button">
             <md-avatar>
               <img src="../assets/grid_view.svg" alt="Avatar" />
             </md-avatar>
           </md-button>
-        
+
           <md-button class="md-icon-button">
             <md-icon>settings</md-icon>
           </md-button>
@@ -62,50 +60,40 @@
               <md-menu-item>
                 <md-button class="md-icon-button">
                   <md-avatar class="profile md-large">
-                    <img src="../assets/logo.png" /> 
-                    <uploadProfile> </uploadProfile>
+                    <img src="../assets/logo.png" />
+                    <uploadProfile></uploadProfile>
                   </md-avatar>
-               
                 </md-button>
-
               </md-menu-item>
-              
-              
+
               <md-menu-item v-model="name">{{ name }}</md-menu-item>
               <md-menu-item v-model="email">{{ email }}</md-menu-item>
               <md-divider></md-divider>
-              <md-menu-item>  
-                <md-button @click="singOut()" >
-                  Sing Out
-                </md-button>
+              <md-menu-item>
+                <md-button @click="singOut()">Sing Out</md-button>
               </md-menu-item>
             </md-menu-content>
           </md-menu>
         </div>
-
-
-
       </md-app-toolbar>
-                                   
- 
-      <!-- </div> --> 
+
+      <!-- </div> -->
       <md-app-drawer :md-active.sync="menuVisible" md-persistent="null">
-        <md-list >
-        <!-- @click="getNote()"  -->
+        <md-list>
+          <!-- @click="getNote()"  -->
           <button class="md-list-item-text">
-            <router-link class="h1" class-active="active"  :to="{path:'/dashboard/notes' }" replace>  
-            
-            <md-list-item class="link1">
-              <md-icon>note</md-icon>Notes
-            </md-list-item>
+            <router-link class="h1" class-active="active" :to="{path:'/dashboard/notes' }" replace>
+              <md-list-item class="link1">
+                <md-icon>note</md-icon>Notes
+              </md-list-item>
             </router-link>
           </button>
 
-          <button class=" md-list-item-text">
-            <router-link :to="{path:'/dashboard/reminder'}" replace>  
-            <md-list-item class="link1"> 
-              <md-icon>notification_important</md-icon>Reminders
-            </md-list-item>
+          <button class="md-list-item-text">
+            <router-link :to="{path:'/dashboard/reminder'}" replace>
+              <md-list-item class="link1">
+                <md-icon>notification_important</md-icon>Reminders
+              </md-list-item>
             </router-link>
           </button>
 
@@ -117,77 +105,82 @@
             </md-list-item>
           </button>
           <div>
+            <form @submit.prevent="validateUser">
+              <md-dialog :md-active.sync="showDialog">
+                <md-dialog-title>Edit label</md-dialog-title>
+                <div class="md-layout">
+                  <div class="md-layout-item">
+                    <md-button class="md-icon-button" @click="clearForm()">
+                      <md-avatar>
+                        <img src="../assets/cut.svg" alt="Avatar" />
+                      </md-avatar>
+                    </md-button>
 
-          <form  @submit.prevent="validateUser">
-            <md-dialog :md-active.sync="showDialog">
-              <md-dialog-title>Edit label</md-dialog-title>
-              <div class="md-layout">
-                <div class="md-layout-item">
-                  <md-button class="md-icon-button">
+                    <input
+                      v-model="label"
+                      type="text"
+                      placeholder="Create new label"
+                      style="border:none; outline:none"
+                      :disabled="sending"
+                    />
+
+                  </div>
+                  <md-button class="md-icon-button" @click="saveLabel()">
                     <md-avatar>
-                      <img src="../assets/cut.svg" alt="Avatar" />
+                      <img src="../assets/done.svg" alt="Avatar" />
                     </md-avatar>
                   </md-button>
-
-                  <input
-                  v-model="label"
-                    type="text"
-                    placeholder="Create new label"
-
-                    style="border:none; outline:none"
-                  />
                 </div>
+                  <md-divider></md-divider>
+                  
+                  <!-- <div  v-for="note in label" v-bind:key="note">
+                  <span>  </span>
+                  </div> -->
+                <md-divider></md-divider>
+                <md-dialog-actions>
 
-                <md-button class="md-icon-button">
-                  <md-avatar>
-                    <img src="../assets/done.svg" alt="Avatar" />
-                  </md-avatar>
-                </md-button>
-              </div>
-              <md-divider></md-divider>
-              <md-dialog-actions>
-                   <div @click="showDialog = false">
-                <md-button type="submit" class="md-primary" @click="savelabel()">Done</md-button>
-             </div>
-              </md-dialog-actions>
-            </md-dialog>
-               </form>
+                  <div @click="showDialog = false">
+                    <md-button type="submit" class="md-primary" @click="saveLabel()">Done</md-button>
+                  </div>
+                </md-dialog-actions>
+              </md-dialog>
+            </form>
           </div>
 
           <md-divider></md-divider>
 
-          <button  class="md-list-item-text">
-             <router-link :to="{path:'/dashboard/archive'}" replace>  
-            <md-list-item>
-              <md-icon>move_to_inbox</md-icon>
-              <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->         
-              Archive
-            </md-list-item>
-            </router-link>  
+          <button class="md-list-item-text">
+            <router-link :to="{path:'/dashboard/archive'}" replace>
+              <md-list-item>
+                <md-icon>move_to_inbox</md-icon>
+                <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->
+                Archive
+              </md-list-item>
+            </router-link>
           </button>
-<!-- @click="getTrash()"  -->
+          <!-- @click="getTrash()"  -->
 
-          <button  class="md-list-item-text">    
-            <router-link :to="{path:'/dashboard/trash'}" replace>         
-            <md-list-item>
-              <md-icon>delete</md-icon>
-               Trash 
-            </md-list-item>   
-               </router-link>      
-          </button> 
-       
+          <button class="md-list-item-text">
+            <router-link :to="{path:'/dashboard/trash'}" replace>
+              <md-list-item>
+                <md-icon>delete</md-icon>Trash
+              </md-list-item>
+            </router-link>
+          </button>
         </md-list>
       </md-app-drawer>
-      <md-app-content class="container ">
-      
+      <md-app-content class="container">
         <div class="main">
           <!-- <md-card></md-card>  -->
-          <!-- <noteComponent></noteComponent> -->      
+          <!-- <noteComponent></noteComponent> -->
           <router-view></router-view>
-       
-      </div>
+        </div>
       </md-app-content>
     </md-app>
+      <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
+      <span> Label Created succesfully!</span>
+     
+    </md-snackbar>
   </div>
 </template>
 
@@ -201,7 +194,7 @@ export default {
   components: {
     // noteComponent,
     uploadProfile,
-    search,
+    search
   },
 
   data: () => ({
@@ -225,11 +218,12 @@ export default {
     this.getAllNote();
   },
   methods: {
+
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
       this.$log.info("menuvisible :: " + this.menuVisible);
     },
-     clearForm() {
+    clearForm() {
       this.label = "";
     },
     saveLabel() {
@@ -246,9 +240,9 @@ export default {
           // const data = JSON.stringify(response.data);
           //alert("note create succesfully ", data);
           this.sending = false;
-           
-          // this.showSnackbar= true;
-  
+
+           this.showSnackbar= true;
+
           this.clearForm();
         })
         .catch(e => {
@@ -256,6 +250,23 @@ export default {
           //alert("add description", e);
           this.sending = false;
           this.clearForm();
+        });
+    },
+
+    getLabels() {
+      HTTP.get(`/label`, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test", response);
+          // const data = JSON.stringify(response.data);
+          //alert("note create succesfully ", data);
+          // this.sending = false;
+
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+          
         });
     },
     // getTrash() {
@@ -269,13 +280,13 @@ export default {
     // },
     //   getReminderNotes() {
     //   this.$router.push("reminder");
-    // } 
+    // }
     toggle1() {
       this.seen1 = !this.seen1;
       this.$log.info("seen :: " + this.seen);
     },
-       singOut() {
-         localStorage.clear();
+    singOut() {
+      localStorage.clear();
       this.$router.push("/");
     }
   }

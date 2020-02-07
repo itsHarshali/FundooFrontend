@@ -16,15 +16,15 @@
         <md-menu class="c1" md-direction="top-start">
           <md-button @click="selectColor(e)" md-menu-trigger class="md-icon-button">
             <md-avatar>
-              <img src="../assets/addcolor.svg" alt="Avatar"/>
+              <img src="../assets/addcolor.svg" alt="Avatar" />
             </md-avatar>
           </md-button>
 
           <md-menu-content class="colorcard">
             <div class="md-layout">
               <div v-for="color1 in colors" v-bind:key="color1">
-                <div class="md-layout-item" >
-                    <md-button class="md-icon-button" @click="shareColor(color1.color)">
+                <div class="md-layout-item">
+                  <md-button class="md-icon-button" @click="shareColor(color1.color)">
                     <span class="color" :style="`background-color: ${color1.color}`"></span>
                   </md-button>
                 </div>
@@ -33,7 +33,7 @@
           </md-menu-content>
         </md-menu>
 
-        <md-button class="md-icon-button">
+        <md-button class="md-icon-button" @click="archive(true)">
           <md-avatar>
             <img src="../assets/archive.svg" alt="Avatar" />
           </md-avatar>
@@ -47,12 +47,12 @@
           <md-menu-content>
             <!-- <div>
               <md-card> </md-card>
-            </div> -->
-            <md-menu-item @click="addLabel">
+            </div>-->
+            <md-menu-item>
               <span>Add label</span>
               <md-icon>message</md-icon>
             </md-menu-item>
-              <md-menu-item @click="shareAddTrash(true)">
+            <md-menu-item @click="shareAddTrash(true)">
               <span>Delete note</span>
               <md-icon>delete</md-icon>
             </md-menu-item>
@@ -75,18 +75,21 @@ export default {
     colorCard: false,
     color: "",
     colors: [
-      { color: "#ffffff" },
-      { color: "#7fffd4" },
-      { color: "#f0ffff" },
-      { color: "#f5f5dc" }, 
-      { color: "#0000ff" },
-      { color: "#94515a" },
-      { color: "#f5bfe0" },
-      { color: "#bbafed" },
-      { color: "#bdcadb" }
-    ]   
+      { name: "Default", color: "#ffffff" },
+      { name: "Red", color: "#f28b82" },
+      { name: "Orange", color: "#f7bb04" },
+      { name: "Yellow", color: "#FAF475" },
+      { name: "Green", color: "#CCFF90" },
+      { name: "Teal", color: "#a7ffeb" },
+      { name: "Blue", color: "#cbf0f8" },
+      { name: "Dark Blue", color: "#aecbfa" },
+      { name: "Purple", color: "#d7aefb" },
+      { name: "Pink", color: "#fdcfe8" },
+      { name: "Brown", color: "#E6C9A8" },
+      { name: "Gray", color: "#E8EAED" },
+    ]
     //     addTrash() {
-      
+
     //   // this.$log.info("test",noteData);
 
     //   HTTP.put(`/trash/` + this.noteId,  {
@@ -97,7 +100,7 @@ export default {
     //       // const data = JSON.stringify(response.data);
     //       //alert("note create succesfully ", data);
     //       // this.showSnackbar= true;
-          
+
     //     })
     //     .catch(e => {
     //       this.$log.info("test", e);
@@ -105,27 +108,29 @@ export default {
     //     });
     // }
   }),
-  
-mounted() {
-    this.getAllNote();
-  },
+
+  // mounted() {
+  //     this.getAllNote();
+  //   },
 
   methods: {
-    deleteNote(){
+    deleteNote() {},
 
-    },
- 
     // selectColor(e) {
     //   this.$emit("changeColor", e.color);
- 
+
     // },
-shareAddTrash(value){
-  this.$log.info("trash>>>>>>>:::"+ value)
-this.$emit("Trash",value)
-},
+    shareAddTrash(value) {
+      this.$log.info("trash>>>>>>>:::" + value);
+      this.$emit("Trash", value);
+    },
     shareColor(color) {
       this.$log.info("selected color :: " + color);
-        this.$emit("changeColor",color);
+      this.$emit("changeColor", color);
+    },
+    archive(value) {
+      // this.$log.info("trash>>>>>>>:::"+ value)
+      this.$emit("archive", value);
     },
     toggleMenu() {
       this.colorCard = !this.colorCard;
@@ -209,27 +214,29 @@ this.$emit("Trash",value)
   -webkit-box-flex: 0;
 }
 .color {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: inline-block;
   border: 1px solid rgba(#000, 0.12);
 }
-.colorcard{
+.colorcard {
   height: 130px;
-    display: flex;
-    flex-wrap: wrap;
-    height: 130;
-     border-radius: 10px;
-    width: 160px;
+  display: flex;
+  flex-wrap: wrap;
+  height: 130;
+  border-radius: 10px;
+  width: 160px;
 }
 .md-helper-text {
   display: flex;
   align-items: center;
 }
-  .c1{
-     border-radius: 8px;
-  }
-
-
+.c1 {
+  border-radius: 8px;
+}
+.colorcard .color:hover {
+    cursor: pointer;
+        border-color: black;
+ }
 </style>

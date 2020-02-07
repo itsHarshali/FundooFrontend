@@ -1,7 +1,7 @@
 <template>
   <div> 
-    <notes></notes>   
-    <displayNote :getAllNotes="getAllNotes" @getAllNotes="onClickChild"></displayNote>
+    <notes @getAll="getAllNote"></notes>   
+    <displayNote :getAllNotes="getAllNotes" @getAllNotes="onClickChild" @getAll="getAllNote"></displayNote>
   
   </div>
 </template>

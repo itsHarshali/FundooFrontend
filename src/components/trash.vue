@@ -1,6 +1,6 @@
 <template>
   <div> 
-    <displayTrash :getAllNotes="getAllNotes"></displayTrash>
+    <displayTrash :getAllNotes="getAllNotes" @getAll="getAllNote"></displayTrash>
   </div>
 </template>
 <script>                                                      
@@ -22,7 +22,7 @@ export default {
  
   methods: {
     getAllNote() {  
-      HTTP.get(`trash`, { headers: { token: localStorage.getItem("token") } })
+      HTTP.get(`/trash`, { headers: { token: localStorage.getItem("token") } })
         .then(response => {
           // const data = JSON.stringify(response.data);
           //JSON. stringify() method converts a  JavaScript object or value to a JSON string
