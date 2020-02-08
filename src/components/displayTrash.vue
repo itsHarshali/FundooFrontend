@@ -77,8 +77,7 @@ export default {
           // this.noteId=null;
         })
         .catch(e => {
-          this.$log.info("test >>", e);
-          
+          this.$log.info("test >>", e);        
         });
     },
      deleteNote() {

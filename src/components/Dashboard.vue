@@ -6,7 +6,7 @@
       <!-- <div class="tool"> -->
       <md-app-toolbar class="md-layout">
         <!-- v-if="!menuVisible" -->
-        <div class="md-layout-item md-size-5">
+        <div class="md-layout-item md-size-5" >
           <md-button class="md-icon-button" @click="toggleMenu">
             <md-icon>menu</md-icon>
           </md-button>
@@ -78,8 +78,9 @@
       </md-app-toolbar>
 
       <!-- </div> -->
-      <md-app-drawer :md-active.sync="menuVisible" md-persistent="null">
-        <md-list>
+      <md-app-drawer :md-active.sync="menuVisible" md-persistent="null"  >
+        <md-content class="md-scrollbar">
+        <md-list >
           <!-- @click="getNote()"  -->
           <button class="md-list-item-text">
             <router-link class="h1" class-active="active" :to="{path:'/dashboard/notes' }" replace>
@@ -99,6 +100,15 @@
 
           <md-divider></md-divider>
           <md-subheader>LABELS</md-subheader>
+          <div  v-for="label in getAllLabel" v-bind:key="label">
+
+            <button class="md-list-item-text">
+               <md-list-item  class="link1">
+              <md-icon>labels</md-icon>{{label.label}}
+               </md-list-item>
+            </button>
+          </div>
+
           <button @click="showDialog = true,menuVisible=false " class="md-list-item-text">
             <md-list-item>
               <md-icon>edit</md-icon>Edit Label
@@ -123,7 +133,6 @@
                       style="border:none; outline:none"
                       :disabled="sending"
                     />
-
                   </div>
                   <md-button class="md-icon-button" @click="saveLabel()">
                     <md-avatar>
@@ -131,16 +140,15 @@
                     </md-avatar>
                   </md-button>
                 </div>
-                  <md-divider></md-divider>
-                  
-                  <!-- <div  v-for="note in label" v-bind:key="note">
+                <md-divider></md-divider>
+
+                <!-- <div  v-for="note in label" v-bind:key="note">
                   <span>  </span>
-                  </div> -->
+                </div>-->
                 <md-divider></md-divider>
                 <md-dialog-actions>
-
                   <div @click="showDialog = false">
-                    <md-button type="submit" class="md-primary" @click="saveLabel()">Done</md-button>
+                    <md-button type="submit" class="md-primary" @click="saveLabel() , getLabels()">Done</md-button>
                   </div>
                 </md-dialog-actions>
               </md-dialog>
@@ -168,6 +176,7 @@
             </router-link>
           </button>
         </md-list>
+        </md-content>
       </md-app-drawer>
       <md-app-content class="container">
         <div class="main">
@@ -177,9 +186,13 @@
         </div>
       </md-app-content>
     </md-app>
-      <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
-      <span> Label Created succesfully!</span>
-     
+    <md-snackbar
+      :md-position="position"
+      :md-duration="isInfinity ? Infinity : duration"
+      :md-active.sync="showSnackbar"
+      md-persistent
+    >
+      <span>Label Created succesfully!</span>
     </md-snackbar>
   </div>
 </template>
@@ -203,6 +216,7 @@ export default {
     email: "",
     name: "",
     selectedEmployee: null,
+      getAllLabel:[],
     employees: [
       "Jim Halpert",
       "Dwight Schrute",
@@ -216,12 +230,14 @@ export default {
     this.email = localStorage.getItem("emailid");
     this.name = localStorage.getItem("name");
     this.getAllNote();
+    this.getAllLabel();
   },
   methods: {
-
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
+      
       this.$log.info("menuvisible :: " + this.menuVisible);
+     
     },
     clearForm() {
       this.label = "";
@@ -241,7 +257,7 @@ export default {
           //alert("note create succesfully ", data);
           this.sending = false;
 
-           this.showSnackbar= true;
+          this.showSnackbar = true;
 
           this.clearForm();
         })
@@ -259,14 +275,13 @@ export default {
       })
         .then(response => {
           this.$log.info("test", response);
-          // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);
-          // this.sending = false;
-
+          this.getAllLabel = response.data.data;
+          
+          this.$log.info("getall labels data  =>" + JSON.stringify(this.getAllLabel)
+          );
         })
         .catch(e => {
           this.$log.info("test", e);
-          
         });
     },
     // getTrash() {
@@ -288,6 +303,9 @@ export default {
     singOut() {
       localStorage.clear();
       this.$router.push("/");
+    },
+    labelFuction(){
+      this.getAllLabel();
     }
   }
 };

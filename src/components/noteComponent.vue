@@ -53,6 +53,7 @@ export default {
         //  this.$log.info("getall notes data from backend =>"+JSON.stringify(response.data));
          this.getAllNotes= response.data.data
          this.$log.info("getall notes data  =>"+JSON.stringify(this.getAllNotes));
+         
           // alert("get all notes succesfully ",response.data.data);
         })
         .catch(e => {

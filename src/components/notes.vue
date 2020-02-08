@@ -97,13 +97,9 @@ export default {
       HTTP.post(`notes`, noteData, {
         headers: { token: localStorage.getItem("token") }
       })
-
         .then(response => {
           this.$log.info("test", response);
-          // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);
-          this.sending = false;
-           
+          this.sending = false;           
           this.showSnackbar= true;
   this.$emit('getAll',null)
           this.clearForm();
