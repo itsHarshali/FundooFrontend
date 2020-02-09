@@ -11,6 +11,7 @@ import reminder from './components/reminder.vue';
 import noteComponent from './components/noteComponent.vue';
 import uploadProfile from './components/uploadProfile.vue';
 import search from './components/search.vue';
+import test1 from './components/test1.vue';
 
 
 const routes = [
@@ -20,7 +21,7 @@ const routes = [
     { path: '/resetpassword/:token', component: ResetPassword },
     { path: '/uploadProfile', component: uploadProfile },
      { path: '/d', component: d },
-     
+     { path: '/test1', component: test1 },
     //  { path: '/search', component: search },
     { path: '/dashboard', component: Dashboard,
         children:[

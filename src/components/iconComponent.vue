@@ -7,11 +7,63 @@
             <img src="../assets/notification.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
-        <md-button class="md-icon-button">
+
+
+
+
+        <md-button class="md-icon-button" @click="showCllaboratorDialog = true">
           <md-avatar>
             <img src="../assets/collaborator.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
+
+         <md-dialog :md-active.sync="showCllaboratorDialog" md-dynamic-height>
+      <md-dialog-title>Collaborators</md-dialog-title>
+      <md-divider></md-divider>
+
+              <div class="c1 md-layout">     
+                <md-layout>   
+                 
+                <md-button class="md-icon-button">
+                  <md-avatar class="profile md-large">
+                    <img src="../assets/rose.jpeg" />
+                    <uploadProfile></uploadProfile>
+                  </md-avatar>
+                </md-button>
+             <span> {{ name }}</span>
+             <space/>
+              {{ email }}
+              </md-layout>
+ </div>
+
+      <div class="inputs">
+         <md-button class="md-icon-button "  md-alignment="left">
+          <md-avatar>
+            <img src="../assets/collaborator.svg" alt="Avatar" />
+          </md-avatar>
+        </md-button>
+                    
+
+        <input
+          type="text"
+          placeholder="Person or email to share with"
+          style="border:none; outline:none"
+        />
+      </div>
+
+      <md-divider></md-divider>
+      
+      <div class="bottom dialogButton">
+        <md-dialog-actions>
+          <md-button @click="showCllaboratorDialog = false">save</md-button>
+          <md-button @click="showCllaboratorDialog = false">Cancel</md-button>
+        </md-dialog-actions>
+          </div>
+    </md-dialog>
+
+
+
+
 
         <md-menu class="c1" md-direction="top-start">
           <md-button @click="selectColor(e)" md-menu-trigger class="md-icon-button">
@@ -74,6 +126,9 @@ export default {
     value: null,
     colorCard: false,
     color: "",
+    email: "",
+    name: "",
+     showCllaboratorDialog: false,
     colors: [
       { name: "Default", color: "#ffffff" },
       { name: "Red", color: "#f28b82" },
@@ -112,7 +167,11 @@ export default {
   // mounted() {
   //     this.getAllNote();
   //   },
-
+  mounted() {
+    this.email = localStorage.getItem("emailid");
+    this.$log.info("email>>>>>>>:::" + this.email);
+    this.name = localStorage.getItem("name");
+  },
   methods: {
     deleteNote() {},
 
@@ -143,6 +202,15 @@ export default {
 // .md-menu {
 //   margin: 24px;
 // }
+.md-dialog {
+  height: 220px;
+  width: 520px;
+  display: flex;
+  border-radius: 8px;
+}
+.inputs {
+  padding: 5px;
+}
 .md-button-group {
   display: flex;
 
@@ -188,6 +256,7 @@ export default {
   transition-duration: 0.218s, 0.218s;
   transition-property: background-color, box-shadow;
   transition-timing-function: ease-in-out, ease-in-out;
+
 }
 .button {
   display: flex;
@@ -238,5 +307,8 @@ export default {
 .colorcard .color:hover {
     cursor: pointer;
         border-color: black;
+ }
+ .dialogButton{
+   background-color:rgb(238, 238, 238);
  }
 </style>

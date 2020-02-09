@@ -1,224 +1,122 @@
 <template>
-  <div class="page-container">
-    <md-app>
-      <md-app-toolbar>
-        <!-- v-if="!menuVisible" -->
-        
-        <md-button  class="md-icon-button " @click="toggleMenu">
-          <md-icon>menu</md-icon>
+  <div>
+    <md-dialog :md-active.sync="showDialog" md-dynamic-height>
+      <md-dialog-title>Collaborators</md-dialog-title>
+      <md-divider></md-divider>
+
+ <div class="c1 md-layout">
+             
+                <md-button class="md-icon-button">
+                  <md-avatar class="profile md-large">
+                    <img src="../assets/logo.png" />
+                    <uploadProfile></uploadProfile>
+                  </md-avatar>
+                </md-button>
+             
+
+              <md-menu-item v-model="name">{{ name }}</md-menu-item>
+              <md-menu-item v-model="email">{{ email }}</md-menu-item>
+ </div>
+      <div class="inputs">
+         <md-button class="md-icon-button "  md-alignment="left">
+          <md-avatar>
+            <img src="../assets/collaborator.svg" alt="Avatar" />
+          </md-avatar>
         </md-button>
-        <img src="../assets/unnamed.png" alt="logo" class="img" />
-        <span class="md-title">Fundoo</span>
-        <md-autocomplete
-          id="search1"
-          class="search"
-          v-model="selectedEmployee"
-          :md-options="employees"
-          md-layout="box"
-        >
-        
-          <label>
-            <md-icon>search</md-icon>Search...
-          </label>
-        </md-autocomplete>  
-        <div class="md-toolbar-section-end">
-          <md-button class="md-icon-button">
-            <md-icon>refresh</md-icon>
-          </md-button>
-          <md-button class="md-icon-button">
-            <md-avatar>
-              <img src="../assets/grid_view.svg" alt="Avatar" />
-            </md-avatar>
-          </md-button>
-          <md-button class="md-icon-button">
-            <md-icon>settings</md-icon>
-          </md-button>
+        <input
+          type="text"
+          placeholder="Person or email to share with"
+          style="border:none; outline:none"
+        />
+      </div>
 
-          <md-menu md-direction="bottom-start">
-            <md-button md-menu-trigger class="md-icon-button">
-              <md-avatar>
-                <img src="../assets/logo.png"/>
-              </md-avatar>
-            </md-button>
+      <md-divider></md-divider>
+      <div class="bottom">
+        <md-dialog-actions>
+          <md-button @click="showDialog = false">save</md-button>
+          <md-button @click="showDialog = false">Cancel</md-button>
+        </md-dialog-actions>
 
-            <md-menu-content>
-              <md-menu-item>
-                <md-button  class="md-icon-button">
-                <md-avatar class="profile"> 
-                <img src="../assets/logo.png"/>
-               
-              </md-avatar>
-            </md-button>
-            </md-menu-item>
-
-              <md-menu-item>emailId:harshalibadgujar3@gmail.com</md-menu-item>
-               <md-divider> </md-divider>
-              <md-menu-item><md-button>Sing Out</md-button></md-menu-item>            
-            </md-menu-content>
-          </md-menu>
-        </div>
-      </md-app-toolbar>
-
-        <md-app-drawer :md-active.sync="menuVisible" md-persistent="null">
-        <!-- <md-toolbar class="md-transparent" md-elevation="0">
-          <span>Navigation</span>
-
-          <div class="md-toolbar-section-end">
-            <md-button class="md-icon-button md-dense" @click="toggleMenu">
-              <md-icon>keyboard_arrow_left</md-icon>
-            </md-button>
-          </div>
-        </md-toolbar> -->
-
-        <md-list>
-          <md-list-item>
-            <md-icon>note</md-icon>
-            <span class="md-list-item-text">Notes</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>notification_important</md-icon>
-            <span class="md-list-item-text">Reminders</span>
-          </md-list-item>
-
-          <md-divider></md-divider>
-          <md-subheader>LABELS</md-subheader>
-
-          <md-list-item>
-            <md-icon>edit</md-icon>
-            <span class="md-list-item-text">Edit Label</span>
-          </md-list-item>
-          <md-divider></md-divider>
-
-          <md-list-item>
-            <md-icon>move_to_inbox</md-icon>
-            <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->
-            <span class="md-list-item-text">Archive</span>
-          </md-list-item>
-
-          <md-list-item>
-            <md-icon>delete</md-icon>
-            <span class="md-list-item-text">Trash</span>
-          </md-list-item>
-        </md-list>
-      </md-app-drawer>
-
-      <md-app-content>
-        <md-card></md-card>
-
-
-        <notes></notes>
-        
-        <transition>
-  <div v-if="toggle" key="1">Hello</div>
-  <div v-else key="2">Goodbye</div>
-</transition>
-
-<li v-for="task in tasks" :key="task.id">
-    {{ task.description}}
-</li>
-      </md-app-content>
-    </md-app>
+        <!-- <div class="button">
+                <iconComponent @changeColor="colorFromIcon()"></iconComponent>
+        </div>-->
+      </div>
+    </md-dialog>
+    <md-button class="md-primary md-raised" @click="showDialog = true">Show Dialog</md-button>
   </div>
-</template>
-
+</template>  
 <script>
-import notes from "../components/notes";
 export default {
-  name: "PersistentFull",
+  name: "editNote",
   components: {
-    notes
+    // search
   },
-  
-  data:()=>({
-    menuVisible: false,
-   tasks: [
-    {
-        description: "dry"
-    },{
-        description: "wash"
-    }
-],
-    selectedEmployee: null,
-    employees: [
-      "Jim Halpert",
-      "Dwight Schrute",
-      "Michael Scott",
-      "Phyllis Lapin-Vance"
-    ]
-  }),
- 
- methods: {
-   
-      toggleMenu () {
-        this.menuVisible = !this.menuVisible
-        this.$log.info('menuvisible :: ' +this.menuVisible)
-
-      }
-    }
-  }
+  data: () => ({
+    showDialog: false
+  })
+};
 </script>
-
-<style lang="scss" scoped>
-.md-app {
-  min-height: 600px;
-  border: 1px solid rgba(#000, 0.12);
+<style scoped>
+.md-dialog {
+  height: 220px;
+  width: 520px;
+  display: flex;
+  border-radius: 8px;
 }
-.md-app-toolbar {
+.inputs {
+  padding: 5px;
+}
+.bottom {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.54);
+  direction: ltr;
+  flex-direction: row-reverse;
+  flex-wrap: wrap-reverse;
+  font-family: Roboto, arial, sans-serif;
+  font-size: 12px;
+  height: 36px;
+  line-height: 26px;
+  margin-bottom: 4px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 20px;
+  position: relative;
+  transition-delay: 0s, 0s;
+  transition-duration: 0.218s, 0.218s;
+  transition-property: background-color, box-shadow;
+  transition-timing-function: ease-in-out, ease-in-out;
+  /* 
+  
+  position: relative;
+  transition-delay: 0s, 0s;
+  transition-duration: 0.218s, 0.218s;
+  transition-property: background-color, box-shadow;
+  transition-timing-function: ease-in-out, ease-in-out;
+  visibility: hidden;
+} */
 }
-
-// Demo purposes only
-.md-drawer {
-  width: 230px;
-  max-width: calc(100vw - 125px);
-}   
-.md-app-drawer {
-  margin-top: 88px;
-}
-.page-container {
+.button {
   display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  background-color: #ffffff;
+  justify-content: flex-start;
+  bottom: 0px;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.54);
+  direction: ltr;
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 0;
+  font-family: Roboto, arial, sans-serif;
+  font-size: 12px;
+  height: 34px;
+  line-height: 26px;
+  opacity: 1;
+  transition-duration: 0.218s;
+  transition-property: opacity;
+  transition-timing-function: ease-in;
+  width: 229.859px;
+  -webkit-box-flex: 0;
 }
-.md-autocomplete {
-  max-width: 600px;
-}
-#search1 {
-  //  margin-left: 90px;
-  background-color: rgb(216, 216, 216);
-  //      padding: 11px 0;
-  height: 46px;
-  padding: 0;
-  margin-left: 56px;
-  margin-right: 49px;
-  overflow: hidden;
-}
-
-.md-card {
-  margin: 4px;
-  display: inline-block;
-  vertical-align: top;
-
-  //     box-sizing: border-box;
-  // overflow: hidden;
-  // position: relative;
-  // border-radius: 8px;
-  // background-color: #fff;
-  // border-color: #e0e0e0;
-}
-.md-avatar img {
-  display: flex;
-  // margin-bottom: auto;
-  width: 50%;
-  height: 50%;
-  display: block;
-}
-.md-menu {
-  margin: 24px;
-}
-
 </style>

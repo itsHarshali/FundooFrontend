@@ -60,7 +60,7 @@
               <md-menu-item>
                 <md-button class="md-icon-button">
                   <md-avatar class="profile md-large">
-                    <img src="../assets/logo.png" />
+                    <img src="../assets/rose.jpeg" />
                     <uploadProfile></uploadProfile>
                   </md-avatar>
                 </md-button>
