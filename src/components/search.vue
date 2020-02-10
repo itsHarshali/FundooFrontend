@@ -39,7 +39,6 @@
 import { HTTP } from "../http-common";
 import { messageService } from './messageService';
 
-
 export default {
   name: "Search",
      
@@ -98,7 +97,7 @@ export default {
 #search1 {
   //  margin-left: 90px;
   // background-color: rgb(216, 216, 216);
-  background-color: #e2e0e0;
+  background-color: #eeeeee;
   //      padding: 11px 0;
   height: 46px;
   padding: 0;
@@ -117,4 +116,5 @@ export default {
 .md-toolbar .md-autocomplete.md-theme-default.md-autocomplete-box label {
   -webkit-text-fill-color: #6f6f6f;
 }
+
 </style>

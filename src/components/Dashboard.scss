@@ -8,6 +8,7 @@
     justify-content: space-between;
     flex-direction: row;
     height: 64px;
+    background-color: #ffffff;
   }
   
   // Demo purposes only
@@ -16,7 +17,7 @@
     max-width: calc(100vw - 125px);
   }
   .md-app-drawer {
-    margin-top: 64px;
+    margin-top: 71px;
   }
   .page-container {
     display: flex;
@@ -66,11 +67,7 @@
   
  
   }
-  .md-app-toolbar {
-    display: flex;
-    // justify-content: space-between;
-    flex-direction: row;
-  }
+ 
   .main {
     margin-left: 180px;
     display: flex;
@@ -119,3 +116,20 @@
   .md-drawer{
     z-index: 5;
   }
+  div.relative {
+    border-radius: 50%;
+     position: relative;
+     width: 46px;
+     height: 80px;
+      // background-color: red;
+    }
+    
+    div.absolute {
+    border-radius: 50%;
+     position: absolute;
+     top: 15px;
+     right: 0;
+     width: 23px;
+     height: 23px;
+     background-color: rgb(168, 168, 168);
+    }

@@ -10,7 +10,7 @@
            >
             <md-card-header-text class="header">
               <div  @click="toggleMenu" style="display:flex">{{note.title}}</div>
-              <md-button class="md-icon-button bottom">
+              <md-button v-b-tooltip.hover  title="Pin note" class="md-icon-button bottom">
                 <md-avatar>
                   <img src="../assets/pin.svg" alt="Avatar" />
                 </md-avatar>
@@ -32,7 +32,7 @@
               <md-card-actions md-alignment="left">
                 <div class="button" >
                   <div>
-                    <iconComponent @archive="addArchive" @changeColor="getColor" @Trash="addTrash"></iconComponent>
+                    <iconComponent  @changeColor="getColor" @Trash="addTrash" @archive="addArchive"></iconComponent>
                   </div>
                 </div>
               </md-card-actions>
@@ -69,6 +69,7 @@ export default {
     note_color: "",
     noteId: "",
     addInTrash: "",
+    addInArchive:"",
     showEditNote: false,
     res:""
   }),
@@ -107,9 +108,10 @@ export default {
           //alert("add description", e);
         });
     },
+
     addIntoArchive(){
-      this.$log.info("test6", this.noteId);  
-      HTTP.put(`/archive/` + this.noteId, {
+      this.$log.info("test6"+ this.noteId);  
+      HTTP.put(`/archive/`+ this.noteId, {
         headers: { token: localStorage.getItem("token") }
       })
         .then(response => {
@@ -138,6 +140,7 @@ export default {
        this.$log.info("addInArchive :: " + this.addInArchive);
       this.addIntoArchive();
     },
+
     getNoteId(id) {
       this.noteId = id;
       this.$log.info("id :: " + this.noteId);

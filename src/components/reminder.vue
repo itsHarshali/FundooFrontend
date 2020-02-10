@@ -1,6 +1,6 @@
 <template>
   <div> 
-    <displayNote :getAllNotes="getAllNotes"></displayNote>
+    <displayNote :getAllNotes="getAllNotes" @getAll="getAllNote"></displayNote>
   </div>
 </template>
 <script>                                                      

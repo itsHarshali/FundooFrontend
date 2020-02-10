@@ -6,7 +6,7 @@
       <!-- <div class="tool"> -->
       <md-app-toolbar class="md-layout">
         <!-- v-if="!menuVisible" -->
-        <div class="md-layout-item md-size-5" >
+        <div class="md-layout-item md-size-5">
           <md-button class="md-icon-button" @click="toggleMenu">
             <md-icon>menu</md-icon>
           </md-button>
@@ -58,12 +58,15 @@
 
             <md-menu-content class="c1">
               <md-menu-item>
-                <md-button class="md-icon-button">
-                  <md-avatar class="profile md-large">
-                    <img src="../assets/rose.jpeg" />
-                    <uploadProfile></uploadProfile>
-                  </md-avatar>
-                </md-button>
+               <div class="relative">
+                 <md-avatar>
+                <img src="../assets/rose.jpeg" />
+              </md-avatar>
+            <div class="absolute" @click="showDialogUploadProfile = true"> 
+            <md-icon>camera</md-icon>
+               </div>
+
+               </div>
               </md-menu-item>
 
               <md-menu-item v-model="name">{{ name }}</md-menu-item>
@@ -72,110 +75,155 @@
               <md-menu-item>
                 <md-button @click="singOut()">Sing Out</md-button>
               </md-menu-item>
+              <md-dialog :md-active.sync="showDialogUploadProfile">
+      <md-dialog-title>Select Profile Photo</md-dialog-title>
+
+      <md-tabs md-dynamic-height>
+      
+        <md-tab md-label="Upload Photos">
+          <input type="file" @change="onFileChanged">
+            <button @click="onUpload">Upload!</button>  
+         </md-tab>
+        <md-tab md-label="your Photos">
+  
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus qui, atque at voluptates cupiditate. Neque quae culpa suscipit praesentium inventore ducimus ipsa aut.</p>
+        </md-tab>
+
+     
+      </md-tabs>
+
+      <md-dialog-actions>
+         <md-button  @click="showDialogUploadProfile = false">Set as Profile Photo</md-button>
+        <md-button   @click="showDialogUploadProfile = false" >Close</md-button>
+      </md-dialog-actions>
+    </md-dialog>
             </md-menu-content>
           </md-menu>
         </div>
       </md-app-toolbar>
 
       <!-- </div> -->
-      <md-app-drawer :md-active.sync="menuVisible" md-persistent="null"  >
+      <md-app-drawer :md-active.sync="menuVisible" md-persistent="null">
         <md-content class="md-scrollbar">
-        <md-list >
-          <!-- @click="getNote()"  -->
-          <button class="md-list-item-text">
-            <router-link class="h1" class-active="active" :to="{path:'/dashboard/notes' }" replace>
-              <md-list-item class="link1">
-                <md-icon>note</md-icon>Notes
-              </md-list-item>
-            </router-link>
-          </button>
-
-          <button class="md-list-item-text">
-            <router-link :to="{path:'/dashboard/reminder'}" replace>
-              <md-list-item class="link1">
-                <md-icon>notification_important</md-icon>Reminders
-              </md-list-item>
-            </router-link>
-          </button>
-
-          <md-divider></md-divider>
-          <md-subheader>LABELS</md-subheader>
-          <div  v-for="label in getAllLabel" v-bind:key="label">
+          <md-list>
+            <!-- @click="getNote()"  -->
+            <button class="md-list-item-text">
+              <router-link
+                class="h1"
+                class-active="active"
+                :to="{path:'/dashboard/notes' }"
+                replace
+              >
+                <md-list-item class="link1">
+                  <md-icon>note</md-icon>Notes
+                </md-list-item>
+              </router-link>
+            </button>
 
             <button class="md-list-item-text">
-               <md-list-item  class="link1">
-              <md-icon>labels</md-icon>{{label.label}}
-               </md-list-item>
+              <router-link :to="{path:'/dashboard/reminder'}" replace>
+                <md-list-item class="link1">
+                  <md-icon>notification_important</md-icon>Reminders
+                </md-list-item>
+              </router-link>
             </button>
-          </div>
 
-          <button @click="showDialog = true,menuVisible=false " class="md-list-item-text">
-            <md-list-item>
-              <md-icon>edit</md-icon>Edit Label
-            </md-list-item>
-          </button>
-          <div>
-            <form @submit.prevent="validateUser">
-              <md-dialog :md-active.sync="showDialog">
-                <md-dialog-title>Edit label</md-dialog-title>
-                <div class="md-layout">
-                  <div class="md-layout-item">
-                    <md-button class="md-icon-button" @click="clearForm()">
+            <md-divider></md-divider>
+            <md-subheader>LABELS</md-subheader>
+            <div v-for="label in getAllLabel" v-bind:key="label">
+
+              <button class="md-list-item-text">
+                <md-list-item class="link1">
+                  <md-icon>labels</md-icon>
+                  {{label.label}}
+                </md-list-item>
+              </button>
+
+            </div>
+
+            <button @click="showDialog = true,menuVisible=false ,getLabels()" class="md-list-item-text">
+              <md-list-item>
+                <md-icon>edit</md-icon>Edit Label
+              </md-list-item>
+            </button>
+            <div>
+              <form @submit.prevent="validateUser">
+                <md-dialog :md-active.sync="showDialog">
+                  <md-dialog-title>Edit label</md-dialog-title>
+                  <div class="md-layout">
+                    <div class="md-layout-item">
+                      <md-button class="md-icon-button" @click="clearForm()">
+                        <md-avatar>
+                          <img src="../assets/cut.svg" alt="Avatar" />
+                        </md-avatar>
+                      </md-button>
+
+                      <input
+                        v-model="label"
+                        type="text"
+                        placeholder="Create new label"
+                        style="border:none; outline:none"
+                        :disabled="sending"
+                      />
+                    </div>
+                    <md-button class="md-icon-button" @click="saveLabel()">
                       <md-avatar>
-                        <img src="../assets/cut.svg" alt="Avatar" />
+                        <img src="../assets/done.svg" alt="Avatar" />
                       </md-avatar>
                     </md-button>
-
-                    <input
-                      v-model="label"
-                      type="text"
-                      placeholder="Create new label"
-                      style="border:none; outline:none"
-                      :disabled="sending"
-                    />
                   </div>
-                  <md-button class="md-icon-button" @click="saveLabel()">
-                    <md-avatar>
-                      <img src="../assets/done.svg" alt="Avatar" />
-                    </md-avatar>
-                  </md-button>
-                </div>
-                <md-divider></md-divider>
+                  <div v-for="label in getAllLabel" v-bind:key="label">
+                    <div class="md-layout">
+                      <div class="md-layout-item md-size-20">
+                        <md-icon>labels</md-icon>
+                      </div>
+                      <div class="md-layout-item md-size-60">
+                        {{label.label}}</div>
+                    
+                     <div class="md-layout-item md-size-10">
+                        <md-icon>edit</md-icon>
+                      </div>
+                      </div>
+                  </div>
+                  <md-divider></md-divider>
 
-                <!-- <div  v-for="note in label" v-bind:key="note">
+                  <!-- <div  v-for="note in label" v-bind:key="note">
                   <span>  </span>
-                </div>-->
-                <md-divider></md-divider>
-                <md-dialog-actions>
-                  <div @click="showDialog = false">
-                    <md-button type="submit" class="md-primary" @click="saveLabel() , getLabels()">Done</md-button>
-                  </div>
-                </md-dialog-actions>
-              </md-dialog>
-            </form>
-          </div>
+                  </div>-->
+                  <md-divider></md-divider>
+                  <md-dialog-actions>
+                    <div @click="showDialog = false">
+                      <md-button
+                        type="submit"
+                        class="md-primary"
+                        @click="saveLabel() , getLabels()"
+                      >Done</md-button>
+                    </div>
+                  </md-dialog-actions>
+                </md-dialog>
+              </form>
+            </div>
 
-          <md-divider></md-divider>
+            <md-divider></md-divider>
+            <button class="md-list-item-text">
+              <router-link :to="{path:'/dashboard/archive'}" replace>
+                <md-list-item>
+                  <md-icon>move_to_inbox</md-icon>
+                  <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->
+                  Archive
+                </md-list-item>
+              </router-link>
+            </button>
+            <!-- @click="getTrash()"  -->
 
-          <button class="md-list-item-text">
-            <router-link :to="{path:'/dashboard/archive'}" replace>
-              <md-list-item>
-                <md-icon>move_to_inbox</md-icon>
-                <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->
-                Archive
-              </md-list-item>
-            </router-link>
-          </button>
-          <!-- @click="getTrash()"  -->
-
-          <button class="md-list-item-text">
-            <router-link :to="{path:'/dashboard/trash'}" replace>
-              <md-list-item>
-                <md-icon>delete</md-icon>Trash
-              </md-list-item>
-            </router-link>
-          </button>
-        </md-list>
+            <button class="md-list-item-text">
+              <router-link :to="{path:'/dashboard/trash'}" replace>
+                <md-list-item>
+                  <md-icon>delete</md-icon>Trash
+                </md-list-item>
+              </router-link>
+            </button>
+          </md-list>
         </md-content>
       </md-app-drawer>
       <md-app-content class="container">
@@ -199,14 +247,14 @@
 
 <script>
 // import noteComponent from "../components/noteComponent";
-import uploadProfile from "../components/uploadProfile";
+// import uploadProfile from "../components/uploadProfile";
 import search from "../components/search";
 import { HTTP } from "../http-common";
 export default {
   name: "PersistentFull",
   components: {
     // noteComponent,
-    uploadProfile,
+    // uploadProfile,
     search
   },
 
@@ -216,7 +264,7 @@ export default {
     email: "",
     name: "",
     selectedEmployee: null,
-      getAllLabel:[],
+    getAllLabel: [],
     employees: [
       "Jim Halpert",
       "Dwight Schrute",
@@ -224,6 +272,7 @@ export default {
       "Phyllis Lapin-Vance"
     ],
     showDialog: false,
+    showDialogUploadProfile:false,
     value: null
   }),
   mounted() {
@@ -234,10 +283,10 @@ export default {
   },
   methods: {
     toggleMenu() {
+   
       this.menuVisible = !this.menuVisible;
-      
+      this.getLabels();
       this.$log.info("menuvisible :: " + this.menuVisible);
-     
     },
     clearForm() {
       this.label = "";
@@ -276,14 +325,17 @@ export default {
         .then(response => {
           this.$log.info("test", response);
           this.getAllLabel = response.data.data;
-          
-          this.$log.info("getall labels data  =>" + JSON.stringify(this.getAllLabel)
+
+          this.$log.info(
+            "getall labels data  =>" + JSON.stringify(this.getAllLabel)
           );
         })
         .catch(e => {
           this.$log.info("test", e);
         });
     },
+
+    
     // getTrash() {
     //   this.$router.push("trash");
     // },
@@ -304,7 +356,7 @@ export default {
       localStorage.clear();
       this.$router.push("/");
     },
-    labelFuction(){
+    labelFuction() {
       this.getAllLabel();
     }
   }

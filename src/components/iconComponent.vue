@@ -2,71 +2,77 @@
   <div class="bottom">
     <md-card-actions md-alignment="left">
       <div class="button">
-        <md-button class="md-icon-button">
+        <md-button  v-b-tooltip.hover title="Remind me"  class="md-icon-button">
           <md-avatar>
             <img src="../assets/notification.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
 
-
-
-
-        <md-button class="md-icon-button" @click="showCllaboratorDialog = true">
+        <md-button v-b-tooltip.hover  title="Collaborator"  class="md-icon-button" @click="showCllaboratorDialog = true ">
           <md-avatar>
             <img src="../assets/collaborator.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
 
-         <md-dialog :md-active.sync="showCllaboratorDialog" md-dynamic-height>
-      <md-dialog-title>Collaborators</md-dialog-title>
-      <md-divider></md-divider>
+        <md-dialog :md-active.sync="showCllaboratorDialog"  md-dynamic-height @click="selected()">
+          <md-dialog-title>Collaborators</md-dialog-title>
+          <md-divider></md-divider>
 
-              <div class="c1 md-layout">     
-                <md-layout>   
-                 
-                <md-button class="md-icon-button">
-                  <md-avatar class="profile md-large">
-                    <img src="../assets/rose.jpeg" />
-                    <uploadProfile></uploadProfile>
-                  </md-avatar>
-                </md-button>
-             <span> {{ name }}</span>
-             <space/>
-              {{ email }}
-              </md-layout>
- </div>
-
-      <div class="inputs">
-         <md-button class="md-icon-button "  md-alignment="left">
-          <md-avatar>
-            <img src="../assets/collaborator.svg" alt="Avatar" />
-          </md-avatar>
-        </md-button>
-                    
-
-        <input
-          type="text"
-          placeholder="Person or email to share with"
-          style="border:none; outline:none"
-        />
-      </div>
-
-      <md-divider></md-divider>
-      
-      <div class="bottom dialogButton">
-        <md-dialog-actions>
-          <md-button @click="showCllaboratorDialog = false">save</md-button>
-          <md-button @click="showCllaboratorDialog = false">Cancel</md-button>
-        </md-dialog-actions>
+          <div class="c1 md-layout">
+            <div class="md-layout-item md-size-10">
+              <md-button class="md-icon-button">
+                <md-avatar class="profile md-large">
+                  <img src="../assets/rose.jpeg" />
+                  <uploadProfile></uploadProfile>
+                </md-avatar>
+              </md-button>
+            </div>
+            <div class="md-layout-item md-size-90">
+              <div class="md-layout">
+                <span>{{ name }} <i>(Owner)</i></span>
+              </div>
+              <div class="md-layout">{{ email }}</div>
+            </div>
           </div>
-    </md-dialog>
 
+          <div class="inputs md-layout">
+            <div class="md-layout-item md-size-10">
+              <md-button class="md-icon-button" md-alignment="left">
+                <md-avatar>
+                  <img src="../assets/collaborator.svg" alt="Avatar" />
+                </md-avatar>
+              </md-button>
+            </div>
+            <!-- <input
+              type="text"            
+              placeholder="Person or email to share with"
+              style="border:none; outline:none"
+              v-model="selectUser" 
+              
+            />-->
+            <div class="md-layout-item md-size-90">
+              <md-autocomplete
+                v-model="selectedUser"
+                :md-options="getAllUser"
+                :md-open-on-focus="false"              
+              >
+                <label>Person or email to share with</label>
+              </md-autocomplete>
+            </div>
+          </div>
 
+          <md-divider></md-divider>
 
-
+          <div class="bottom dialogButton">
+            <md-dialog-actions>
+              <md-button @click="showCllaboratorDialog = false">save</md-button>
+              <md-button @click="showCllaboratorDialog = false">Cancel</md-button>
+            </md-dialog-actions>
+          </div>
+        </md-dialog>
 
         <md-menu class="c1" md-direction="top-start">
-          <md-button @click="selectColor(e)" md-menu-trigger class="md-icon-button">
+          <md-button v-b-tooltip.hover  title="Change color" @click="selectColor(e)" md-menu-trigger class="md-icon-button">
             <md-avatar>
               <img src="../assets/addcolor.svg" alt="Avatar" />
             </md-avatar>
@@ -76,7 +82,7 @@
             <div class="md-layout">
               <div v-for="color1 in colors" v-bind:key="color1">
                 <div class="md-layout-item">
-                  <md-button class="md-icon-button" @click="shareColor(color1.color)">
+                  <md-button  class="md-icon-button" @click="shareColor(color1.color)">
                     <span class="color" :style="`background-color: ${color1.color}`"></span>
                   </md-button>
                 </div>
@@ -85,14 +91,14 @@
           </md-menu-content>
         </md-menu>
 
-        <md-button class="md-icon-button" @click="archive(true)">
+        <md-button v-b-tooltip.hover  title="Archive"  class="md-icon-button" @click="archive(true)">
           <md-avatar>
             <img src="../assets/archive.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
 
         <md-menu md-size="big" md-direction="bottom-end">
-          <md-button class="md-icon-button" md-menu-trigger>
+          <md-button v-b-tooltip.hover  title="More"  class="md-icon-button" md-menu-trigger>
             <md-icon>more_vert</md-icon>
           </md-button>
 
@@ -115,6 +121,8 @@
   </div>
 </template>
 <script>
+import { HTTP } from "../http-common";
+
 export default {
   name: "iconComponent",
   // components: {
@@ -128,7 +136,8 @@ export default {
     color: "",
     email: "",
     name: "",
-     showCllaboratorDialog: false,
+    emailid:"",
+    showCllaboratorDialog: false,
     colors: [
       { name: "Default", color: "#ffffff" },
       { name: "Red", color: "#f28b82" },
@@ -141,44 +150,73 @@ export default {
       { name: "Purple", color: "#d7aefb" },
       { name: "Pink", color: "#fdcfe8" },
       { name: "Brown", color: "#E6C9A8" },
-      { name: "Gray", color: "#E8EAED" },
-    ]
-    //     addTrash() {
+      { name: "Gray", color: "#E8EAED" }
+    ],
+    employees: [
+      "dipak123@gmail.com",
+      "Dwight Schrute",
+      "Michael Scott",
+      "Pam Beesly",
+      "Toby Flenderson",
+      "Stanley Hudson",
+      "Meredith Palmer",
+      "Phyllis Lapin-Vance"
+    ],
 
-    //   // this.$log.info("test",noteData);
-
-    //   HTTP.put(`/trash/` + this.noteId,  {
-    //     headers: { token: localStorage.getItem("token") }
-    //   })
-    //     .then(response => {
-    //       this.$log.info("test2", response);
-    //       // const data = JSON.stringify(response.data);
-    //       //alert("note create succesfully ", data);
-    //       // this.showSnackbar= true;
-
-    //     })
-    //     .catch(e => {
-    //       this.$log.info("test", e);
-    //       //alert("add description", e);
-    //     });
-    // }
+    getAllUser:[]
   }),
 
-  // mounted() {
-  //     this.getAllNote();
-  //   },
   mounted() {
     this.email = localStorage.getItem("emailid");
     this.$log.info("email>>>>>>>:::" + this.email);
     this.name = localStorage.getItem("name");
+    this.getAllUser();
   },
   methods: {
-    deleteNote() {},
+    getUsers() {
+      HTTP.get(`/allUser`)
+        .then(response => {
+          this.$log.info("test of getUsers", response);
+          this.getAllUser = response.data.data
 
-    // selectColor(e) {
-    //   this.$emit("changeColor", e.color);
+          this.$log.info(
+            "getall users data  =>" + JSON.stringify(this.getAllUser)
+          );
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+        });
+    },
+selected(){
+this.getUsers()
 
-    // },
+},
+  clearForm() {
+      this.label = "";
+    },
+    saveCollaborator() {
+      this.sending = true;
+
+      HTTP.post(`/collaborator` + this.noteId, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test", response);
+          // const data = JSON.stringify(response.data);
+          //alert("note create succesfully ", data);
+          this.sending = false;
+
+          this.showSnackbar = true;
+
+          this.clearForm();
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+          //alert("add description", e);
+          this.sending = false;
+          this.clearForm();
+        });
+    },
     shareAddTrash(value) {
       this.$log.info("trash>>>>>>>:::" + value);
       this.$emit("Trash", value);
@@ -197,16 +235,22 @@ export default {
     }
   }
 };
+
 </script>
 <style lang="scss" scoped>
+// .md-menu-content-bottom-start .md-menu-content-small .md-menu-content .md-theme-default{
+// z-index: 11;
+// }
 // .md-menu {
 //   margin: 24px;
 // }
+
 .md-dialog {
-  height: 220px;
+  height: 240px;
   width: 520px;
   display: flex;
   border-radius: 8px;
+  z-index: 6;
 }
 .inputs {
   padding: 5px;
@@ -256,7 +300,6 @@ export default {
   transition-duration: 0.218s, 0.218s;
   transition-property: background-color, box-shadow;
   transition-timing-function: ease-in-out, ease-in-out;
-
 }
 .button {
   display: flex;
@@ -305,10 +348,10 @@ export default {
   border-radius: 8px;
 }
 .colorcard .color:hover {
-    cursor: pointer;
-        border-color: black;
- }
- .dialogButton{
-   background-color:rgb(238, 238, 238);
- }
+  cursor: pointer;
+  border-color: black;
+}
+.dialogButton {
+  background-color: rgb(238, 238, 238);
+}
 </style>
