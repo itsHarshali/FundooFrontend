@@ -11,7 +11,6 @@
             <md-icon>menu</md-icon>
           </md-button>
         </div>
-
         <div class="md-layout-item md-size-5">
           <img src="../assets/unnamed.png" alt="logo" class="img" />
         </div>
@@ -75,25 +74,25 @@
               <md-menu-item>
                 <md-button @click="singOut()">Sing Out</md-button>
               </md-menu-item>
-              <md-dialog :md-active.sync="showDialogUploadProfile">
+              
+              <md-dialog :md-active.sync="showDialogUploadProfile" @click.stop="stopTheEvent">>
       <md-dialog-title>Select Profile Photo</md-dialog-title>
 
       <md-tabs md-dynamic-height>
       
         <md-tab md-label="Upload Photos">
-          <input type="file" @change="onFileChanged">
-            <button @click="onUpload">Upload!</button>  
+          <input type="file"          
+           />
+            <button >Upload!</button>  
          </md-tab>
         <md-tab md-label="your Photos">
   
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus qui, atque at voluptates cupiditate. Neque quae culpa suscipit praesentium inventore ducimus ipsa aut.</p>
         </md-tab>
-
-     
       </md-tabs>
 
       <md-dialog-actions>
-         <md-button  @click="showDialogUploadProfile = false">Set as Profile Photo</md-button>
+         <md-button>Set as Profile Photo</md-button>
         <md-button   @click="showDialogUploadProfile = false" >Close</md-button>
       </md-dialog-actions>
     </md-dialog>
@@ -141,7 +140,7 @@
 
             </div>
 
-            <button @click="showDialog = true,menuVisible=false ,getLabels()" class="md-list-item-text">
+            <button @click="showDialog = true , menuVisible=false ,getLabels()" class="md-list-item-text">
               <md-list-item>
                 <md-icon>edit</md-icon>Edit Label
               </md-list-item>
@@ -163,7 +162,7 @@
                         type="text"
                         placeholder="Create new label"
                         style="border:none; outline:none"
-                        :disabled="sending"
+                     
                       />
                     </div>
                     <md-button class="md-icon-button" @click="saveLabel()">
@@ -278,12 +277,14 @@ export default {
   mounted() {
     this.email = localStorage.getItem("emailid");
     this.name = localStorage.getItem("name");
-    this.getAllNote();
-    this.getAllLabel();
+    // this.getAllNote();
+    // this.getAllLabel();
   },
   methods: {
+
+stopTheEvent: (event) => event.stopPropagation() ,
+
     toggleMenu() {
-   
       this.menuVisible = !this.menuVisible;
       this.getLabels();
       this.$log.info("menuvisible :: " + this.menuVisible);
@@ -292,7 +293,7 @@ export default {
       this.label = "";
     },
     saveLabel() {
-      this.sending = true;
+      // this.sending = true;
       const labelData = {};
       labelData.label = this.label;
       this.$log.info("test", this.label);
@@ -304,7 +305,7 @@ export default {
           this.$log.info("test", response);
           // const data = JSON.stringify(response.data);
           //alert("note create succesfully ", data);
-          this.sending = false;
+          // this.sending = false;
 
           this.showSnackbar = true;
 
@@ -313,7 +314,7 @@ export default {
         .catch(e => {
           this.$log.info("test", e);
           //alert("add description", e);
-          this.sending = false;
+          // this.sending = false;
           this.clearForm();
         });
     },

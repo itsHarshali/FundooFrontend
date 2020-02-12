@@ -1,49 +1,90 @@
 <template>
+  <div class="note">
+    <div v-for="note in getAllNotes" v-bind:key="note._id">
+      <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
+      <div class="card" @getAll="forUpdateNotes">
+        <md-card
+          v-if="seen==false"
+          md-dynamic-height
+          :style="`background-color: ${note.colorNote}`"
+        >
+          <md-card-header-text class="header">
+            <!-- @click="toggleMenu" -->
+            <div @click="showEditNote=true">{{note.title}}</div>
+            <md-button title="Pin note" class="md-icon-button bottom">
+              <md-avatar>
+                <img src="../assets/pin.svg" alt="Avatar" />
+              </md-avatar>
+            </md-button>
+          </md-card-header-text>
+          <md-card-content>
+            <div @click="showEditNote=true">{{note.description}}</div>
+          </md-card-content>
+         <md-dialog :md-active.sync="showEditNote">
+<editNote></editNote>
+         </md-dialog>
+          <!-- <md-dialog :md-active.sync="showEditNote" md-dynamic-height :style="`background-color: ${note.colorNote}`">
+            <md-dialog-title>Edit note</md-dialog-title>
 
-    <div class="note">
-      <div v-for="note in getAllNotes" v-bind:key="note">
-        <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
-        <div class="card" @getAll="forUpdateNotes" >
-          <md-card  v-if="seen==false" 
-           md-dynamic-height 
-           :style="`background-color: ${note.colorNote}`"
-           >
-            <md-card-header-text class="header">
-              <div  @click="toggleMenu" style="display:flex">{{note.title}}</div>
-              <md-button v-b-tooltip.hover  title="Pin note" class="md-icon-button bottom">
-                <md-avatar>
-                  <img src="../assets/pin.svg" alt="Avatar" />
-                </md-avatar>
-              </md-button>
-            </md-card-header-text>
-            <md-card-content>
-              <div  @click="toggleMenu">{{note.description}}</div>
-            </md-card-content>
-
-            <div v-if="note.labels.length!= 0">
-              <div v-for="note in note.labels.length" v-bind:key="note">
-                <md-chip md-deletable>{{note.labels}}</md-chip>
+            <div class="inputs">
+              <input type="text" placeholder="Create new label" style="border:none; outline:none" />
+            </div>
+            <div class="inputs">
+              <input type="text" placeholder="Create new label" style="border:none; outline:none" />
+            </div>
+          
+            <div>
+              <md-dialog-actions>
+                <md-button class="md-primary" @click="showEditNote = false">save</md-button>
+              </md-dialog-actions>
+          
+              <div>
+                <iconComponent @changeColor="colorFromIcon()"></iconComponent>
               </div>
             </div>
-            <div v-if="note.reminder!= null">
-              <md-chip md-deletable>{{note.reminder}}</md-chip>
+          </md-dialog> -->
+
+          <div class="md-layout" v-if="note.labels!==null">
+            <div v-for="note in note.labels" v-bind:key="note.labels">
+              <md-chip md-deletable>{{note.label}}</md-chip>
             </div>
-            <div class="bottom" @click="getNoteId(note._id)">
-              <md-card-actions md-alignment="left">
-                <div class="button" >
-                  <div>
-                    <iconComponent  @changeColor="getColor" @Trash="addTrash" @archive="addArchive"></iconComponent>
-                  </div>
+          </div>
+          
+          <div v-if="note.reminder!= null">
+            <md-chip md-deletable>{{note.reminder}}</md-chip>
+          </div>
+
+
+          <div class="md-layout" v-if="note.collaborators!==null">
+            <div v-for="note in note.collaborators" v-bind:key="note.collaborators">
+              <md-avatar class="md-avatar-icon md-small margin">
+                <md-icon>person</md-icon>
+                <md-tooltip md-direction="bottom">harshali@gmail.com</md-tooltip>
+              </md-avatar>
+            </div>
+          </div>
+
+          <div class="bottom" @click="getNoteId(note._id)">
+            <md-card-actions md-alignment="left">
+              <div class="button">
+                <div>
+                  <iconComponent
+                    @selectedUserId="userIdFunction"
+                    @archive="addArchive"
+                    @changeColor="getColor"
+                    @Trash="addTrash"
+                  ></iconComponent>
                 </div>
-              </md-card-actions>
-            </div>
-          </md-card>
-        </div> 
-        <div >
-        <md-dialog v-if="seen==true" :md-active.sync="showEditNote" >
-        <editNote ></editNote>  
+              </div>
+            </md-card-actions>
+          </div>
+        </md-card>
+      </div>
+      <div>
+        <md-dialog v-if="seen==true" :md-active.sync="showEditNote">
+          <editNote v-bind:title="note.title + ' by ' + note.description"></editNote>
         </md-dialog>
-        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,13 +109,31 @@ export default {
     fromChild: "",
     note_color: "",
     noteId: "",
+    user_id: "",
     addInTrash: "",
-    addInArchive:"",
+    addInArchive: "",
     showEditNote: false,
-    res:""
+    res: ""
   }),
 
   methods: {
+    addCollaborator() {
+      // this.sending = true;
+      //  this.$log.info("test NOTE ID>>",this.noteId  )
+      //    this.$log.info("test this.user_id>>",this.user_id  )
+      //             this.$log.info("test TOKEN>>",localStorage.getItem("token") )
+
+      HTTP.post(`/collaborator` + "/" + this.noteId + "/" + this.user_id, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test", response);
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+        });
+    },
+    
     addColor() {
       const noteData = {};
       noteData.colorNote = this.note_color;
@@ -84,8 +143,8 @@ export default {
         headers: { token: localStorage.getItem("token") }
       })
         .then(response => {
-          this.$log.info("test2", response);        
-           this.$emit('getAll',null)
+          this.$log.info("test2", response);
+          this.$emit("getAll", null);
         })
         .catch(e => {
           this.$log.info("test", e);
@@ -101,7 +160,7 @@ export default {
           // const data = JSON.stringify(response.data);
           //alert("note create succesfully ", data);
           // this.showSnackbar= true;
-           this.$emit('getAll',null)
+          this.$emit("getAll", null);
         })
         .catch(e => {
           this.$log.info("test", e);
@@ -109,20 +168,22 @@ export default {
         });
     },
 
-    addIntoArchive(){
-      this.$log.info("test6"+ this.noteId);  
-      HTTP.put(`/archive/`+ this.noteId, {
-        headers: { token: localStorage.getItem("token") }
-      })
+    addIntoArchive() {
+      this.$log.info("test6" + this.noteId);
+      HTTP.put(`/archive/` + this.noteId, {})
         .then(response => {
-          this.$log.info("test2", response);     
-           this.$emit('getAll',null)
+          this.$log.info("test2", response);
+          this.$emit("getAll", null);
         })
         .catch(e => {
           this.$log.info("test>>", e);
         });
     },
-
+    userIdFunction(userId) {
+      this.user_id = userId;
+      this.$log.info("user _ID____**__ :: " + this.user_id);
+      this.addCollaborator();
+    },
 
     getColor(color) {
       this.note_color = color;
@@ -135,9 +196,9 @@ export default {
       this.$log.info("addInTrash :: " + this.addInTrash);
       this.addIntoTrash();
     },
-     addArchive(value) {
-       this.addInArchive = value;
-       this.$log.info("addInArchive :: " + this.addInArchive);
+    addArchive(value) {
+      this.addInArchive = value;
+      this.$log.info("addInArchive :: " + this.addInArchive);
       this.addIntoArchive();
     },
 
@@ -154,8 +215,8 @@ export default {
       this.seen = !this.seen;
       this.$log.info("seen :: " + this.seen);
     },
-    forUpdateNotes(response){
-  this.res = response;
+    forUpdateNotes(response) {
+      this.res = response;
       this.$log.info("response :: " + this.res);
     }
   }
@@ -181,7 +242,7 @@ export default {
   flex-direction: column;
 
   margin: 4px;
-margin-bottom: 20px;
+  margin-bottom: 20px;
   // display: inline-block;
   // vertical-align: top;
   border: 1px solid transparent;
@@ -339,7 +400,15 @@ margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
 }
+.margin{
+  margin: 6px;
+}
+
 </style>
 
 

@@ -1,25 +1,27 @@
 <template>
   <div>
-    <!-- <md-dialog :md-active.sync="showEditNote" md-dynamic-height>
-      <md-dialog-title>Edit note</md-dialog-title>   -->
+    <md-dialog :md-active.sync="showEditNote" md-dynamic-height>
+      <md-dialog-title>Edit note</md-dialog-title>  
 <md-card>
+
       <div class="inputs">
         <input type="text" placeholder="Create new label" style="border:none; outline:none" />
       </div>
+
       <div class="inputs">
         <input type="text" placeholder="Create new label" style="border:none; outline:none" />
       </div>
+      
           <div class="bottom">
           <md-dialog-actions>
         <md-button class="md-primary" @click="showEditNote = false">save</md-button>
       </md-dialog-actions>
               <div class="button">
                 <iconComponent @changeColor="colorFromIcon()"></iconComponent>
-              </div>
-    
+              </div>   
           </div>
 </md-card>
-    <!-- </md-dialog> -->
+    </md-dialog>
     <!-- <md-button class="md-primary md-raised" @click="showEditNote = true">Show Dialog</md-button> -->
   </div>
 </template>  
@@ -42,6 +44,7 @@ export default {
   width: 520px;
   display: flex;
   border-radius: 8px;
+  /* z-index:-1 ; */
 }
 .inputs{
   padding: 5px;
@@ -99,4 +102,5 @@ export default {
   width: 229.859px;
   -webkit-box-flex: 0;
 } 
+
 </style>

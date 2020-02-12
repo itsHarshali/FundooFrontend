@@ -29,7 +29,6 @@
           style="border:none; outline:none"
         />
       </div>
-
       <md-divider></md-divider>
       <div class="bottom">
         <md-dialog-actions>

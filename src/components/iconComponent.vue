@@ -2,19 +2,24 @@
   <div class="bottom">
     <md-card-actions md-alignment="left">
       <div class="button">
-        <md-button  v-b-tooltip.hover title="Remind me"  class="md-icon-button">
+        <md-button  title="Remind me" class="md-icon-button">
           <md-avatar>
             <img src="../assets/notification.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
 
-        <md-button v-b-tooltip.hover  title="Collaborator"  class="md-icon-button" @click="showCllaboratorDialog = true ">
+        <md-button
+          
+          title="Collaborator"
+          class="md-icon-button"
+          @click="showCllaboratorDialog = true;getAllUsers() "
+        >
           <md-avatar>
             <img src="../assets/collaborator.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
 
-        <md-dialog :md-active.sync="showCllaboratorDialog"  md-dynamic-height @click="selected()">
+        <md-dialog :md-active.sync="showCllaboratorDialog" md-dynamic-height>
           <md-dialog-title>Collaborators</md-dialog-title>
           <md-divider></md-divider>
 
@@ -29,7 +34,10 @@
             </div>
             <div class="md-layout-item md-size-90">
               <div class="md-layout">
-                <span>{{ name }} <i>(Owner)</i></span>
+                <span>
+                  {{ name }}
+                  <i>(Owner)</i>
+                </span>
               </div>
               <div class="md-layout">{{ email }}</div>
             </div>
@@ -52,9 +60,10 @@
             />-->
             <div class="md-layout-item md-size-90">
               <md-autocomplete
+                :md-options="UsersEmail"
+                md-layout="box"
+                :md-open-on-focus="false"
                 v-model="selectedUser"
-                :md-options="getAllUser"
-                :md-open-on-focus="false"              
               >
                 <label>Person or email to share with</label>
               </md-autocomplete>
@@ -65,14 +74,20 @@
 
           <div class="bottom dialogButton">
             <md-dialog-actions>
-              <md-button @click="showCllaboratorDialog = false">save</md-button>
-              <md-button @click="showCllaboratorDialog = false">Cancel</md-button>
+               <md-button @click="showCllaboratorDialog = false">Cancel</md-button>
+              <md-button v-on:click="save()" @click="showCllaboratorDialog = false">save</md-button>
             </md-dialog-actions>
           </div>
         </md-dialog>
 
         <md-menu class="c1" md-direction="top-start">
-          <md-button v-b-tooltip.hover  title="Change color" @click="selectColor(e)" md-menu-trigger class="md-icon-button">
+          <md-button
+            
+            title="Change color"
+            @click="selectColor(e)" 
+            md-menu-trigger
+            class="md-icon-button"
+          >
             <md-avatar>
               <img src="../assets/addcolor.svg" alt="Avatar" />
             </md-avatar>
@@ -80,9 +95,9 @@
 
           <md-menu-content class="colorcard">
             <div class="md-layout">
-              <div v-for="color1 in colors" v-bind:key="color1">
+              <div v-for="color1 in colors" v-bind:key="color1.name">
                 <div class="md-layout-item">
-                  <md-button  class="md-icon-button" @click="shareColor(color1.color)">
+                  <md-button class="md-icon-button" @click="shareColor(color1.color)">
                     <span class="color" :style="`background-color: ${color1.color}`"></span>
                   </md-button>
                 </div>
@@ -91,25 +106,48 @@
           </md-menu-content>
         </md-menu>
 
-        <md-button v-b-tooltip.hover  title="Archive"  class="md-icon-button" @click="archive(true)">
+
+        <md-button  title="Archive" class="md-icon-button" @click="archive(true)">
           <md-avatar>
             <img src="../assets/archive.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
 
         <md-menu md-size="big" md-direction="bottom-end">
-          <md-button v-b-tooltip.hover  title="More"  class="md-icon-button" md-menu-trigger>
+          <md-button  title="More" class="md-icon-button" md-menu-trigger>
             <md-icon>more_vert</md-icon>
           </md-button>
+
+
+    <!-- <md-menu md-direction="top-start">
+      <md-button md-menu-trigger>Top Start</md-button>
+
+      <md-menu-content>
+        <md-menu-item>My Item 1</md-menu-item>
+        <md-menu-item>My Item 2</md-menu-item>
+        <md-menu-item>My Item 3</md-menu-item>
+      </md-menu-content>
+    </md-menu> -->
+
 
           <md-menu-content>
             <!-- <div>
               <md-card> </md-card>
             </div>-->
-            <md-menu-item>
-              <span>Add label</span>
+
+            <md-menu-item >       
+              <span @click="labelMenu=true">Add label</span>
               <md-icon>message</md-icon>
-            </md-menu-item>
+   </md-menu-item>
+               <md-menu :md-active.sync="labelMenu" md-direction="top-end">
+      <md-menu-content>
+        <md-menu-item>My Item 1</md-menu-item>
+        <md-menu-item>My Item 2</md-menu-item>
+        <md-menu-item>My Item 3</md-menu-item>
+      </md-menu-content>
+    </md-menu>
+
+         
             <md-menu-item @click="shareAddTrash(true)">
               <span>Delete note</span>
               <md-icon>delete</md-icon>
@@ -125,18 +163,21 @@ import { HTTP } from "../http-common";
 
 export default {
   name: "iconComponent",
-  // components: {
-  //   notes,
-  //   displayNote
-  // },
+  components: {
+    // notes,
+    // displayNote
+
+  },
 
   data: () => ({
     value: null,
+    selectedUser: "",
     colorCard: false,
+    labelMenu: false,
     color: "",
     email: "",
     name: "",
-    emailid:"",
+    emailid: "",
     showCllaboratorDialog: false,
     colors: [
       { name: "Default", color: "#ffffff" },
@@ -152,71 +193,51 @@ export default {
       { name: "Brown", color: "#E6C9A8" },
       { name: "Gray", color: "#E8EAED" }
     ],
-    employees: [
-      "dipak123@gmail.com",
-      "Dwight Schrute",
-      "Michael Scott",
-      "Pam Beesly",
-      "Toby Flenderson",
-      "Stanley Hudson",
-      "Meredith Palmer",
-      "Phyllis Lapin-Vance"
-    ],
+    UsersEmail: [],
 
-    getAllUser:[]
+    getAllUser: []
   }),
 
   mounted() {
     this.email = localStorage.getItem("emailid");
     this.$log.info("email>>>>>>>:::" + this.email);
     this.name = localStorage.getItem("name");
-    this.getAllUser();
   },
   methods: {
-    getUsers() {
+    save(){
+  this.$log.info("*********************");
+    this.getAllUser.forEach(element => {   
+      this.$log.info("test of email>>>collaboratorId >",this.selectedUser);
+            if (element.emailid == this.selectedUser) {
+              this.$log.info("test of email>>>c user_id >>", element._id);
+              this.$emit("selectedUserId", element._id);
+            }
+          });
+    },
+    getAllUsers() {
+      this.$log.info("test of getUsers");
       HTTP.get(`/allUser`)
         .then(response => {
-          this.$log.info("test of getUsers", response);
-          this.getAllUser = response.data.data
-
-          this.$log.info(
-            "getall users data  =>" + JSON.stringify(this.getAllUser)
-          );
-        })
+          this.$log.info("test of getUsers", response.data.data);
+          this.getAllUser = response.data.data;
+          this.getAllUser.forEach(element => {
+            this.$log.info("test of email", element.emailid);
+            this.UsersEmail.push(element.emailid);
+            // if (element.emailid == this.selectedUser) {
+            //   this.$log.info("test of email>>>collaboratorId >",this.selectedUser);
+            //   //this.$emit("selectedUser", element._id);
+            // }
+          });
+        })  
         .catch(e => {
           this.$log.info("test", e);
         });
     },
-selected(){
-this.getUsers()
 
-},
-  clearForm() {
+    clearForm() {
       this.label = "";
     },
-    saveCollaborator() {
-      this.sending = true;
-
-      HTTP.post(`/collaborator` + this.noteId, {
-        headers: { token: localStorage.getItem("token") }
-      })
-        .then(response => {
-          this.$log.info("test", response);
-          // const data = JSON.stringify(response.data);
-          //alert("note create succesfully ", data);
-          this.sending = false;
-
-          this.showSnackbar = true;
-
-          this.clearForm();
-        })
-        .catch(e => {
-          this.$log.info("test", e);
-          //alert("add description", e);
-          this.sending = false;
-          this.clearForm();
-        });
-    },
+   
     shareAddTrash(value) {
       this.$log.info("trash>>>>>>>:::" + value);
       this.$emit("Trash", value);
@@ -232,10 +253,14 @@ this.getUsers()
     toggleMenu() {
       this.colorCard = !this.colorCard;
       // this.$log.info("seen :: " + this.seen);
-    }
+    },
+    //  tM() {
+    //   this.labelMenu = !this.labelMenu;
+    //   // this.$log.info("seen :: " + this.seen);
+    // },
+    
   }
 };
-
 </script>
 <style lang="scss" scoped>
 // .md-menu-content-bottom-start .md-menu-content-small .md-menu-content .md-theme-default{
