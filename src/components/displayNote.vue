@@ -10,7 +10,7 @@
         >
           <md-card-header-text class="header">
             <!-- @click="toggleMenu" -->
-            <div @click="showEditNote=true">{{note.title}}</div>
+            <div @click="foreEditNote(note);showEditNote=true">{{note.title}}</div>
             <md-button title="Pin note" class="md-icon-button bottom">
               <md-avatar>
                 <img src="../assets/pin.svg" alt="Avatar" />
@@ -18,11 +18,14 @@
             </md-button>
           </md-card-header-text>
           <md-card-content>
-            <div @click="showEditNote=true">{{note.description}}</div>
+            <div @click="foreEditNote(note);showEditNote=true">{{note.description}}</div>
           </md-card-content>
-         <md-dialog :md-active.sync="showEditNote">
-<editNote></editNote>
-         </md-dialog>
+          
+          <md-dialog :md-active.sync="showEditNote">
+            <!-- <div v-if="seen==true" :md-active.sync="showEditNote"> -->
+              <editNote :note="note"></editNote>
+            <!-- </div> -->
+          </md-dialog>
           <!-- <md-dialog :md-active.sync="showEditNote" md-dynamic-height :style="`background-color: ${note.colorNote}`">
             <md-dialog-title>Edit note</md-dialog-title>
 
@@ -42,19 +45,17 @@
                 <iconComponent @changeColor="colorFromIcon()"></iconComponent>
               </div>
             </div>
-          </md-dialog> -->
+          </md-dialog>-->
 
+          <!-- 
           <div class="md-layout" v-if="note.labels!==null">
             <div v-for="note in note.labels" v-bind:key="note.labels">
               <md-chip md-deletable>{{note.label}}</md-chip>
             </div>
-          </div>
-          
+          </div>-->
           <div v-if="note.reminder!= null">
             <md-chip md-deletable>{{note.reminder}}</md-chip>
           </div>
-
-
           <div class="md-layout" v-if="note.collaborators!==null">
             <div v-for="note in note.collaborators" v-bind:key="note.collaborators">
               <md-avatar class="md-avatar-icon md-small margin">
@@ -63,7 +64,6 @@
               </md-avatar>
             </div>
           </div>
-
           <div class="bottom" @click="getNoteId(note._id)">
             <md-card-actions md-alignment="left">
               <div class="button">
@@ -80,18 +80,14 @@
           </div>
         </md-card>
       </div>
-      <div>
-        <md-dialog v-if="seen==true" :md-active.sync="showEditNote">
-          <editNote v-bind:title="note.title + ' by ' + note.description"></editNote>
-        </md-dialog>
-      </div>
+      <div></div>
     </div>
   </div>
 </template>
 <script>
 import iconComponent from "../components/iconComponent";
 import editNote from "../components/editNote";
-import { gridService } from './messageService';
+import { gridService } from "./messageService";
 import { HTTP } from "../http-common";
 // import search from "../components/search";
 export default {
@@ -106,6 +102,7 @@ export default {
   data: () => ({
     seen: false,
     getAllNotes: [],
+
     label: [],
     fromChild: "",
     note_color: "",
@@ -114,22 +111,22 @@ export default {
     addInTrash: "",
     addInArchive: "",
     showEditNote: false,
-    res: ""
+    res: "",
+    note: "gfgf"
   }),
-   created () {
-        // subscribe to home component messages
-        this.subscription = gridService.getMessage().subscribe(message => {
-            if (message) {
-                this.$log.info("message---->>>>", message);
-                // add message to local state if not empty
-                this.getAllNotes=message.text;
-
-            } else {
-                // clear messages when empty message received
-                this.messages = [];
-            }
-        });
-    },
+  created() {
+    // subscribe to home component messages
+    this.subscription = gridService.getMessage().subscribe(message => {
+      if (message) {
+        this.$log.info("message---->>>>", message);
+        // add message to local state if not empty
+        this.getAllNotes = message.text;
+      } else {
+        // clear messages when empty message received
+        this.messages = [];
+      }
+    });
+  },
   methods: {
     addCollaborator() {
       // this.sending = true;
@@ -142,12 +139,13 @@ export default {
       })
         .then(response => {
           this.$log.info("test", response);
+          
         })
         .catch(e => {
           this.$log.info("test", e);
         });
     },
-    
+
     addColor() {
       const noteData = {};
       noteData.colorNote = this.note_color;
@@ -221,9 +219,9 @@ export default {
       this.$log.info("id :: " + this.noteId);
     },
 
-    onChildClick(value) {
-      this.fromChild = value;
-    },
+    // onChildClick(value) {
+    //   this.fromChild = value;
+    // },
 
     toggleMenu() {
       this.seen = !this.seen;
@@ -232,6 +230,11 @@ export default {
     forUpdateNotes(response) {
       this.res = response;
       this.$log.info("response :: " + this.res);
+    },
+    foreEditNote(note) {
+      this.$log.info("Note :: " + note);
+
+      this.note = note;
     }
   }
 };
@@ -419,10 +422,9 @@ export default {
   font-weight: 500;
   line-height: 1.5rem;
 }
-.margin{
+.margin {
   margin: 6px;
 }
-
 </style>
 
 

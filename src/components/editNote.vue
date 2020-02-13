@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <md-dialog :md-active.sync="showEditNote" md-dynamic-height>
+  <div >
+    <md-dialog  :md-active.sync="showEditNote" md-dynamic-height>
       <md-dialog-title>Edit note</md-dialog-title>  
-<md-card>
-
       <div class="inputs">
-        <input type="text" placeholder="Create new label" style="border:none; outline:none" />
+        <input type="text" v-model="description"  style="border:none; outline:none" />
       </div>
 
       <div class="inputs">
-        <input type="text" placeholder="Create new label" style="border:none; outline:none" />
+        <input type="text" v-model="title"  style="border:none; outline:none" />
       </div>
       
           <div class="bottom">
@@ -20,22 +18,51 @@
                 <iconComponent @changeColor="colorFromIcon()"></iconComponent>
               </div>   
           </div>
-</md-card>
+
     </md-dialog>
     <!-- <md-button class="md-primary md-raised" @click="showEditNote = true">Show Dialog</md-button> -->
   </div>
 </template>  
 <script>
 import iconComponent from "../components/iconComponent";
+import { HTTP } from "../http-common";
 export default {
    name: "editNote",
   components: {
     iconComponent,
     // search
   },
+  props: ["note"],
   data: () => ({
-    showEditNote: true
-  })
+    showEditNote: true,
+    title:null,
+    description:null,
+  }),
+
+  mounted(){
+this.title=this.note.title;
+this.description=this.note.description;
+  },
+  methods:{
+  editNote() {
+     const noteData = {};
+      noteData.title = this.title;
+      noteData.description = this.description;
+
+      this.$log.info("test", this.title);
+
+      HTTP.put(`notes`, noteData, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test2", response);
+          this.$emit("getAll", null);
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+        });
+    },
+  }
 };
 </script>
 <style scoped>
