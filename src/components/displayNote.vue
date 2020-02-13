@@ -91,6 +91,7 @@
 <script>
 import iconComponent from "../components/iconComponent";
 import editNote from "../components/editNote";
+import { gridService } from './messageService';
 import { HTTP } from "../http-common";
 // import search from "../components/search";
 export default {
@@ -115,7 +116,20 @@ export default {
     showEditNote: false,
     res: ""
   }),
+   created () {
+        // subscribe to home component messages
+        this.subscription = gridService.getMessage().subscribe(message => {
+            if (message) {
+                this.$log.info("message---->>>>", message);
+                // add message to local state if not empty
+                this.getAllNotes=message.text;
 
+            } else {
+                // clear messages when empty message received
+                this.messages = [];
+            }
+        });
+    },
   methods: {
     addCollaborator() {
       // this.sending = true;

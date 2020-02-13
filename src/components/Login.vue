@@ -30,7 +30,7 @@
             <label for="password">Password</label>
             <md-input type="password" name="password" id="password" autocomplete="password" v-model="form.password" :disabled="sending" />
             <span class="md-error" v-if="!$v.form.password.required">The password is required</span>
-            <span class="md-error" v-else-if="!$v.form.password.password.minlength">Invalid password</span>
+            <span class="md-error" v-else-if="!$v.form.password.password.minLength">Invalid password</span>
           </md-field>         
           <md-progress-bar md-mode="indeterminate" v-if="sending" />
         <md-card-actions>

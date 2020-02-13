@@ -119,23 +119,13 @@
           </md-button>
 
 
-    <!-- <md-menu md-direction="top-start">
-      <md-button md-menu-trigger>Top Start</md-button>
-
-      <md-menu-content>
-        <md-menu-item>My Item 1</md-menu-item>
-        <md-menu-item>My Item 2</md-menu-item>
-        <md-menu-item>My Item 3</md-menu-item>
-      </md-menu-content>
-    </md-menu> -->
-
 
           <md-menu-content>
             <!-- <div>
               <md-card> </md-card>
             </div>-->
 
-            <md-menu-item >       
+            <!-- <md-menu-item >       
               <span @click="labelMenu=true">Add label</span>
               <md-icon>message</md-icon>
    </md-menu-item>
@@ -145,9 +135,15 @@
         <md-menu-item>My Item 2</md-menu-item>
         <md-menu-item>My Item 3</md-menu-item>
       </md-menu-content>
-    </md-menu>
+    </md-menu> -->
 
-         
+           <md-menu-item >       
+              <span v-if="labelMenu==false " @click="menu" >Add label</span>
+              
+              <md-icon>message</md-icon>
+              
+   </md-menu-item>
+
             <md-menu-item @click="shareAddTrash(true)">
               <span>Delete note</span>
               <md-icon>delete</md-icon>
@@ -254,6 +250,10 @@ export default {
       this.colorCard = !this.colorCard;
       // this.$log.info("seen :: " + this.seen);
     },
+    menu(){
+      this.labelMenu=!this.labelMenu;
+              
+    }
     //  tM() {
     //   this.labelMenu = !this.labelMenu;
     //   // this.$log.info("seen :: " + this.seen);

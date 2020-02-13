@@ -37,9 +37,14 @@
         <div class="md-layout-item md-size-25">
           <!-- <div class="md-toolbar-section-end"> -->
 
-          <md-button class="md-icon-button">
+          <md-button v-if="seenList==true" @click="listview" class="md-icon-button">
             <md-avatar>
-              <img src="../assets/grid_view.svg" alt="Avatar" />
+              <img src="../assets/listView.svg" alt="Avatar" />
+            </md-avatar>
+            </md-button>
+            <md-button v-else-if="seenList==false"  @click="listview" class="md-icon-button">
+            <md-avatar>
+              <img src= "../assets/grid_view.svg" alt="Avatar" />
             </md-avatar>
           </md-button>
 
@@ -258,6 +263,7 @@ export default {
   },
 
   data: () => ({
+    seenList:false,
     menuVisible: false,
     label: "",
     email: "",
@@ -352,6 +358,9 @@ stopTheEvent: (event) => event.stopPropagation() ,
     toggle1() {
       this.seen1 = !this.seen1;
       this.$log.info("seen :: " + this.seen);
+    },
+    listview(){
+this.seenList=!this.seenList;
     },
     singOut() {
       localStorage.clear();
