@@ -1,0 +1,377 @@
+<template>
+  <!-- <md-button class="md-primary md-raised" @click="active = true">Prompt</md-button>
+  <span v-if="value">Value: {{ value }}</span>-->
+  <div class="page-container">
+    <md-app>
+      <!-- <div class="tool"> -->
+      <md-app-toolbar class="md-layout">
+        <!-- v-if="!menuVisible" -->
+        <div class="md-layout-item md-size-5">
+          <md-button class="md-icon-button" @click="toggleMenu">
+            <md-icon>menu</md-icon>
+          </md-button>
+        </div>
+        <div class="md-layout-item md-size-5">
+          <img src="../assets/unnamed.png" alt="logo" class="img" />
+        </div>
+        <div class="md-layout-item md-size-5">
+          <span class="md-title">Fundoo</span>
+        </div>
+        <div class="md-layout-item md-size-50">
+          <search></search>
+
+          <!-- <md-autocomplete
+            id="search1"
+            class="search"
+            v-model="selectedEmployee"
+            :md-options="employees"
+            md-layout="box"
+          >
+            <label>
+              <md-icon>search</md-icon>Search...
+            </label>
+          </md-autocomplete>
+          -->
+        </div>
+
+        <div class="md-layout-item md-size-25">
+          <!-- <div class="md-toolbar-section-end"> -->
+
+          <md-button v-if="seenList==true" @click="listview" class="md-icon-button">
+            <md-avatar>
+              <img src="../assets/listView.svg" alt="Avatar" />
+            </md-avatar>
+            </md-button>
+            <md-button v-else-if="seenList==false"  @click="listview" class="md-icon-button">
+            <md-avatar>
+              <img src= "../assets/grid_view.svg" alt="Avatar" />
+            </md-avatar>
+          </md-button>
+
+          <md-button class="md-icon-button">
+            <md-icon>settings</md-icon>
+          </md-button>
+        </div>
+        <div class="md-layout-item md-size-10">
+          <md-menu md-direction="bottom-start">
+            <md-button md-menu-trigger class="md-icon-button">
+              <md-avatar>
+                <img src="../assets/logo.png" />
+              </md-avatar>
+            </md-button>
+
+            <md-menu-content class="c1">
+              <md-menu-item>
+               <div class="relative">
+                 <md-avatar>
+                <img src="../assets/rose.jpeg" />
+              </md-avatar>
+            <div class="absolute" @click="showDialogUploadProfile = true"> 
+            <md-icon>camera</md-icon>
+               </div>
+
+               </div>
+              </md-menu-item>
+
+              <md-menu-item v-model="name">{{ name }}</md-menu-item>
+              <md-menu-item v-model="email">{{ email }}</md-menu-item>
+              <md-divider></md-divider>
+              <md-menu-item>
+                <md-button @click="singOut()">Sing Out</md-button>
+              </md-menu-item>
+              
+              <md-dialog :md-active.sync="showDialogUploadProfile" @click.stop="stopTheEvent">>
+      <md-dialog-title>Select Profile Photo</md-dialog-title>
+
+      <md-tabs md-dynamic-height>
+      
+        <md-tab md-label="Upload Photos">
+          <input type="file"          
+           />
+            <button >Upload!</button>  
+         </md-tab>
+        <md-tab md-label="your Photos">
+  
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus qui, atque at voluptates cupiditate. Neque quae culpa suscipit praesentium inventore ducimus ipsa aut.</p>
+        </md-tab>
+      </md-tabs>
+
+      <md-dialog-actions>
+         <md-button>Set as Profile Photo</md-button>
+        <md-button   @click="showDialogUploadProfile = false" >Close</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+            </md-menu-content>
+          </md-menu>
+        </div>
+      </md-app-toolbar>
+
+      <!-- </div> -->
+      <md-app-drawer :md-active.sync="menuVisible" md-persistent="null">
+        <md-content class="md-scrollbar">
+          <md-list>
+            <!-- @click="getNote()"  -->
+            <button class="md-list-item-text">
+              <router-link
+                class="h1"
+                class-active="active"
+                :to="{path:'/dashboard/notes' }"
+                replace
+              >
+                <md-list-item class="link1">
+                  <md-icon>note</md-icon>Notes
+                </md-list-item>
+              </router-link>
+            </button>
+
+            <button class="md-list-item-text">
+              <router-link :to="{path:'/dashboard/reminder'}" replace>
+                <md-list-item class="link1">
+                  <md-icon>notification_important</md-icon>Reminders
+                </md-list-item>
+              </router-link>
+            </button>
+
+            <md-divider></md-divider>
+            <md-subheader>LABELS</md-subheader>
+            <div v-for="label in getAllLabel" v-bind:key="label">
+
+              <button class="md-list-item-text">
+                <md-list-item class="link1">
+                  <md-icon>labels</md-icon>
+                  {{label.label}}
+                </md-list-item>
+              </button>
+
+            </div>
+
+            <button @click="showDialog = true , menuVisible=false ,getLabels()" class="md-list-item-text">
+              <md-list-item>
+                <md-icon>edit</md-icon>Edit Label
+              </md-list-item>
+            </button>
+            <div>
+              <form @submit.prevent="validateUser">
+                <md-dialog :md-active.sync="showDialog">
+                  <md-dialog-title>Edit label</md-dialog-title>
+                  <div class="md-layout">
+                    <div class="md-layout-item">
+                      <md-button class="md-icon-button" @click="clearForm()">
+                        <md-avatar>
+                          <img src="../assets/cut.svg" alt="Avatar" />
+                        </md-avatar>
+                      </md-button>
+
+                      <input
+                        v-model="label"
+                        type="text"
+                        placeholder="Create new label"
+                        style="border:none; outline:none"
+                     
+                      />
+                    </div>
+                    <md-button class="md-icon-button" @click="saveLabel()">
+                      <md-avatar>
+                        <img src="../assets/done.svg" alt="Avatar" />
+                      </md-avatar>
+                    </md-button>
+                  </div>
+                  <div v-for="label in getAllLabel" v-bind:key="label">
+                    <div class="md-layout">
+                      <div class="md-layout-item md-size-20">
+                        <md-icon>labels</md-icon>
+                      </div>
+                      <div class="md-layout-item md-size-60">
+                        {{label.label}}</div>
+                    
+                     <div class="md-layout-item md-size-10">
+                        <md-icon>edit</md-icon>
+                      </div>
+                      </div>
+                  </div>
+                  <md-divider></md-divider>
+
+                  <!-- <div  v-for="note in label" v-bind:key="note">
+                  <span>  </span>
+                  </div>-->
+                  <md-divider></md-divider>
+                  <md-dialog-actions>
+                    <div @click="showDialog = false">
+                      <md-button
+                        type="submit"
+                        class="md-primary"
+                        @click="saveLabel() , getLabels()"
+                      >Done</md-button>
+                    </div>
+                  </md-dialog-actions>
+                </md-dialog>
+              </form>
+            </div>
+
+            <md-divider></md-divider>
+            <button class="md-list-item-text">
+              <router-link :to="{path:'/dashboard/archive'}" replace>
+                <md-list-item>
+                  <md-icon>move_to_inbox</md-icon>
+                  <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->
+                  Archive
+                </md-list-item>
+              </router-link>
+            </button>
+            <!-- @click="getTrash()"  -->
+
+            <button class="md-list-item-text">
+              <router-link :to="{path:'/dashboard/trash'}" replace>
+                <md-list-item>
+                  <md-icon>delete</md-icon>Trash
+                </md-list-item>
+              </router-link>
+            </button>
+          </md-list>
+        </md-content>
+      </md-app-drawer>
+      <md-app-content class="container">
+        <div class="main">
+          <!-- <md-card></md-card>  -->
+          <!-- <noteComponent></noteComponent> -->
+          <router-view></router-view>
+        </div>
+      </md-app-content>
+    </md-app>
+    <md-snackbar
+      :md-position="position"
+      :md-duration="isInfinity ? Infinity : duration"
+      :md-active.sync="showSnackbar"
+      md-persistent
+    >
+      <span>Label Created succesfully!</span>
+    </md-snackbar>
+  </div>
+</template>
+
+<script>
+// import noteComponent from "../components/noteComponent";
+// import uploadProfile from "../components/uploadProfile";
+import search from "../components/search";
+import { HTTP } from "../http-common";
+export default {
+  name: "PersistentFull",
+  components: {
+    // noteComponent,
+    // uploadProfile,
+    search
+  },
+
+  data: () => ({
+    seenList:false,
+    menuVisible: false,
+    label: "",
+    email: "",
+    name: "",
+    selectedEmployee: null,
+    getAllLabel: [],
+    employees: [
+      "Jim Halpert",
+      "Dwight Schrute",
+      "Michael Scott",
+      "Phyllis Lapin-Vance"
+    ],
+    showDialog: false,
+    showDialogUploadProfile:false,
+    value: null
+  }),
+  mounted() {
+    this.email = localStorage.getItem("emailid");
+    this.name = localStorage.getItem("name");
+    // this.getAllNote();
+    // this.getAllLabel();
+  },
+  methods: {
+
+stopTheEvent: (event) => event.stopPropagation() ,
+
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+      this.getLabels();
+      this.$log.info("menuvisible :: " + this.menuVisible);
+    },
+    clearForm() {
+      this.label = "";
+    },
+    saveLabel() {
+      // this.sending = true;
+      const labelData = {};
+      labelData.label = this.label;
+      this.$log.info("test", this.label);
+
+      HTTP.post(`/label`, labelData, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test", response);
+          // const data = JSON.stringify(response.data);
+          //alert("note create succesfully ", data);
+          // this.sending = false;
+
+          this.showSnackbar = true;
+
+          this.clearForm();
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+          //alert("add description", e);
+          // this.sending = false;
+          this.clearForm();
+        });
+    },
+
+    getLabels() {
+      HTTP.get(`/label`, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test", response);
+          this.getAllLabel = response.data.data;
+
+          this.$log.info(
+            "getall labels data  =>" + JSON.stringify(this.getAllLabel)
+          );
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+        });
+    },
+
+    
+    // getTrash() {
+    //   this.$router.push("trash");
+    // },
+    // getArchive() {
+    //   this.$router.push("archive");
+    // },
+    // getNote() {
+    //   this.$router.push("notes");
+    // },
+    //   getReminderNotes() {
+    //   this.$router.push("reminder");
+    // }
+    toggle1() {
+      this.seen1 = !this.seen1;
+      this.$log.info("seen :: " + this.seen);
+    },
+    listview(){
+this.seenList=!this.seenList;
+    },
+    singOut() {
+      localStorage.clear();
+      this.$router.push("/");
+    },
+    labelFuction() {
+      this.getAllLabel();
+    }
+  }
+};
+</script>
+<style src="./Dashboard.scss" lang="scss" scoped/>
+
+
