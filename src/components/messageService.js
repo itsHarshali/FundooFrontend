@@ -15,9 +15,18 @@ export const labelService = {
     getMessage: () => getLabel.asObservable()
 };
 
-const gridlist = new Subject();
-export const gridService = {
-    sendMessage: message => gridlist.next({ text: message }),
-    clearMessages: () => gridlist.next(),
-    getMessage: () => gridlist.asObservable()
+// const gridlist = new Subject();
+// export const listView = {
+//     sendMessage: message => gridlist.next({ text: message }),
+//     clearMessages: () => gridlist.next(),
+//     getMessage: () => gridlist.asObservable()
+// };
+
+const listSubject = new Subject();
+export const listView = {
+    enableListView: message => listSubject.next({
+        text: message
+    }),
+    clearMessages: () => listSubject.next(),
+    getListView: () => listSubject.asObservable()
 };

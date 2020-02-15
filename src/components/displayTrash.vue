@@ -15,14 +15,12 @@
             <div>{{note.description}}</div>
           </md-card-content>
 
-          <div v-if="note.labels.length!= 0">
-            <div v-for="note in note.labels.length" v-bind:key="note">
-              <md-chip md-deletable>{{note.labels}}</md-chip>
+          <div class="md-layout" v-if="note.labels!==null">
+            <div v-for="note in note.labels" v-bind:key="note.labels">
+              <md-chip md-deletable>{{note.label}}</md-chip>
             </div>
           </div>
-          <div v-if="note.reminder!= null">
-            <md-chip md-deletable>{{note.reminder}}</md-chip>
-          </div>
+       
 
           <div class="bottom">
             <md-card-actions md-alignment="left">
@@ -296,7 +294,6 @@ export default {
   visibility: visible;
 }
 </style>
-
 
 
 

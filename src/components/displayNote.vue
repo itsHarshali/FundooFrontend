@@ -6,6 +6,7 @@
         <md-card
           v-if="seen==false"
           md-dynamic-height
+          :class="activeListView ? 'listView' : 'displayNote'"
           :style="`background-color: ${note.colorNote}`"
         >
           <md-card-header-text class="header">
@@ -66,8 +67,9 @@
 <script>
 import iconComponent from "../components/iconComponent";
 import editNote from "../components/editNote";
-import { gridService } from "./messageService";
+import { listView } from "./messageService";
 import { HTTP } from "../http-common";
+// import { viewService } from './messageService';
 // import search from "../components/search";
 export default {
   name: "notes",
@@ -86,6 +88,7 @@ export default {
     fromChild: "",
     note_color: "",
     noteId: "",
+    activeListView: false,
     user_id: "",
     addInTrash: "",
     addInArchive: "",
@@ -93,19 +96,16 @@ export default {
     res: "",
     note: "gfgf"
   }),
-  created() {
-    // subscribe to home component messages
-    this.subscription = gridService.getMessage().subscribe(message => {
-      if (message) {
-        this.$log.info("message---->>>>", message);
-        // add message to local state if not empty
-        this.getAllNotes = message.text;
-      } else {
-        // clear messages when empty message received
-        this.messages = [];
-      }
+   created() {
+    this.$log.info("created in display .....");
+    this.subscription = listView.getListView().subscribe(message => {
+      this.$log.info("message in display note....", message.text);
+      this.activeListView = !this.activeListView;
+      this.$log.info("activeListView display note....", this.activeListView);
+      this.$emit("update", "note Update");
     });
   },
+
   methods: {
         closeDialog(value){
  this.showEditNote = value;
@@ -409,6 +409,32 @@ export default {
 }
 .margin {
   margin: 6px;
+}
+.displayNote {
+  display: grid;
+  justify-content: center;
+  padding: 10px;
+  width: 260px;
+}
+.listView {
+  display: grid;
+  justify-content: center;
+  padding: 10px;
+  width: 560px;
+  height: 140px;
+}
+
+.displayNote:hover .gridNote {
+  visibility: visible;
+}
+.gridNote {
+  visibility: hidden;
+}
+.listNote:hover .gridNote {
+  visibility: visible;
+}
+.listNote.gridNote {
+  width: 350px;
 }
 </style>
 

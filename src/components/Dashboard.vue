@@ -34,75 +34,57 @@
           -->
         </div>
 
-        <div class="md-layout-item md-size-25">
+      
           <!-- <div class="md-toolbar-section-end"> -->
-
-          <md-button v-if="seenList==true" @click="listview" class="md-icon-button">
+<!-- <div v-if="activeListView == false" @click="changeView">
+          <md-avatar class="md-medium">
+            <md-ripple>
+              <img
+                src="../assets/view_agenda-24px.svg"
+             
+                alt="people"
+              />
+              <md-tooltip md-direction="bottom">list view</md-tooltip>
+            </md-ripple>
+          </md-avatar>
+        </div>
+        <div v-else @click="changeView">
+          <md-avatar class="md-medium">
+            <md-ripple>
+              <img
+                src="../assets/grid_view.svg"
+                style="height:25px;width:25px;"
+                alt="people"
+              />
+              <md-tooltip md-direction="bottom">Grid view</md-tooltip>
+            </md-ripple>
+          </md-avatar>
+        </div> -->
+             <div class="md-layout-item md-size-25">
+<div v-if="seenList==true" @click="listview" >
+          <md-button class="md-icon-button">
             <md-avatar>
               <img src="../assets/listView.svg" alt="Avatar" />
             </md-avatar>
             </md-button>
-            <md-button v-else-if="seenList==false"  @click="listview" class="md-icon-button">
+</div>
+            <div v-else @click="listview" >
+            <md-button  class="md-icon-button">
             <md-avatar>
               <img src= "../assets/grid_view.svg" alt="Avatar" />
             </md-avatar>
           </md-button>
-
+          </div>
+          </div>
+          <!-- <div class="md-layout-item md-size-5">
           <md-button class="md-icon-button">
             <md-icon>settings</md-icon>
           </md-button>
-        </div>
-        <div class="md-layout-item md-size-10">
-          <md-menu md-direction="bottom-start">
-            <md-button md-menu-trigger class="md-icon-button">
-              <md-avatar>
-                <img src="../assets/logo.png" />
-              </md-avatar>
-            </md-button>
+        </div> -->
 
-            <md-menu-content class="c1">
-              <md-menu-item>
-               <div class="relative">
-                 <md-avatar>
-                <img src="../assets/rose.jpeg" />
-              </md-avatar>
-            <div class="absolute" @click="showDialogUploadProfile = true"> 
-            <md-icon>camera</md-icon>
-               </div>
+        <div class="md-layout-item md-size-10" @click="showDialogUploadProfile = true">
 
-               </div>
-              </md-menu-item>
-
-              <md-menu-item v-model="name">{{ name }}</md-menu-item>
-              <md-menu-item v-model="email">{{ email }}</md-menu-item>
-              <md-divider></md-divider>
-              <md-menu-item>
-                <md-button @click="singOut()">Sing Out</md-button>
-              </md-menu-item>
-              
-              <md-dialog :md-active.sync="showDialogUploadProfile" @click.stop="stopTheEvent">>
-      <md-dialog-title>Select Profile Photo</md-dialog-title>
-
-      <md-tabs md-dynamic-height>
-      
-        <md-tab md-label="Upload Photos">
-          <input type="file"          
-           />
-            <button >Upload!</button>  
-         </md-tab>
-        <md-tab md-label="your Photos">
-  
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam mollitia dolorum dolores quae commodi impedit possimus qui, atque at voluptates cupiditate. Neque quae culpa suscipit praesentium inventore ducimus ipsa aut.</p>
-        </md-tab>
-      </md-tabs>
-
-      <md-dialog-actions>
-         <md-button>Set as Profile Photo</md-button>
-        <md-button   @click="showDialogUploadProfile = false" >Close</md-button>
-      </md-dialog-actions>
-    </md-dialog>
-            </md-menu-content>
-          </md-menu>
+<uploadProfile> </uploadProfile>
         </div>
       </md-app-toolbar>
 
@@ -177,14 +159,14 @@
                     </md-button>
                   </div>
                   <div v-for="label in getAllLabel" v-bind:key="label">
-                    <div class="md-layout">
-                      <div class="md-layout-item md-size-20">
+                    <div class="md-layout aaaa">
+                      <div class="">
                         <md-icon>labels</md-icon>
                       </div>
-                      <div class="md-layout-item md-size-60">
+                      <div class="md-layout-item aa">
                         {{label.label}}</div>
                     
-                     <div class="md-layout-item md-size-10">
+                     <div class=" a">
                         <md-icon>edit</md-icon>
                       </div>
                       </div>
@@ -251,14 +233,15 @@
 
 <script>
 // import noteComponent from "../components/noteComponent";
-// import uploadProfile from "../components/uploadProfile";
+import uploadProfile from "../components/uploadProfile";
 import search from "../components/search";
+import { listView } from './messageService';
 import { HTTP } from "../http-common";
 export default {
   name: "PersistentFull",
   components: {
     // noteComponent,
-    // uploadProfile,
+    uploadProfile,
     search
   },
 
@@ -267,7 +250,7 @@ export default {
     menuVisible: false,
     label: "",
     email: "",
-    name: "",
+    name: null,
     selectedEmployee: null,
     getAllLabel: [],
     employees: [
@@ -361,7 +344,9 @@ stopTheEvent: (event) => event.stopPropagation() ,
     },
     listview(){
 this.seenList=!this.seenList;
+ listView.enableListView(this.activeListView);
     },
+
     singOut() {
       localStorage.clear();
       this.$router.push("/");

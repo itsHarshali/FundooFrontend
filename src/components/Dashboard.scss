@@ -10,7 +10,23 @@
     height: 64px;
     background-color: #ffffff;
   }
-  
+  .aaaa{
+    display: flex;
+    // justify-content: center;
+     margin-left: 20px;
+  }
+  .aaa{
+    // display: flex;
+    justify-content: flex-start;
+  }
+  .aa{
+    display: grid;
+    // width: 40px;
+  }
+  .a{
+    margin-right: 20px;
+    justify-content: flex-end;
+  }
   // Demo purposes only
   .md-drawer {
     width: 230px;
@@ -24,6 +40,11 @@
     justify-content: space-between;
     flex-direction: column;
     background-color: #ffffff;
+ 
+      position: relative;
+      height: 100%;
+      width: 100%;
+    
   }
  
   #ex3 {
@@ -135,4 +156,7 @@
      height: 23px;
      background-color: rgb(168, 168, 168);
     }
- 
+    .md-menu-content{
+      max-height: 50vh;
+    }
+    // 

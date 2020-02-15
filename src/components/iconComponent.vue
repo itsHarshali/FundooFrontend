@@ -24,8 +24,6 @@
           </md-menu-content>
         </md-menu>
 
-
-
         <md-button        
           title="Collaborator"
           class="md-icon-button"
