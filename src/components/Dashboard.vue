@@ -64,14 +64,16 @@
 <div v-if="seenList==true" @click="listview" >
           <md-button class="md-icon-button">
             <md-avatar>
-              <img src="../assets/listView.svg" alt="Avatar" />
+              <img src= "../assets/grid_view.svg" alt="Avatar" />
+              <md-tooltip md-direction="bottom">Grid view</md-tooltip>
             </md-avatar>
             </md-button>
 </div>
             <div v-else @click="listview" >
             <md-button  class="md-icon-button">
             <md-avatar>
-              <img src= "../assets/grid_view.svg" alt="Avatar" />
+              <img src=  "../assets/listView.svg"  alt="Avatar" />
+              <md-tooltip md-direction="bottom">List view</md-tooltip>
             </md-avatar>
           </md-button>
           </div>
@@ -237,6 +239,7 @@ import uploadProfile from "../components/uploadProfile";
 import search from "../components/search";
 import { listView } from './messageService';
 import { HTTP } from "../http-common";
+import { get } from "./messageService";
 export default {
   name: "PersistentFull",
   components: {
@@ -315,9 +318,10 @@ stopTheEvent: (event) => event.stopPropagation() ,
         .then(response => {
           this.$log.info("test", response);
           this.getAllLabel = response.data.data;
-
+get.sendAllLabel(this.getAllLabel);
           this.$log.info(
             "getall labels data  =>" + JSON.stringify(this.getAllLabel)
+             
           );
         })
         .catch(e => {

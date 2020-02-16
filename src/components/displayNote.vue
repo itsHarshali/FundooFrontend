@@ -12,11 +12,7 @@
           <md-card-header-text class="header">
             <!-- @click="toggleMenu" -->
             <div @click="foreEditNote(note);showEditNote=true">{{note.title}}</div>
-            <md-button title="Pin note" class="md-icon-button bottom">
-              <md-avatar>
-                <img src="../assets/pin.svg" alt="Avatar" />
-              </md-avatar>
-            </md-button>
+          
           </md-card-header-text>
           <md-card-content>
             <div @click="foreEditNote(note);showEditNote=true">{{note.description}}</div>
@@ -97,11 +93,10 @@ export default {
     note: "gfgf"
   }),
    created() {
-    this.$log.info("created in display .....");
+    // this.$log.info(" abc ");
     this.subscription = listView.getListView().subscribe(message => {
-      this.$log.info("message in display note....", message.text);
+      this.$log.info("......>...", message.text);
       this.activeListView = !this.activeListView;
-      this.$log.info("activeListView display note....", this.activeListView);
       this.$emit("update", "note Update");
     });
   },
@@ -411,31 +406,42 @@ export default {
   margin: 6px;
 }
 .displayNote {
-  display: grid;
-  justify-content: center;
-  padding: 10px;
-  width: 260px;
+  // display: grid;
+  // justify-content: center;
+  // padding: 10px;
+  // width: 260px;
 }
 .listView {
   display: grid;
   justify-content: center;
   padding: 10px;
   width: 560px;
-  height: 140px;
+  // height: 140px;
+  // height:auto;
+// min-height:30px;
+height:auto !important;        /* for IE as it does not support min-height */
+// height:30px; 
 }
 
-.displayNote:hover .gridNote {
+.displayNote:hover .iconNote {
   visibility: visible;
 }
-.gridNote {
+.iconNote {
   visibility: hidden;
 }
-.listNote:hover .gridNote {
+.listNote:hover .iconNote {
   visibility: visible;
 }
-.listNote.gridNote {
+.listNote.iconNote {
   width: 350px;
 }
+// .iconNote {
+//   display: flex;
+//   justify-content: flex-start;
+//   height: 25px;
+//   margin-left: 10px;
+//   margin-right: 10px;
+// }
 </style>
 
 

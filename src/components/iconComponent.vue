@@ -2,8 +2,6 @@
   <div class="bottom">
     <md-card-actions md-alignment="left">
       <div class="button">
-        
-
         <md-menu md-size="big" md-direction="bottom-end">
         <md-button  title="Remind me" class="md-icon-button" md-menu-trigger>
           <md-avatar>
@@ -115,6 +113,8 @@
                   <md-button class="md-icon-button" @click="shareColor(color1.color)">
                     <span class="color" :style="`background-color: ${color1.color}`"></span>
                   </md-button>
+                   <md-tooltip md-direction="bottom">{{ color1.name }}</md-tooltip>
+
                 </div>
               </div>
             </div>
@@ -134,9 +134,49 @@
           </md-button>
           <md-menu-content>
 
-           <md-menu-item >       
-              <span v-if="labelMenu==false " @click="menu()" >Add label</span>    
+           <md-menu-item >  
+<md-menu md-align-trigger md-size="medium">
+            <!-- <div @click.stop="stopTheEvent" md-menu-trigger>
+              Add label
+            </div> -->
+             <span @click.stop="stopTheEvent" md-menu-trigger >Add label</span>    
               <md-icon>message</md-icon>
+            <md-menu-content>
+              <div  class="labelUpdate">
+              <div class="labelTitle">Label note</div>
+              <divider></divider>
+              
+              <!-- <div >
+                <input class="searchLabel"
+                  @click.stop="stopTheEvent"
+                  type="text"
+                  placeholder="Enter label name"
+                  autocomplete="off"
+                  v-model="labelName"
+                />
+                <md-button
+                  class="md-icon-button md-dense"
+                >
+                  <md-icon>search</md-icon>
+                  <md-tooltip md-direction="bottom">search </md-tooltip>
+                </md-button>
+              </div> -->
+
+              <div v-for="label in label.labels" :key="label._id">
+                <div>
+                  {{ label.labels }}
+                </div>
+              </div>
+              <md-menu-item class="closeLabelCard">Close</md-menu-item>
+              </div>
+            </md-menu-content>
+          </md-menu>
+
+
+
+
+
+             
               
               
    </md-menu-item>
@@ -153,6 +193,8 @@
 </template>
 <script>
 import { HTTP } from "../http-common";
+// import { labelService} from "./messageService";
+
 
 export default {
   name: "iconComponent",
@@ -189,9 +231,25 @@ export default {
     ],
     UsersEmail: [],
 
-    getAllUser: []
+    getAllUser: [],
+    labels:[]
   }),
-
+    // created() {
+    //     // subscribe to home component messages
+    //     this.$log.info("label>>>..")
+    //     this.subscription = getLabels.getAllLabel().subscribe(message => {
+    //          this.labels =  message.text;
+    //     });
+    // },
+    
+  //   created() {
+  //   this.$log.info("created in icon...")
+  //   this.subscription = getLabels.getAllLabel().subscribe(message => {
+  //     this.$log.info("message in icons ....", message.text);
+  //     this.labels =  message.text;
+  //     this.$log.info("labels in icons of note....", this.labels);
+  //   });
+  // },
   mounted() {
     this.email = localStorage.getItem("emailid");
     this.$log.info("email>>>>>>>:::" + this.email);
@@ -199,6 +257,7 @@ export default {
   },
   methods: {
     // stopTheEvent: (event) => event.stopPropagation() ,
+       stopTheEvent: event => event.stopPropagation(),
     save(){
   this.$log.info("*********************");
     this.getAllUser.forEach(element => {   

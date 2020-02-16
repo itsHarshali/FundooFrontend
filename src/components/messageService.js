@@ -10,9 +10,9 @@ export const messageService = {
 
 const getLabel = new Subject();
 export const labelService = {
-    sendMessage: message => getLabel.next({ text: message }),
+    sendAllLabel: message => getLabel.next({ text: message }),
     clearMessages: () => getLabel.next(),
-    getMessage: () => getLabel.asObservable()
+    getAllLabel: () => getLabel.asObservable()
 };
 
 // const gridlist = new Subject();
