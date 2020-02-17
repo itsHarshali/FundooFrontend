@@ -8,20 +8,6 @@ export const messageService = {
     getMessage: () => subject.asObservable()
 };
 
-const getLabel = new Subject();
-export const labelService = {
-    sendAllLabel: message => getLabel.next({ text: message }),
-    clearMessages: () => getLabel.next(),
-    getAllLabel: () => getLabel.asObservable()
-};
-
-// const gridlist = new Subject();
-// export const listView = {
-//     sendMessage: message => gridlist.next({ text: message }),
-//     clearMessages: () => gridlist.next(),
-//     getMessage: () => gridlist.asObservable()
-// };
-
 const listSubject = new Subject();
 export const listView = {
     enableListView: message => listSubject.next({
@@ -29,4 +15,11 @@ export const listView = {
     }),
     clearMessages: () => listSubject.next(),
     getListView: () => listSubject.asObservable()
+};
+
+const getLabel = new Subject();
+export const labelService = {
+    sendAllLabelMessage: message => getLabel.next({ text: message }),
+    clearMessages: () => getLabel.next(),
+    getAllLabel: () => getLabel.asObservable()
 };

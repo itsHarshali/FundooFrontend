@@ -20,18 +20,6 @@
         <div class="md-layout-item md-size-50">
           <search></search>
 
-          <!-- <md-autocomplete
-            id="search1"
-            class="search"
-            v-model="selectedEmployee"
-            :md-options="employees"
-            md-layout="box"
-          >
-            <label>
-              <md-icon>search</md-icon>Search...
-            </label>
-          </md-autocomplete>
-          -->
         </div>
 
       
@@ -68,7 +56,7 @@
               <md-tooltip md-direction="bottom">Grid view</md-tooltip>
             </md-avatar>
             </md-button>
-</div>
+            </div>
             <div v-else @click="listview" >
             <md-button  class="md-icon-button">
             <md-avatar>
@@ -99,7 +87,7 @@
               <router-link
                 class="h1"
                 class-active="active"
-                :to="{path:'/dashboard/notes' }"
+                :to="{path:'/dashboard/notes' }"  
                 replace
               >
                 <md-list-item class="link1">
@@ -162,14 +150,15 @@
                   </div>
                   <div v-for="label in getAllLabel" v-bind:key="label">
                     <div class="md-layout aaaa">
-                      <div class="">
-                        <md-icon>labels</md-icon>
+                      <div @click="getLabelId(label._id);deleteLabel()">
+                        <md-icon>delete</md-icon>
                       </div>
                       <div class="md-layout-item aa">
-                        {{label.label}}</div>
+                        <input  class="inputs" type="text" v-model="label.label" style="border:none" @click="getLabelId(label._id) "  />
+                        </div>
                     
-                     <div class=" a">
-                        <md-icon>edit</md-icon>
+                     <div class=" a" @click="getLabelId(label._id);labelfunction(label.label);editLabel()" >
+                        <md-icon>done</md-icon>
                       </div>
                       </div>
                   </div>
@@ -239,7 +228,7 @@ import uploadProfile from "../components/uploadProfile";
 import search from "../components/search";
 import { listView } from './messageService';
 import { HTTP } from "../http-common";
-import { get } from "./messageService";
+import { labelService } from "./messageService";
 export default {
   name: "PersistentFull",
   components: {
@@ -252,7 +241,9 @@ export default {
     seenList:false,
     menuVisible: false,
     label: "",
+    label1:"",
     email: "",
+    labelId:"",
     name: null,
     selectedEmployee: null,
     getAllLabel: [],
@@ -269,11 +260,15 @@ export default {
   mounted() {
     this.email = localStorage.getItem("emailid");
     this.name = localStorage.getItem("name");
+  
     // this.getAllNote();
     // this.getAllLabel();
   },
   methods: {
-
+labelfunction(label){
+  this.label1 =label
+   this.$log.info("test", this.label);
+},
 stopTheEvent: (event) => event.stopPropagation() ,
 
     toggleMenu() {
@@ -310,6 +305,61 @@ stopTheEvent: (event) => event.stopPropagation() ,
           this.clearForm();
         });
     },
+    editLabel() {
+      // this.sending = true;
+      const labelData = {};
+      this.$log.info("test>>", this.label1);
+      labelData.label = this.label1;
+      
+
+      HTTP.put(`/label/`+ this.labelId, labelData, {
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test", response);
+          // const data = JSON.stringify(response.data);
+          //alert("note create succesfully ", data);
+          // this.sending = false;
+
+          this.showSnackbar = true;
+
+          this.clearForm();
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+          //alert("add description", e);
+          // this.sending = false;
+          this.clearForm();
+        });
+    },
+      deleteLabel() {
+    
+      HTTP.delete(`/label/`+ this.labelId,{
+        headers: { token: localStorage.getItem("token") }
+      })
+        .then(response => {
+          this.$log.info("test", response);
+          // const data = JSON.stringify(response.data);
+          //alert("note create succesfully ", data);
+          // this.sending = false;
+
+          this.showSnackbar = true;
+
+          this.clearForm();
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+          //alert("add description", e);
+          // this.sending = false;
+          this.clearForm();
+        });
+    },
+ sendAllLabelMessage(value) {
+            // send message to subscribers via observable subject
+           labelService.sendAllLabel(value);
+                     this.$log.info("value...", value);
+
+        },
 
     getLabels() {
       HTTP.get(`/label`, {
@@ -318,7 +368,8 @@ stopTheEvent: (event) => event.stopPropagation() ,
         .then(response => {
           this.$log.info("test", response);
           this.getAllLabel = response.data.data;
-get.sendAllLabel(this.getAllLabel);
+           
+           this.sendAllLabelMessage(this.getAllLabel);
           this.$log.info(
             "getall labels data  =>" + JSON.stringify(this.getAllLabel)
              
@@ -357,6 +408,11 @@ this.seenList=!this.seenList;
     },
     labelFuction() {
       this.getAllLabel();
+    },
+    getLabelId(id){
+      // this.$log.info("labelis>>.",id)
+      this.labelId= id;
+      this.$log.info("labelis>>.", this.labelId)
     }
   }
 };

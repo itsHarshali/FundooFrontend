@@ -3,16 +3,17 @@
     <md-card-actions md-alignment="left">
       <div class="button">
         <md-menu md-size="big" md-direction="bottom-end">
+
         <md-button  title="Remind me" class="md-icon-button" md-menu-trigger>
           <md-avatar>
             <img src="../assets/notification.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
+
   <md-menu-content>
  <label> pick date and time</label>
            <md-menu-item >       
-              <!-- <span @click="date()" >Date</span>    
-              <md-icon>calendar_today</md-icon> -->
+           
                <md-datepicker v-model="selectedDate"  />
    </md-menu-item>
             <md-menu-item @click="time(true)">
@@ -24,15 +25,15 @@
 
         <md-button        
           title="Collaborator"
-          class="md-icon-button"
-          @click="showCllaboratorDialog = true;getAllUsers() "
+          class="md-icon-button" 
+          @click="showCollaboratorDialog = true ; getAllUsers() "
         >
           <md-avatar>
             <img src="../assets/collaborator.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
 
-        <md-dialog :md-active.sync="showCllaboratorDialog" md-dynamic-height>
+        <md-dialog :md-active.sync="showCollaboratorDialog" md-dynamic-height>
           <md-dialog-title>Collaborators</md-dialog-title>
           <md-divider></md-divider>
 
@@ -87,8 +88,8 @@
 
           <div class="bottom dialogButton">
             <md-dialog-actions>
-               <md-button @click="showCllaboratorDialog = false">Cancel</md-button>
-              <md-button v-on:click="save()" @click="showCllaboratorDialog = false">save</md-button>
+               <md-button @click="showCollaboratorDialog = false">Cancel</md-button>
+              <md-button v-on:click="save()" @click="showCollaboratorDialog = false">save</md-button>
             </md-dialog-actions>
           </div>
         </md-dialog>
@@ -108,19 +109,18 @@
 
           <md-menu-content class="colorcard">
             <div class="md-layout">
-              <div v-for="color1 in colors" v-bind:key="color1.name">
+              <div v-for="color1 in colors" v-bind:key="color1.colorName">
                 <div class="md-layout-item">
                   <md-button class="md-icon-button" @click="shareColor(color1.color)">
                     <span class="color" :style="`background-color: ${color1.color}`"></span>
                   </md-button>
-                   <md-tooltip md-direction="bottom">{{ color1.name }}</md-tooltip>
+                   <md-tooltip md-direction="bottom">{{ color1.colorName }}</md-tooltip>
 
                 </div>
               </div>
             </div>
           </md-menu-content>
         </md-menu>
-
 
         <md-button  title="Archive" class="md-icon-button" @click="archive(true)">
           <md-avatar>
@@ -142,43 +142,21 @@
              <span @click.stop="stopTheEvent" md-menu-trigger >Add label</span>    
               <md-icon>message</md-icon>
             <md-menu-content>
-              <div  class="labelUpdate">
-              <div class="labelTitle">Label note</div>
+              <div>
+              <div>Label note</div>
               <divider></divider>
-              
-              <!-- <div >
-                <input class="searchLabel"
-                  @click.stop="stopTheEvent"
-                  type="text"
-                  placeholder="Enter label name"
-                  autocomplete="off"
-                  v-model="labelName"
-                />
-                <md-button
-                  class="md-icon-button md-dense"
-                >
-                  <md-icon>search</md-icon>
-                  <md-tooltip md-direction="bottom">search </md-tooltip>
-                </md-button>
-              </div> -->
 
-              <div v-for="label in label.labels" :key="label._id">
+              <div v-for="label in label.label" v-bind:key="label.label">
                 <div>
-                  {{ label.labels }}
+                  {{ label.label }}
                 </div>
-              </div>
-              <md-menu-item class="closeLabelCard">Close</md-menu-item>
+              </div> 
+            
+              <md-menu-item class="closeLabel"> <button>Close</button></md-menu-item>
               </div>
             </md-menu-content>
           </md-menu>
-
-
-
-
-
-             
-              
-              
+        
    </md-menu-item>
 
             <md-menu-item @click="shareAddTrash(true)">
@@ -193,7 +171,7 @@
 </template>
 <script>
 import { HTTP } from "../http-common";
-// import { labelService} from "./messageService";
+import { labelService} from "./messageService";
 
 
 export default {
@@ -213,47 +191,53 @@ export default {
     color: "",
     email: "",
     name: "",
+    colorName:"",
     emailid: "",
-    showCllaboratorDialog: false,
+    showCollaboratorDialog: false,
     colors: [
-      { name: "Default", color: "#ffffff" },
-      { name: "Red", color: "#f28b82" },
-      { name: "Orange", color: "#f7bb04" },
-      { name: "Yellow", color: "#FAF475" },
-      { name: "Green", color: "#CCFF90" },
-      { name: "Teal", color: "#a7ffeb" },
-      { name: "Blue", color: "#cbf0f8" },
-      { name: "Dark Blue", color: "#aecbfa" },
-      { name: "Purple", color: "#d7aefb" },
-      { name: "Pink", color: "#fdcfe8" },
-      { name: "Brown", color: "#E6C9A8" },
-      { name: "Gray", color: "#E8EAED" }
+      { colorName: "Default", color: "#ffffff" },
+      { colorName: "Red", color: "#f28b82" },
+      { colorName: "Orange", color: "#f7bb04" },
+      { colorName: "Yellow", color: "#FAF475" },
+      { colorName: "Green", color: "#CCFF90" },
+      { colorName: "Teal", color: "#a7ffeb" },
+      { colorName: "Blue", color: "#cbf0f8" },
+      { colorName: "Dark Blue", color: "#aecbfa" },
+      { colorName: "Purple", color: "#d7aefb" },
+      { colorName: "Pink", color: "#fdcfe8" },
+      { colorName: "Brown", color: "#E6C9A8" },
+      { colorName: "Gray", color: "#E8EAED" }
     ],
     UsersEmail: [],
 
     getAllUser: [],
-    labels:[]
+     label:[]
   }),
-    // created() {
-    //     // subscribe to home component messages
-    //     this.$log.info("label>>>..")
-    //     this.subscription = getLabels.getAllLabel().subscribe(message => {
-    //          this.labels =  message.text;
-    //     });
-    // },
+    created() {
+        // subscribe to home component messages
+        this.$log.info("<<<label>>>")
+        this.subscription = labelService.getAllLabel().subscribe(message => {
+            //  this.label =  message.text;
+               this.$log.info("<<<label this.label>>>", this.label)
+                 if (message) {
+                this.$log.info("message---->>>>", message);
+                // add message to local state if not empty
+                this.label=message.text;
+
+            } else {
+                 this.$log.info("else>>>>", message);
+                // clear messages when empty message received
+                this.messages = [];
+            }
+        });
+    },
     
-  //   created() {
-  //   this.$log.info("created in icon...")
-  //   this.subscription = getLabels.getAllLabel().subscribe(message => {
-  //     this.$log.info("message in icons ....", message.text);
-  //     this.labels =  message.text;
-  //     this.$log.info("labels in icons of note....", this.labels);
-  //   });
-  // },
+ 
   mounted() {
     this.email = localStorage.getItem("emailid");
     this.$log.info("email>>>>>>>:::" + this.email);
     this.name = localStorage.getItem("name");
+
   },
   methods: {
     // stopTheEvent: (event) => event.stopPropagation() ,
@@ -333,7 +317,7 @@ export default {
   width: 520px;
   display: flex;
   border-radius: 8px;
-  z-index: 6;
+
 }
 .inputs {
   padding: 5px;

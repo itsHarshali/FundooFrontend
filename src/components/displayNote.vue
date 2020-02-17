@@ -30,14 +30,14 @@
             <div v-for="note in note.collaborators" v-bind:key="note.collaborators">
               <md-avatar class="md-avatar-icon md-small margin">
                 <md-icon>person</md-icon>
-                <md-tooltip md-direction="bottom">harshali@gmail.com</md-tooltip>
+                <md-tooltip md-direction="bottom">harshali@gmail.com{{note.emailid}}</md-tooltip>
               </md-avatar>
             </div>
-          </div>
+          </div>   
           <div class="bottom" @click="getNoteId(note._id)">
             <md-card-actions md-alignment="left">
               <div class="button">
-                <div>
+                <div class="iconNote">
                   <iconComponent
                     @selectedUserId="userIdFunction"
                     @archive="addArchive"
@@ -90,14 +90,14 @@ export default {
     addInArchive: "",
     showEditNote: false,
     res: "",
-    note: "gfgf"
+    note: ""
   }),
    created() {
     // this.$log.info(" abc ");
     this.subscription = listView.getListView().subscribe(message => {
       this.$log.info("......>...", message.text);
       this.activeListView = !this.activeListView;
-      this.$emit("update", "note Update");
+      this.$emit("update", "noteUpdate");
     });
   },
 
@@ -405,24 +405,16 @@ export default {
 .margin {
   margin: 6px;
 }
-.displayNote {
-  // display: grid;
-  // justify-content: center;
-  // padding: 10px;
-  // width: 260px;
-}
+
 .listView {
   display: grid;
-  justify-content: center;
+  // justify-content: center;
+ -webkit-box-pack: initial;
   padding: 10px;
-  width: 560px;
-  // height: 140px;
-  // height:auto;
-// min-height:30px;
-height:auto !important;        /* for IE as it does not support min-height */
-// height:30px; 
-}
+  width: 570px;
+height:auto !important;       
 
+}
 .displayNote:hover .iconNote {
   visibility: visible;
 }
@@ -435,13 +427,7 @@ height:auto !important;        /* for IE as it does not support min-height */
 .listNote.iconNote {
   width: 350px;
 }
-// .iconNote {
-//   display: flex;
-//   justify-content: flex-start;
-//   height: 25px;
-//   margin-left: 10px;
-//   margin-right: 10px;
-// }
+
 </style>
 
 
