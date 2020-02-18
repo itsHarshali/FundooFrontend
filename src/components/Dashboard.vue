@@ -1,7 +1,7 @@
 <template>
   <!-- <md-button class="md-primary md-raised" @click="active = true">Prompt</md-button>
   <span v-if="value">Value: {{ value }}</span>-->
-  <div class="page-container">
+  <div class="page-container" >
     <md-app>
       <!-- <div class="tool"> -->
       <md-app-toolbar class="md-layout">
@@ -182,16 +182,16 @@
             </div>
 
             <md-divider></md-divider>
+        
             <button class="md-list-item-text">
               <router-link :to="{path:'/dashboard/archive'}" replace>
                 <md-list-item>
                   <md-icon>move_to_inbox</md-icon>
-                  <!-- <md-icon><img src="../assets/archive.svg" alt="Avatar"></md-icon> -->
                   Archive
                 </md-list-item>
               </router-link>
-            </button>
-            <!-- @click="getTrash()"  -->
+            </button>               
+      
 
             <button class="md-list-item-text">
               <router-link :to="{path:'/dashboard/trash'}" replace>
@@ -354,9 +354,11 @@ stopTheEvent: (event) => event.stopPropagation() ,
           this.clearForm();
         });
     },
+    
  sendAllLabelMessage(value) {
+             
             // send message to subscribers via observable subject
-           labelService.sendAllLabel(value);
+           labelService.sendAllLabelMessage(value);
                      this.$log.info("value...", value);
 
         },

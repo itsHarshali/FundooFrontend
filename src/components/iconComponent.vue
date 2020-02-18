@@ -3,18 +3,17 @@
     <md-card-actions md-alignment="left">
       <div class="button">
         <md-menu md-size="big" md-direction="bottom-end">
-
-        <md-button  title="Remind me" class="md-icon-button" md-menu-trigger>
+        <md-button  @click.stop="stopTheEvent"  title="Remind me" class="md-icon-button" md-menu-trigger>
           <md-avatar>
             <img src="../assets/notification.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
-
-  <md-menu-content>
+  <md-menu-content @click.stop="stopTheEvent" >
  <label> pick date and time</label>
            <md-menu-item >       
-           
-               <md-datepicker v-model="selectedDate"  />
+             <input type="date" id="birthday" name="birthday"  @click.stop="stopTheEvent" >
+  <input type="submit">
+               <!-- <md-datepicker v-model="selectedDate"  /> -->
    </md-menu-item>
             <md-menu-item @click="time(true)">
               <span>Set Time</span>
@@ -32,7 +31,6 @@
             <img src="../assets/collaborator.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
-
         <md-dialog :md-active.sync="showCollaboratorDialog" md-dynamic-height>
           <md-dialog-title>Collaborators</md-dialog-title>
           <md-divider></md-divider>
@@ -93,7 +91,6 @@
             </md-dialog-actions>
           </div>
         </md-dialog>
-
         <md-menu class="c1" md-direction="top-start">
           <md-button
             
@@ -102,6 +99,7 @@
             md-menu-trigger
             class="md-icon-button"
           >
+
             <md-avatar>
               <img src="../assets/addcolor.svg" alt="Avatar" />
             </md-avatar>
@@ -135,24 +133,26 @@
           <md-menu-content>
 
            <md-menu-item >  
-<md-menu md-align-trigger md-size="medium">
+<md-menu class="menuLabelAndDelete" md-align-trigger md-size="medium" >
             <!-- <div @click.stop="stopTheEvent" md-menu-trigger>
               Add label
             </div> -->
              <span @click.stop="stopTheEvent" md-menu-trigger >Add label</span>    
               <md-icon>message</md-icon>
-            <md-menu-content>
+            <md-menu-content  class="menuLabelAndDelete">
               <div>
               <div>Label note</div>
-              <divider></divider>
+             
 
-              <div v-for="label in label.label" v-bind:key="label.label">
-                <div>
-                  {{ label.label }}
-                </div>
+              <div v-for="label in label" v-bind:key="label._id">
+               <span>
+                  <md-checkbox v-model="array" value="label._id">{{ label.label }}</md-checkbox>
+                  
+               </span>
               </div> 
-            
-              <md-menu-item class="closeLabel"> <button>Close</button></md-menu-item>
+               <divider></divider>
+
+              <md-menu-item> <button>Close</button></md-menu-item>
               </div>
             </md-menu-content>
           </md-menu>
@@ -183,6 +183,7 @@ export default {
   },
 
   data: () => ({
+     array: [],
     value: null,
     selectedDate: null,
     selectedUser: "",
@@ -213,25 +214,16 @@ export default {
     getAllUser: [],
      label:[]
   }),
-    created() {
-        // subscribe to home component messages
-        this.$log.info("<<<label>>>")
-        this.subscription = labelService.getAllLabel().subscribe(message => {
-            //  this.label =  message.text;
-               this.$log.info("<<<label this.label>>>", this.label)
-                 if (message) {
-                this.$log.info("message---->>>>", message);
-                // add message to local state if not empty
-                this.label=message.text;
-
-            } else {
-                 this.$log.info("else>>>>", message);
-                // clear messages when empty message received
-                this.messages = [];
-            }
-        });
-    },
+   
     
+     created() {
+          this.$log.info("<<<label>>>")
+    this.subscription = labelService.getAllLabel().subscribe(message => {
+      this.$log.info("message", message.text);
+      this.label =  message.text;
+      this.$log.info("labels ...>>", this.label);
+    });
+  },
  
   mounted() {
     this.email = localStorage.getItem("emailid");
@@ -311,7 +303,9 @@ export default {
 // .md-menu {
 //   margin: 24px;
 // }
-
+.menuLabelAndDelete{
+border-radius: 5px;
+}
 .md-dialog {
   height: 240px;
   width: 520px;

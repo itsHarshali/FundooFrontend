@@ -1,7 +1,7 @@
 <template>
   <div class="note">
     <div  v-for="note in getAllNotes" v-bind:key="note._id" >
-      <!-- <div v-for="note in displayNote" v-bind:key="note">  -->
+      <!-- <div v-for="note in displayNote" v-bind:key="note"> -->
       <div class="card" @getAll="forUpdateNotes">
         <md-card
           v-if="seen==false"
@@ -12,7 +12,6 @@
           <md-card-header-text class="header">
             <!-- @click="toggleMenu" -->
             <div @click="foreEditNote(note);showEditNote=true">{{note.title}}</div>
-          
           </md-card-header-text>
           <md-card-content>
             <div @click="foreEditNote(note);showEditNote=true">{{note.description}}</div>

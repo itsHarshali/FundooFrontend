@@ -125,6 +125,12 @@ this.color=this.note.color;
   visibility: hidden;
 } */
 }
+.colorcard.md-menu-content-top-start.md-menu-content-small.md-menu-content.md-theme-default{
+ z-index: 99;
+}
+/* .md-dialog.md-dialog-fullscreen.md-theme-default{
+ z-index: 8;
+} */
  .button {
   display: flex;
   justify-content: flex-start;
