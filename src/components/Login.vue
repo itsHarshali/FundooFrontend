@@ -113,7 +113,7 @@ import { HTTP } from "../http-common";
       HTTP.post(`login`, loginData)
         .then(response => {
           const data = JSON.stringify(response.data);
-          alert("Login succesfully ", data);
+          alert("Login succesfully.. ", data);
           // this.posts = response.data;
           //this.userSaved=true
           this.$router.push('/dashboard')
@@ -124,7 +124,7 @@ import { HTTP } from "../http-common";
            this.clearForm();
         })
         .catch(e => {
-          alert("Login not succesful" ,e);
+          alert("Login not succesful.." ,e);
            this.sending = false
           this.clearForm();
           // this.errors.push(e);

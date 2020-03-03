@@ -1,30 +1,51 @@
+   
 <template>
+
   <div class="bottom">
     <md-card-actions md-alignment="left">
       <div class="button">
-        <md-menu md-size="big" md-direction="bottom-end">
-        <md-button  @click.stop="stopTheEvent"  title="Remind me" class="md-icon-button" md-menu-trigger>
-          <md-avatar>
-            <img src="../assets/notification.svg" alt="Avatar" />
-          </md-avatar>
-        </md-button>
-  <md-menu-content @click.stop="stopTheEvent" >
- <label> pick date and time</label>
-           <md-menu-item >       
-             <input type="date" id="birthday" name="birthday"  @click.stop="stopTheEvent" >
-  <input type="submit">
-               <!-- <md-datepicker v-model="selectedDate"  /> -->
-   </md-menu-item>
-            <md-menu-item @click="time(true)">
-              <span>Set Time</span>
-              <md-icon>access_time</md-icon>
+        <md-menu md-size="big" md-direction="bottom-end"  md-dynamic-height>
+          <md-button
+            @click.stop="stopTheEvent"
+            title="Remind me"
+            class="md-icon-button"
+            md-menu-trigger
+          >
+            <md-avatar>
+              <img src="../assets/notification.svg" alt="Avatar" />
+            </md-avatar>
+          </md-button>
+          <md-menu-content >
+            <label @click="showDate= true">pick date and time</label>
+            <md-menu class="datetime1"  :md-active.sync="showDate">
+               <datetime format="MM/DD/YYYY h:i:s" width="300px" v-model="time"></datetime>
+              <md-button v-on:click="setReminder()" @click="showDate=false">save</md-button>
+            </md-menu>
+
+            <!-- <md-menu-item>
+              <datetime format="MM/DD/YYYY h:i:s" width="300px" v-model="val"></datetime>
+              <input type="submit" />
+            
             </md-menu-item>
+            <md-menu-item @click="time(true)">
+           
+              <form action="/action_page.php" @click.stop="stopTheEvent">
+                <label for="appt">Select a time:</label>
+                <input type="time" id="appt" name="appt" />
+                <input type="submit"/>
+              </form>
+            </md-menu-item >
+            <div @click.stop="stopTheEvent" >
+             
+            <datetime  v-model="date"  @click.stop="stopTheEvent" ></datetime>
+            </div> -->
+         
           </md-menu-content>
         </md-menu>
 
-        <md-button        
+        <md-button
           title="Collaborator"
-          class="md-icon-button" 
+          class="md-icon-button"
           @click="showCollaboratorDialog = true ; getAllUsers() "
         >
           <md-avatar>
@@ -86,20 +107,18 @@
 
           <div class="bottom dialogButton">
             <md-dialog-actions>
-               <md-button @click="showCollaboratorDialog = false">Cancel</md-button>
+              <md-button @click="showCollaboratorDialog = false">Cancel</md-button>
               <md-button v-on:click="save()" @click="showCollaboratorDialog = false">save</md-button>
             </md-dialog-actions>
           </div>
         </md-dialog>
         <md-menu class="c1" md-direction="top-start">
           <md-button
-            
             title="Change color"
-            @click="selectColor(e)" 
+            @click="selectColor(e)"
             md-menu-trigger
             class="md-icon-button"
           >
-
             <md-avatar>
               <img src="../assets/addcolor.svg" alt="Avatar" />
             </md-avatar>
@@ -112,52 +131,49 @@
                   <md-button class="md-icon-button" @click="shareColor(color1.color)">
                     <span class="color" :style="`background-color: ${color1.color}`"></span>
                   </md-button>
-                   <md-tooltip md-direction="bottom">{{ color1.colorName }}</md-tooltip>
-
+                  <md-tooltip md-direction="bottom">{{ color1.colorName }}</md-tooltip>
                 </div>
               </div>
             </div>
           </md-menu-content>
         </md-menu>
 
-        <md-button  title="Archive" class="md-icon-button" @click="archive(true)">
+        <md-button title="Archive" class="md-icon-button" @click="archive(true)">
           <md-avatar>
             <img src="../assets/archive.svg" alt="Avatar" />
           </md-avatar>
         </md-button>
 
         <md-menu md-size="big" md-direction="bottom-end">
-          <md-button  title="More" class="md-icon-button" md-menu-trigger>
+          <md-button title="More" class="md-icon-button" md-menu-trigger>
             <md-icon>more_vert</md-icon>
           </md-button>
           <md-menu-content>
-
-           <md-menu-item >  
-<md-menu class="menuLabelAndDelete" md-align-trigger md-size="medium" >
-            <!-- <div @click.stop="stopTheEvent" md-menu-trigger>
+            <md-menu-item>
+              <md-menu class="menuLabelAndDelete" md-align-trigger md-size="medium">
+                <!-- <div @click.stop="stopTheEvent" md-menu-trigger>
               Add label
-            </div> -->
-             <span @click.stop="stopTheEvent" md-menu-trigger >Add label</span>    
-              <md-icon>message</md-icon>
-            <md-menu-content  class="menuLabelAndDelete">
-              <div>
-              <div>Label note</div>
-             
+                </div>-->
+                <span @click.stop="stopTheEvent" md-menu-trigger>Add label</span>
+                <md-icon>message</md-icon>
+                <md-menu-content class="menuLabelAndDelete">
+                  <div>
+                    <div>Label note</div>
 
-              <div v-for="label in label" v-bind:key="label._id">
-               <span>
-                  <md-checkbox v-model="array" value="label._id">{{ label.label }}</md-checkbox>
-                  
-               </span>
-              </div> 
-               <divider></divider>
+                    <div v-for="label in label" v-bind:key="label._id">
+                      <span>
+                        <md-checkbox v-model="array" value="label._id">{{ label.label }}</md-checkbox>
+                      </span>
+                    </div>
+                    <divider></divider>
 
-              <md-menu-item> <button>Close</button></md-menu-item>
-              </div>
-            </md-menu-content>
-          </md-menu>
-        
-   </md-menu-item>
+                    <md-menu-item>
+                      <button>Close</button>
+                    </md-menu-item>
+                  </div>
+                </md-menu-content>
+              </md-menu>
+            </md-menu-item>
 
             <md-menu-item @click="shareAddTrash(true)">
               <span>Delete note</span>
@@ -171,7 +187,10 @@
 </template>
 <script>
 import { HTTP } from "../http-common";
-import { labelService} from "./messageService";
+import { labelService } from "./messageService";
+// import { Datetime } from 'vue-datetime';
+// import 'vue-datetime/dist/vue-datetime.css'
+import datetime from 'vuejs-datetimepicker';
 
 
 export default {
@@ -179,11 +198,13 @@ export default {
   components: {
     // notes,
     // displayNote
-
+    //  datetime: Datetime,
+     datetime
   },
 
   data: () => ({
-     array: [],
+    time:"",
+    array: [],
     value: null,
     selectedDate: null,
     selectedUser: "",
@@ -192,8 +213,9 @@ export default {
     color: "",
     email: "",
     name: "",
-    colorName:"",
+    colorName: "",
     emailid: "",
+    ShowDate:false,
     showCollaboratorDialog: false,
     colors: [
       { colorName: "Default", color: "#ffffff" },
@@ -212,37 +234,35 @@ export default {
     UsersEmail: [],
 
     getAllUser: [],
-     label:[]
+    label: []
   }),
-   
-    
-     created() {
-          this.$log.info("<<<label>>>")
+
+  created() {
+    this.$log.info("<<<label>>>");
     this.subscription = labelService.getAllLabel().subscribe(message => {
       this.$log.info("message", message.text);
-      this.label =  message.text;
+      this.label = message.text;
       this.$log.info("labels ...>>", this.label);
     });
   },
- 
+
   mounted() {
     this.email = localStorage.getItem("emailid");
     this.$log.info("email>>>>>>>:::" + this.email);
     this.name = localStorage.getItem("name");
-
   },
   methods: {
     // stopTheEvent: (event) => event.stopPropagation() ,
-       stopTheEvent: event => event.stopPropagation(),
-    save(){
-  this.$log.info("*********************");
-    this.getAllUser.forEach(element => {   
-      this.$log.info("test of email>>>collaboratorId >",this.selectedUser);
-            if (element.emailid == this.selectedUser) {
-              this.$log.info("test of email>>>c user_id >>", element._id);
-              this.$emit("selectedUserId", element._id);
-            }
-          });
+    stopTheEvent: event => event.stopPropagation(),
+    save() {
+      this.$log.info("*********************");
+      this.getAllUser.forEach(element => {
+        this.$log.info("test of email>>>collaboratorId >", this.selectedUser);
+        if (element.emailid == this.selectedUser) {
+          this.$log.info("test of email>>>c user_id >>", element._id);
+          this.$emit("selectedUserId", element._id);
+        }
+      });
     },
     getAllUsers() {
       this.$log.info("test of getUsers");
@@ -258,16 +278,24 @@ export default {
             //   //this.$emit("selectedUser", element._id);
             // }
           });
-        })  
+        })
         .catch(e => {
           this.$log.info("test", e);
         });
     },
 
+// setReminder(){
+// this.$emit("reminde",)
+// },
+setReminder() {
+      let reminder = this.time;
+      this.$emit("reminderDate", reminder);
+      this.$log.info("reminder1111", reminder);
+    },
     clearForm() {
       this.label = "";
     },
-   
+
     shareAddTrash(value) {
       this.$log.info("trash>>>>>>>:::" + value);
       this.$emit("Trash", value);
@@ -284,15 +312,13 @@ export default {
       this.colorCard = !this.colorCard;
       // this.$log.info("seen :: " + this.seen);
     },
-    menu(){
-      this.labelMenu=!this.labelMenu;
-              
+    menu() {
+      this.labelMenu = !this.labelMenu;
     }
     //  tM() {
     //   this.labelMenu = !this.labelMenu;
     //   // this.$log.info("seen :: " + this.seen);
     // },
-    
   }
 };
 </script>
@@ -303,15 +329,17 @@ export default {
 // .md-menu {
 //   margin: 24px;
 // }
-.menuLabelAndDelete{
-border-radius: 5px;
+.datetime1{
+  height: 200px;
+}
+.menuLabelAndDelete {
+  border-radius: 5px;
 }
 .md-dialog {
   height: 240px;
   width: 520px;
   display: flex;
   border-radius: 8px;
-
 }
 .inputs {
   padding: 5px;

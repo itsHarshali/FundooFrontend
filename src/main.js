@@ -10,6 +10,9 @@ import routes from './routes';
 import Rx from 'rxjs/Rx';
 import VueRx from 'vue-rx';
 // import vuetify from '@/plugins/vuetify' // path to vuetify export
+import { Datetime } from 'vue-datetime'
+// You need a specific loader for CSS files
+import 'vue-datetime/dist/vue-datetime.css'
 
 const options = {
   isEnabled: true,
@@ -28,6 +31,7 @@ Vue.use(MdButton)
 Vue.use(MdContent)
 Vue.use(MdTabs)
 Vue.use(VueRx, Rx)
+Vue.use(Datetime)
 
 Vue.config.productionTip = false
 

@@ -1,6 +1,6 @@
 <template>
   <div class="note">
-    <div  v-for="note in getAllNotes" v-bind:key="note._id" >
+    <div v-for="note in getAllNotes" v-bind:key="note._id">
       <!-- <div v-for="note in displayNote" v-bind:key="note"> -->
       <div class="card" @getAll="forUpdateNotes">
         <md-card
@@ -8,6 +8,7 @@
           md-dynamic-height
           :class="activeListView ? 'listView' : 'displayNote'"
           :style="`background-color: ${note.colorNote}`"
+           
         >
           <md-card-header-text class="header">
             <!-- @click="toggleMenu" -->
@@ -16,10 +17,10 @@
           <md-card-content>
             <div @click="foreEditNote(note);showEditNote=true">{{note.description}}</div>
           </md-card-content>
-          
-<div class="md-layout" v-if="note.labels!==null">
-            <div v-for="note in note.labels" v-bind:key="note.labels">
-              <md-chip md-deletable>{{note.label}}</md-chip>
+
+          <div class="md-layout" v-if="note.labels!==null">
+            <div v-for="note in note.labels" v-bind:key="note._id">
+              <md-chip md-deletable @click="deleteLabel(note._id)">{{note.label}}</md-chip>
             </div>
           </div>
           <div v-if="note.reminder!= null">
@@ -32,12 +33,13 @@
                 <md-tooltip md-direction="bottom">harshali@gmail.com{{note.emailid}}</md-tooltip>
               </md-avatar>
             </div>
-          </div>   
+          </div>
           <div class="bottom" @click="getNoteId(note._id)">
             <md-card-actions md-alignment="left">
               <div class="button">
-                <div class="iconNote">
+                <div class="iconNote" >
                   <iconComponent
+                    @reminderDate="addReminderDate"
                     @selectedUserId="userIdFunction"
                     @archive="addArchive"
                     @changeColor="getColor"
@@ -52,11 +54,12 @@
       <div></div>
     </div>
     <div>
-    <md-dialog :md-active.sync="showEditNote">
-            <!-- <div v-if="seen==true" :md-active.sync="showEditNote"> -->
-              <editNote :note="note" @closeDialog="closeDialog"></editNote>
-            <!-- </div> -->
-          </md-dialog></div>
+      <md-dialog :md-active.sync="showEditNote">
+        <!-- <div v-if="seen==true" :md-active.sync="showEditNote"> -->
+        <editNote :note="note" @closeDialog="closeDialog"></editNote>
+        <!-- </div> -->
+      </md-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -78,7 +81,7 @@ export default {
   data: () => ({
     seen: false,
     getAllNotes: [],
-
+    reminder: "",
     label: [],
     fromChild: "",
     note_color: "",
@@ -89,9 +92,10 @@ export default {
     addInArchive: "",
     showEditNote: false,
     res: "",
-    note: ""
+    note: "",
+    labelId: ""
   }),
-   created() {
+  created() {
     // this.$log.info(" abc ");
     this.subscription = listView.getListView().subscribe(message => {
       this.$log.info("......>...", message.text);
@@ -101,21 +105,27 @@ export default {
   },
 
   methods: {
-        closeDialog(value){
- this.showEditNote = value;
+    closeDialog(value) {
+      this.showEditNote = value;
     },
+    addReminderDate(value) {
+      this.reminder = value;
+      this.addReminder();
+   
+    },
+
     addCollaborator() {
       this.sending = true;
-       this.$log.info("test NOTE ID>>",this.noteId  )
-         this.$log.info("test this.user_id>>",this.user_id  )
-                  this.$log.info("test TOKEN>>",localStorage.getItem("token") )
+      this.$log.info("test NOTE ID>>", this.noteId);
+      this.$log.info("test this.user_id>>", this.user_id);
+      this.$log.info("test TOKEN>>", localStorage.getItem("token"));
 
       HTTP.post(`/collaborator` + "/" + this.noteId + "/" + this.user_id, {
         headers: { token: localStorage.getItem("token") }
       })
         .then(response => {
           this.$log.info("test", response);
-            this.$emit("getAll", null);
+          this.$emit("getAll", null);
         })
         .catch(e => {
           this.$log.info("test", e);
@@ -167,6 +177,55 @@ export default {
           this.$log.info("test>>", e);
         });
     },
+    removeLabel() {
+      // this.$log.info("noteId function...", this.noteId);
+      // this.$log.info("label id function...", this.labelId);
+      const noteData = {};
+      noteData.noteId = this.noteId;
+      this.$log.info("add notedata ...", noteData);
+      this.token = localStorage.getItem("token");
+      this.$log.info("token :" + this.token);
+      HTTP.put("label/" + this.labelId + "/remove", noteData)
+        .then(response => {
+          const data = JSON.stringify(response.data);
+          this.$log.info("note label removed successfully : " + data);
+          this.$emit("getAllNotes", null);
+        })
+        .catch(error => {
+          this.$log.error("response", error);
+        });
+    },
+
+    addReminder(){
+      this.$log.info("test NOTE ID>>"+ this.noteId);
+      this.$log.info(" reminder ", this.reminder);
+      const noteData = {};
+      noteData.reminder = this.reminder;
+      this.$log.info("add reminder noteId...", noteData);
+
+    //   HTTP.put(`/reminder/` + this.noteId,noteData, {
+    //     headers: { token: localStorage.getItem("token") }
+    //   })
+    //     .then(response => {
+    //       const data = JSON.stringify(response.data);
+    //       this.$log.info("reminder added successfully : " + data);
+    //       this.$emit("getAll", null);
+    //     })
+    //     .catch(error => {
+    //       this.$log.error("response", error);
+    //     });
+    // },
+
+      HTTP.put(`/reminder/` + this.noteId, noteData, {})
+        .then(response => {
+          this.$log.info("test2", response);
+          this.$emit("getAll", null);
+        })
+        .catch(e => {
+          this.$log.info("test", e);
+        });
+    },
+
     userIdFunction(userId) {
       this.user_id = userId;
       this.$log.info("user _ID____**__ :: " + this.user_id);
@@ -212,8 +271,10 @@ export default {
 
       this.note = note;
     },
-
-   
+    deleteLabel(value) {
+      this.labelId = value;
+      this.removeLabel();
+    }
   }
 };
 </script>
@@ -408,11 +469,10 @@ export default {
 .listView {
   display: grid;
   // justify-content: center;
- -webkit-box-pack: initial;
+  -webkit-box-pack: initial;
   padding: 10px;
   width: 570px;
-height:auto !important;       
-
+  height: auto !important;
 }
 .displayNote:hover .iconNote {
   visibility: visible;
@@ -426,7 +486,6 @@ height:auto !important;
 .listNote.iconNote {
   width: 350px;
 }
-
 </style>
 
 
